@@ -1,0 +1,17 @@
+{
+    "html.format.wrapAttributes": "force-aligned",
+    "html.format.wrapLineLength": 200,
+    "sassFormat.indent": 2,
+    "[html]": {
+        "editor.tabSize": 2
+    },
+    "[typescript]": {
+        "editor.tabSize": 2
+    },
+    "[json]": {
+        "editor.tabSize": 2
+    },
+    "[scss]": {
+        "editor.tabSize": 2
+    }
+}
