@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Dumps } from 'src/app/shared/interfaces/dumps';
+import { DumpsService } from './services/dumps.service';
 
 @Component({
   selector: 'app-dumps',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DumpsComponent implements OnInit {
 
-  constructor() { }
+  dumps: Dumps[];
+  dumpsSubscription: Subscription;
+
+  constructor(private dumpsService: DumpsService) { }
 
   ngOnInit() {
+    this.dumpsService.getDumps();
+    this.dumpsSubscription = this.dumpsService.dumpsObservable$.subscribe(data => {
+      this.dumps = data;
+    });
   }
 
 }

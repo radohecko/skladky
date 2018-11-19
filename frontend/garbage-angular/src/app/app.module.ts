@@ -11,6 +11,13 @@ import { HomeComponent } from './core/home/home.component';
 import { DumpAddComponent } from './core/dumps/components/dump-add/dump-add.component';
 import { StatsComponent } from './core/stats/stats.component';
 import { AppRoutingModule } from './app.routing.module';
+import { MaterialModule } from './material.module';
+import { environment } from 'src/environments/environment';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { DumpsService } from './core/dumps/services/dumps.service';
 
 @NgModule({
   declarations: [
@@ -26,9 +33,14 @@ import { AppRoutingModule } from './app.routing.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MaterialModule,
+    BrowserAnimationsModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAuthModule
   ],
-  providers: [],
+  providers: [DumpsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
