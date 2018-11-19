@@ -1,5 +1,5 @@
 // TODO: define types of location according to database
-export interface Dumps {
+export interface Dump {
   id: string;
   email: string | null;
   image: null;

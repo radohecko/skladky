@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Dumps } from 'src/app/shared/interfaces/dumps';
+import { Dump } from 'src/app/shared/interfaces/dump';
 import { DumpsService } from './services/dumps.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { DumpsService } from './services/dumps.service';
 })
 export class DumpsComponent implements OnInit {
 
-  dumps: Dumps[];
+  dumps: Dump[];
   dumpsSubscription: Subscription;
 
   constructor(private dumpsService: DumpsService) { }
