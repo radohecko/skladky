@@ -18,6 +18,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DumpsService } from './core/dumps/services/dumps.service';
+import { NavigationToolbarComponent } from './shared/components/navigation-toolbar/navigation-toolbar.component';
+import { FooterToolbarComponent } from './shared/components/footer-toolbar/footer-toolbar.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { DumpsService } from './core/dumps/services/dumps.service';
     AuthDialogComponent,
     HomeComponent,
     DumpAddComponent,
-    StatsComponent
+    StatsComponent,
+    NavigationToolbarComponent,
+    FooterToolbarComponent
   ],
   imports: [
     BrowserModule,
