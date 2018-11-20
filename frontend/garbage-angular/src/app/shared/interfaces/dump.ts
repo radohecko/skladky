@@ -1,3 +1,6 @@
+import {firestore} from 'firebase/app';
+import Timestamp = firestore.Timestamp;
+
 // TODO: define types of location according to database
 export interface Dump {
   id: string;
@@ -8,4 +11,5 @@ export interface Dump {
   substances: string[];
   amount: string;
   status: string;
+  timestamp: Timestamp;
 }

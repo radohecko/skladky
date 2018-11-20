@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { Dump } from 'src/app/shared/interfaces/dump';
 import { DumpsService } from '../dumps/services/dumps.service';
 
+
 @Component({
   selector: 'app-stats',
   templateUrl: './stats.component.html',
@@ -25,8 +26,6 @@ export class StatsComponent implements OnInit {
     });
     
   }
-
-
 
 
   private showStats(){
@@ -103,30 +102,44 @@ export class StatsComponent implements OnInit {
     }
   }); 
 
+const monthNames = ["January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December"];
+var now = new Date();
+var months = [];
+for (let index = (now.getMonth()-5)%12; index <= now.getMonth(); index++) {
+  months.push(monthNames[index]);
+}
+
+var reports_by_months = [];
+for (let i = 0; i < months.length; i++)  {
+  reports_by_months[i] = 0;
+  this.dumps.forEach(el => {
+    
+    if (el.timestamp.toDate().getMonth()== monthNames.indexOf(months[i])){
+      reports_by_months[i] += 1;
+    }
+
+  });
+
+console.log(reports_by_months[i]);
+};
+
 
       var ctx = document.getElementById("chart3");
       var chart3 = new Chart(ctx, {
-      type: 'bar',
+      type: 'line',
       data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          labels: months,
           datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3, 5, 2, 3],
+              label: '# of Reports',
+              data: reports_by_months,
               backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
+                
               ],
               borderColor: [
                   'rgba(255,99,132,1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
+                 
               ],
               borderWidth: 1
           }]
@@ -135,6 +148,7 @@ export class StatsComponent implements OnInit {
           scales: {
               yAxes: [{
                   ticks: {
+                      
                       beginAtZero:true
                   }
               }]
