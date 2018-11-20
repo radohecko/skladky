@@ -6,7 +6,6 @@ import { DumpsComponent } from './core/dumps/dumps.component';
 import { DumpMapComponent } from './core/dumps/components/dump-map/dump-map.component';
 import { DumpListComponent } from './core/dumps/components/dump-list/dump-list.component';
 import { DumpDetailComponent } from './core/dumps/components/dump-detail/dump-detail.component';
-import { AuthDialogComponent } from './auth/components/auth-dialog/auth-dialog.component';
 import { HomeComponent } from './core/home/home.component';
 import { DumpAddComponent } from './core/dumps/components/dump-add/dump-add.component';
 import { StatsComponent } from './core/stats/stats.component';
@@ -16,10 +15,12 @@ import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DumpsService } from './core/dumps/services/dumps.service';
 import { NavigationToolbarComponent } from './shared/components/navigation-toolbar/navigation-toolbar.component';
 import { FooterToolbarComponent } from './shared/components/footer-toolbar/footer-toolbar.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AuthModule } from './auth';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,6 @@ import { FooterToolbarComponent } from './shared/components/footer-toolbar/foote
     DumpMapComponent,
     DumpListComponent,
     DumpDetailComponent,
-    AuthDialogComponent,
     HomeComponent,
     DumpAddComponent,
     StatsComponent,
@@ -42,7 +42,10 @@ import { FooterToolbarComponent } from './shared/components/footer-toolbar/foote
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AuthModule
   ],
   providers: [DumpsService],
   bootstrap: [AppComponent]
