@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { Dump } from 'src/app/shared/interfaces/dump';
 import { DumpsService } from '../dumps/services/dumps.service';
 import { Chart } from 'chart.js';
+import { unsubscribe } from 'src/app/shared/utils/subscription.util';
 
 
 @Component({
@@ -29,8 +30,7 @@ export class StatsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        // TODO: create utility for unsubscribing
-        this.dumpsSubscription.unsubscribe();
+        unsubscribe(this.dumpsSubscription);
     }
 
     showDoughnutChart() {

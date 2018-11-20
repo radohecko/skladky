@@ -1,13 +1,12 @@
-import {firestore} from 'firebase/app';
+import { firestore } from 'firebase/app';
 import Timestamp = firestore.Timestamp;
-import Geopoint = firestore.GeoPoint
+import Geopoint = firestore.GeoPoint;
 
-// TODO: define types of location according to database
 export interface Dump {
   id: string;
   email: string | null;
   image: null;
-  location:Geopoint;
+  location: Geopoint;
   materials: string[];
   substances: string[];
   amount: string;
