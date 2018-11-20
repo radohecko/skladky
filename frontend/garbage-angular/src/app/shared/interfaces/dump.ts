@@ -6,4 +6,6 @@ export interface Dump {
   location: any[];
   materials: string[];
   substances: string[];
+  amount: string;
+  status: string;
 }
