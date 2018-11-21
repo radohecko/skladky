@@ -1,0 +1,60 @@
+@import './variables';
+
+.cdk-overlay-dark-backdrop {
+  background: #abb6c1;
+}
+
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+  opacity: 0.7;
+}
+
+mat-dialog-container {
+  &.mat-dialog-container {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .mat-dialog-title {
+    height: 35px;
+    margin-bottom: 0;
+    padding: 8px;
+    background: $color-red;
+    font-size: 15px;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+  }
+
+  .mat-dialog-content {
+    margin: 0;
+    padding: 12px 15px;
+  }
+
+  .mat-dialog-actions {
+    display: block;
+    padding: 8px 15px;
+    text-align: right;
+
+    &:last-child {
+      margin: 0;
+    }
+  }
+}
+
+ppl-dialog-content.no-padding mat-dialog-content {
+  padding: 0;
+}
+
+.mat-dialog-container-blank mat-dialog-container {
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.mat-dialog-container-scrollable-detail {
+  background: #abb6c1;
+  & + .cdk-global-overlay-wrapper {
+    overflow-y: auto;
+    padding-top: 20px;
+  }
+}

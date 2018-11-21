@@ -1,0 +1,9 @@
+mat-dialog-actions {
+  padding: 10px 9px 9px 0px;
+
+  ::ng-deep {
+    button + button {
+      margin-left: 5px;
+    }
+  }
+}

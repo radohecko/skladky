@@ -1,0 +1,32 @@
+@import '../../../../../styles/variables';
+
+.mat-dialog-title {
+  height: auto;
+  overflow: hidden;
+  padding: 0;
+}
+
+.title-container {
+  height: 34px;
+  line-height: 36px;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+button {
+  align-items: center;
+  background-color: $color-red;
+  border: 1px solid $color-red-deep;
+  border-radius: 3px;
+  color: $color-white;
+  cursor: pointer;
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  outline: none;
+  position: absolute;
+  right: 5px;
+  top: 6px;
+  width: 24px;
+}
