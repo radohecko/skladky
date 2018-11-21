@@ -2,9 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Dump } from 'src/app/shared/interfaces/dump';
 import { DumpsService } from '../dumps/services/dumps.service';
+import { MapsAPILoader, AgmMap } from '@agm/core';
+import { GoogleMapsAPIWrapper } from '@agm/core/services';
 import { Chart } from 'chart.js';
 import { unsubscribe } from 'src/app/shared/utils/subscription.util';
+import { callbackify } from 'util';
 
+declare var google: any;
 
 @Component({
     selector: 'app-stats',
@@ -15,8 +19,15 @@ export class StatsComponent implements OnInit, OnDestroy {
 
     dumpsSubscription: Subscription;
     dumps: Dump[];
+    geocoder: any;
 
-    constructor(private dumpsService: DumpsService) { }
+    constructor(public mapsApiLoader: MapsAPILoader, private dumpsService: DumpsService, private wrapper: GoogleMapsAPIWrapper) {
+        this.mapsApiLoader = mapsApiLoader;
+        this.wrapper = wrapper;
+        this.mapsApiLoader.load().then(() => {
+            this.geocoder = new google.maps.Geocoder();
+        });
+    }
 
     ngOnInit() {
         this.dumpsService.getDumps();
@@ -33,13 +44,38 @@ export class StatsComponent implements OnInit, OnDestroy {
         unsubscribe(this.dumpsSubscription);
     }
 
+
+    async get_region(element) {
+        let region;
+        const loc = new google.maps.LatLng(element.location.latitude, element.location.longitude);
+        this.geocoder.geocode({ 'location': loc }, function (results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+                if (results[0]) {
+                    if (results[0]['address_components']) {
+                        if (results[0]['address_components'][3]) {
+                            region = results[0]['address_components'][3]['long_name'];
+
+                        }
+                    }
+                }
+            }
+        });
+
+        return region;
+    }
+
+
+
+
+
+
     showDoughnutChart() {
         const resolved = this.dumps.filter(el => {
-            return el.status === 'resolved';
+            return el.status === 'Resolved';
         });
 
         const inProcess = this.dumps.filter(el => {
-            return el.status === 'inprocess';
+            return el.status === 'In Process';
         });
 
         const ctx = document.getElementById('chart1');
@@ -73,8 +109,23 @@ export class StatsComponent implements OnInit, OnDestroy {
         });
     }
 
-    showRadarChart() {
-        const reportsByRegions = [];
+    async showRadarChart() {
+        let region;
+        const regions = ['Bratislavský kraj', 'Trnavský kraj',
+            'Trenčiansky kraj', 'Nitriansky kraj', 'Žilinský kraj', 'Banskobystrický kraj', 'Prešovský kraj', 'Košický kraj'];
+
+        const reportsByRegions = [0, 0, 0, 0, 0, 0, 0, 0];
+        this.dumps.forEach(async element => {
+            region = this.get_region(element);
+
+            if (region && regions.indexOf(region) !== -1) {
+                reportsByRegions[regions.indexOf(region)] += 1;
+            }
+
+        });
+
+        console.log('drawing chart ' + reportsByRegions);
+
         const ctx = document.getElementById('chart2');
         const chart = new Chart(ctx, {
             type: 'radar',
@@ -119,7 +170,7 @@ export class StatsComponent implements OnInit, OnDestroy {
                     reportsByMonths[i] += 1;
                 }
             });
-            console.log(reportsByMonths[i]);
+
         }
 
         const ctx = document.getElementById('chart3');
@@ -153,6 +204,7 @@ export class StatsComponent implements OnInit, OnDestroy {
                 }
             }
         });
+
     }
 
     showPieChart() {

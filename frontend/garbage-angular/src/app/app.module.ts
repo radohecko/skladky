@@ -24,6 +24,7 @@ import { AuthModule } from './auth';
 import { DialogModule, DialogService } from './shared/components/dialog';
 import { PageHeaderComponent } from './shared/components/page-header/page-header.component';
 import { DumpEditComponent } from './core/dumps/components/dump-edit/dump-edit.component';
+import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 
 @NgModule({
   declarations: [
@@ -51,13 +52,14 @@ import { DumpEditComponent } from './core/dumps/components/dump-edit/dump-edit.c
     FormsModule,
     ReactiveFormsModule,
     AuthModule,
-    DialogModule
+    DialogModule,
+    AgmCoreModule.forRoot({apiKey: 'AIzaSyDVTT8btuhog4XIke6JG4wv38ABrf85qXc'})
   ],
   entryComponents: [
     DumpEditComponent,
     DumpAddComponent
   ],
-  providers: [DumpsService, DialogService],
+  providers: [DumpsService, DialogService, GoogleMapsAPIWrapper],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
