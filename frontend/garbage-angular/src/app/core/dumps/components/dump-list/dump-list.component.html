@@ -1,1 +1,7 @@
 <app-page-header title="Dumps List"></app-page-header>
+
+<div class="cards"
+     *ngIf="dumps">
+  <app-dump-detail *ngFor="let dump of dumps"
+                   [dump]="dump"></app-dump-detail>
+</div>

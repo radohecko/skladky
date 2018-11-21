@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Dump } from 'src/app/shared/interfaces/dump';
 import { DumpsService } from './services/dumps.service';
+import { MatDialog } from '@angular/material';
+import { DumpAddComponent } from './components/dump-add/dump-add.component';
 
 @Component({
   selector: 'app-dumps',
@@ -10,15 +12,14 @@ import { DumpsService } from './services/dumps.service';
 })
 export class DumpsComponent implements OnInit {
 
-  dumps: Dump[];
-  dumpsSubscription: Subscription;
-
-  constructor(private dumpsService: DumpsService) { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.dumpsService.getDumps();
-    this.dumpsSubscription = this.dumpsService.dumpsObservable$.subscribe(data => {
-      this.dumps = data;
+  }
+
+  onOpenAddReport() {
+    const dialogRef = this.dialog.open(DumpAddComponent, {
+      width: '650px'
     });
   }
 

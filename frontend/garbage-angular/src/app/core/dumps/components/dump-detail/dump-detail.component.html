@@ -1,3 +1,37 @@
-<p>
-  dump-detail works!
-</p>
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-title>Pezinok</mat-card-title>
+    <!-- <mat-card-subtitle>Limbaska cesta</mat-card-subtitle> -->
+  </mat-card-header>
+  <mat-card-content class="card-content">
+    <div class="card-content-image">
+      <img src="../../../../../assets/img-placeholder.png"
+           alt="placeholder"
+           width="300px"
+           (click)="onOpenImage()">
+    </div>
+    <div class="card-content-info">
+      <div class="card-content-info-title"
+           [class.pending]="dump.status === 'Pending'"
+           [class.resolved]="dump.status === 'Resolved'"
+           [class.progress]="dump.status === 'In Process'">
+        <span class="description">Status: </span>{{ dump.status }}
+      </div>
+      <div class="card-content-info-title">
+        <span class="description">Amount: </span>Car needed
+      </div>
+      <div class="card-content-info-title">
+        <span class="description">Materials: </span>car wheels, plastic, steel
+      </div>
+      <div class="card-content-info-title">
+        <span class="description">Dangerous substances contained: </span> -
+      </div>
+      <div class="card-content-info-title">
+        <span class="description">Date: </span> {{ dump.timestamp.seconds * 1000 | date }}
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-icon class="edit"
+            (click)="onOpenEdit()"
+            title="Edit">edit</mat-icon>
+</mat-card>

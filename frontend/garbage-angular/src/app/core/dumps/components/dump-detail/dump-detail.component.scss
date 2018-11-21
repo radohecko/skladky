@@ -1,0 +1,72 @@
+@import "../../../../../styles/variables";
+
+:host {
+  width: 80%;
+}
+
+.card {
+  display: flex;
+  flex-flow: column;
+  margin: 2rem;
+  position: relative;
+
+  mat-card-title {
+    font-size: 2.5rem;
+    color: $color-dark-grey;
+  }
+
+  &-content {
+    display: flex;
+    flex-flow: row;
+
+    &-image {
+      margin-right: 1.5rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &-info {
+      &-title {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  &:hover {
+    .edit {
+      display: block;
+    }
+  }
+}
+
+.edit {
+  position: absolute;
+  top: 3rem;
+  right: 3rem;
+  font-size: 3.5rem;
+  display: none;
+
+  &:hover {
+    color: $color-red;
+    cursor: pointer;
+  }
+}
+
+.pending {
+  color: $color-red-deep;
+}
+
+.progress {
+  color: $color-progress;
+}
+
+.resolved {
+  color: $color-primary-green;
+}
+
+.description {
+  color: $color-mid-grey;
+}

@@ -23,6 +23,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthModule } from './auth';
 import { DialogModule, DialogService } from './shared/components/dialog';
 import { PageHeaderComponent } from './shared/components/page-header/page-header.component';
+import { DumpEditComponent } from './core/dumps/components/dump-edit/dump-edit.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { PageHeaderComponent } from './shared/components/page-header/page-header
     StatsComponent,
     NavigationToolbarComponent,
     FooterToolbarComponent,
-    PageHeaderComponent
+    PageHeaderComponent,
+    DumpEditComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +52,10 @@ import { PageHeaderComponent } from './shared/components/page-header/page-header
     ReactiveFormsModule,
     AuthModule,
     DialogModule
+  ],
+  entryComponents: [
+    DumpEditComponent,
+    DumpAddComponent
   ],
   providers: [DumpsService, DialogService],
   bootstrap: [AppComponent]
