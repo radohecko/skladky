@@ -21,6 +21,8 @@ import { NavigationToolbarComponent } from './shared/components/navigation-toolb
 import { FooterToolbarComponent } from './shared/components/footer-toolbar/footer-toolbar.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthModule } from './auth';
+import { DialogModule, DialogService } from './shared/components/dialog';
+import { PageHeaderComponent } from './shared/components/page-header/page-header.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { AuthModule } from './auth';
     DumpAddComponent,
     StatsComponent,
     NavigationToolbarComponent,
-    FooterToolbarComponent
+    FooterToolbarComponent,
+    PageHeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -45,9 +48,10 @@ import { AuthModule } from './auth';
     AngularFireAuthModule,
     FormsModule,
     ReactiveFormsModule,
-    AuthModule
+    AuthModule,
+    DialogModule
   ],
-  providers: [DumpsService],
+  providers: [DumpsService, DialogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

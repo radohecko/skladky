@@ -1,0 +1,17 @@
+@import "../../../../styles/variables";
+
+.header {
+  display: flex;
+  align-items: center;
+  background: $color-primary-green;
+  z-index: 1;
+  padding-left: 2rem;
+
+  &-title {
+    color: $color-white;
+    font-weight: 300;
+    margin: 0;
+    padding: 2.8rem .8rem;
+    font-size: 2rem;
+  }
+}

@@ -13,6 +13,11 @@ const router: Routes = [
     path: 'dumps', component: DumpsComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'list',
+        pathMatch: 'full'
+      },
+      {
         path: 'list',
         component: DumpListComponent
       },
