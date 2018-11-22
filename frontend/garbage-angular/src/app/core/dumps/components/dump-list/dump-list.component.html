@@ -14,6 +14,6 @@
 
 <div class="cards"
      *ngIf="dumps">
-  <app-dump-detail *ngFor="let dump of dumps"
+  <app-dump-detail *ngFor="let dump of filteredDumps"
                    [dump]="dump"></app-dump-detail>
 </div>
