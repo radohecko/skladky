@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, Observer } from 'rxjs';
 import { Dump } from 'src/app/shared/interfaces/dump';
 import { DumpsService } from '../dumps/services/dumps.service';
 import { MapsAPILoader, AgmMap } from '@agm/core';
 import { GoogleMapsAPIWrapper } from '@agm/core/services';
 import { Chart } from 'chart.js';
 import { unsubscribe } from 'src/app/shared/utils/subscription.util';
-import { callbackify } from 'util';
+
 
 declare var google: any;
 
@@ -20,6 +20,9 @@ export class StatsComponent implements OnInit, OnDestroy {
     dumpsSubscription: Subscription;
     dumps: Dump[];
     geocoder: any;
+    regionsSubscription: Subscription;
+    regionsObservable$: Observable<number[]>;
+
 
     constructor(public mapsApiLoader: MapsAPILoader, private dumpsService: DumpsService, private wrapper: GoogleMapsAPIWrapper) {
         this.mapsApiLoader = mapsApiLoader;
@@ -34,7 +37,10 @@ export class StatsComponent implements OnInit, OnDestroy {
         this.dumpsSubscription = this.dumpsService.dumpsObservable$.subscribe(data => {
             this.dumps = data;
             this.showDoughnutChart();
-            this.showRadarChart();
+            this.regionsObservable$ = this.geocode();
+            this.regionsSubscription = this.regionsObservable$.subscribe(loc_array => {
+                this.showRadarChart(loc_array);
+            });
             this.showLineChart();
             this.showPieChart();
         });
@@ -42,31 +48,45 @@ export class StatsComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         unsubscribe(this.dumpsSubscription);
+        unsubscribe(this.regionsSubscription);
     }
 
-
-    async get_region(element) {
+    geocode(): Observable<number[]> {
         let region;
-        const loc = new google.maps.LatLng(element.location.latitude, element.location.longitude);
-        this.geocoder.geocode({ 'location': loc }, function (results, status) {
-            if (status === google.maps.GeocoderStatus.OK) {
-                if (results[0]) {
-                    if (results[0]['address_components']) {
-                        if (results[0]['address_components'][3]) {
-                            region = results[0]['address_components'][3]['long_name'];
+        const reportsByRegions = [0, 0, 0, 0, 0, 0, 0, 0];
+        const regions = ['Bratislavský kraj', 'Trnavský kraj',
+            'Trenčiansky kraj', 'Nitriansky kraj', 'Žilinský kraj', 'Banskobystrický kraj', 'Prešovský kraj', 'Košický kraj'];
 
+
+        return Observable.create((observer: Observer<number[]>) => {
+            // Invokes geocode method of Google Maps API geocoding.
+            this.dumps.forEach(async element => {
+                const loc = new google.maps.LatLng(element.location.latitude, element.location.longitude);
+                this.geocoder.geocode({ location: loc }, (
+                    (results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus) => {
+                        if (status === google.maps.GeocoderStatus.OK) {
+                            if (results[0]) {
+                                if (results[0]['address_components']) {
+                                    if (results[0]['address_components'][3]) {
+                                        region = results[0]['address_components'][3]['long_name'];
+                                        console.log(region);
+                                        if (region && regions.indexOf(region) !== -1) {
+                                            reportsByRegions[regions.indexOf(region)] += 1;
+                                        }
+                                    }
+                                }
+                            }
+                            if (this.dumps.indexOf(element) === this.dumps.length - 1) {
+                                observer.next(reportsByRegions);
+                                observer.complete();
+                            }
                         }
                     }
-                }
-            }
+                )
+                );
+            });
         });
-
-        return region;
     }
-
-
-
-
 
 
     showDoughnutChart() {
@@ -109,23 +129,7 @@ export class StatsComponent implements OnInit, OnDestroy {
         });
     }
 
-    async showRadarChart() {
-        let region;
-        const regions = ['Bratislavský kraj', 'Trnavský kraj',
-            'Trenčiansky kraj', 'Nitriansky kraj', 'Žilinský kraj', 'Banskobystrický kraj', 'Prešovský kraj', 'Košický kraj'];
-
-        const reportsByRegions = [0, 0, 0, 0, 0, 0, 0, 0];
-        this.dumps.forEach(async element => {
-            region = this.get_region(element);
-
-            if (region && regions.indexOf(region) !== -1) {
-                reportsByRegions[regions.indexOf(region)] += 1;
-            }
-
-        });
-
-        console.log('drawing chart ' + reportsByRegions);
-
+    showRadarChart(reportsByRegions) {
         const ctx = document.getElementById('chart2');
         const chart = new Chart(ctx, {
             type: 'radar',
