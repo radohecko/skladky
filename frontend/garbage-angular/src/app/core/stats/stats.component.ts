@@ -1,3 +1,5 @@
+declare const google: any;
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, Observable, Observer } from 'rxjs';
 import { Dump } from 'src/app/shared/interfaces/dump';
@@ -8,7 +10,6 @@ import { Chart } from 'chart.js';
 import { unsubscribe } from 'src/app/shared/utils/subscription.util';
 
 
-declare var google: any;
 
 @Component({
     selector: 'app-stats',
