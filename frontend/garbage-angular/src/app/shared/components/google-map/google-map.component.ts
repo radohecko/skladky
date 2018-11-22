@@ -62,7 +62,10 @@ export class GoogleMapComponent implements OnInit {
     infoWindow.open(this.map);
   }
 
-  // TODO: Add custom marker into map with readeble location title
+  /**
+   *  TODO: Add custom marker into map with readeble location title check link
+   * link - https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
+   * */
   customMarker() { }
 
 }
