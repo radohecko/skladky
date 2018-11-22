@@ -25,6 +25,7 @@ import { DialogModule, DialogService } from './shared/components/dialog';
 import { PageHeaderComponent } from './shared/components/page-header/page-header.component';
 import { DumpEditComponent } from './core/dumps/components/dump-edit/dump-edit.component';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
+import { GoogleMapComponent } from './shared/components/google-map/google-map.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
     NavigationToolbarComponent,
     FooterToolbarComponent,
     PageHeaderComponent,
-    DumpEditComponent
+    DumpEditComponent,
+    GoogleMapComponent
   ],
   imports: [
     BrowserModule,
