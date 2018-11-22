@@ -1,6 +1,6 @@
 declare const google: any;
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
 import { InfoWindowOptions, InfoWindow } from '@agm/core/services/google-maps-types';
 
@@ -22,6 +22,7 @@ export class DumpAddComponent implements OnInit {
   ngOnInit() {
     this.mapsApiLoader.load().then(() => {
       this.infoWindow = new google.maps.InfoWindow;
+      const latlng = new google.maps.LatLng(39.305, -76.617);
       this.map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: -34.397, lng: 150.644 },
         zoom: 6
@@ -39,7 +40,6 @@ export class DumpAddComponent implements OnInit {
           lng: position.coords.longitude
         };
         console.log(pos);
-
         this.infoWindow.setPosition(pos);
         this.infoWindow.setContent('Location found.');
         this.infoWindow.open(this.map);
