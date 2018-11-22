@@ -1,8 +1,7 @@
 declare const google: any;
 
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
-import { InfoWindowOptions, InfoWindow } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-dump-add',
@@ -14,7 +13,7 @@ export class DumpAddComponent implements OnInit {
   map: any;
   infoWindow: any;
 
-  constructor(public mapsApiLoader: MapsAPILoader,  private wrapper: GoogleMapsAPIWrapper) {
+  constructor(public mapsApiLoader: MapsAPILoader, private wrapper: GoogleMapsAPIWrapper) {
     this.mapsApiLoader = mapsApiLoader;
     this.wrapper = wrapper;
   }
