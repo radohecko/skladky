@@ -10,25 +10,9 @@ import { ToggleGroupOption } from 'src/app/shared/components/toggle-buttons/togg
 })
 export class DumpsComponent implements OnInit {
 
-  toggleOptionsLeft: ToggleGroupOption[] = [
-    {
-      value: 'List',
-      label: 'List'
-    },
-    {
-      value: 'Map',
-      label: 'Map'
-    }
-  ];
-  optionSelectedValueLeft = 'List';
-
   constructor(public dialog: MatDialog) { }
 
   ngOnInit() {}
-
-  onSelectedValueChange($event) {
-    console.log($event);
-  }
 
   onOpenAddReport() {
     const dialogRef = this.dialog.open(DumpAddComponent, {

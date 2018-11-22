@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToggleGroupOption } from 'src/app/shared/components/toggle-buttons/toggle-buttons.component';
+import { toggleOptionsLeft, toggleOptionsRight } from '../../services/dumps.service';
 
 @Component({
   selector: 'app-dump-map',
@@ -8,17 +9,10 @@ import { ToggleGroupOption } from 'src/app/shared/components/toggle-buttons/togg
 })
 export class DumpMapComponent implements OnInit {
 
-  toggleOptionsLeft: ToggleGroupOption[] = [
-    {
-      value: 'List',
-      label: 'List'
-    },
-    {
-      value: 'Map',
-      label: 'Map'
-    }
-  ];
-  optionSelectedValueLeft = 'List';
+  toggleOptionsLeft: ToggleGroupOption[] = toggleOptionsLeft;
+  toggleOptionsRight: ToggleGroupOption[] = toggleOptionsRight;
+  optionSelectedValueLeft = 'Map';
+  optionSelectedValueRight = 'All';
 
   constructor() { }
 

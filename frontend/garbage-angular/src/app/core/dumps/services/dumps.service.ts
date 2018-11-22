@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Dump } from 'src/app/shared/interfaces/dump';
+import { ToggleGroupOption } from 'src/app/shared/components/toggle-buttons/toggle-buttons.component';
 
 @Injectable()
 export class DumpsService {
@@ -10,7 +11,7 @@ export class DumpsService {
   dumpsCollection: AngularFirestoreCollection<Dump>;
   dumpsObservable$: Observable<Dump[]>;
 
-  constructor(private afs: AngularFirestore) {}
+  constructor(private afs: AngularFirestore) { }
 
   getDumps() {
     this.dumpsCollection = this.afs.collection<Dump>(`dumps`);
@@ -23,3 +24,33 @@ export class DumpsService {
     );
   }
 }
+
+export const toggleOptionsLeft: ToggleGroupOption[] = [
+  {
+    value: 'List',
+    label: 'List'
+  },
+  {
+    value: 'Map',
+    label: 'Map'
+  }
+];
+
+export const toggleOptionsRight: ToggleGroupOption[] = [
+  {
+    value: 'All',
+    label: 'All'
+  },
+  {
+    value: 'Pending',
+    label: 'Pending'
+  },
+  {
+    value: 'Resolved',
+    label: 'Resolved'
+  },
+  {
+    value: 'In Process',
+    label: 'In Process'
+  }
+];

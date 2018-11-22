@@ -14,7 +14,15 @@ export class ToggleButtonsComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    if (this.selectedValue) {
+      this.setDefaultValue(this.selectedValue);
+    }
+  }
+
+  setDefaultValue(selectedValue: ToggleGroupValue) {
+    this.selectedValueChange.emit(this.selectedValue);
+  }
 
   isSelected(option: ToggleGroupOption) {
     return ((this.selectedValue as string) || '') === option.value;

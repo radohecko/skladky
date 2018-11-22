@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Dump } from 'src/app/shared/interfaces/dump';
-import { DumpsService } from '../../services/dumps.service';
+import { DumpsService, toggleOptionsLeft, toggleOptionsRight } from '../../services/dumps.service';
 import { Subscription } from 'rxjs';
 import { ToggleGroupOption } from 'src/app/shared/components/toggle-buttons/toggle-buttons.component';
 
@@ -14,17 +14,10 @@ export class DumpListComponent implements OnInit {
   dumps: Dump[];
   dumpsSubscription: Subscription;
 
-  toggleOptionsLeft: ToggleGroupOption[] = [
-    {
-      value: 'List',
-      label: 'List'
-    },
-    {
-      value: 'Map',
-      label: 'Map'
-    }
-  ];
+  toggleOptionsLeft: ToggleGroupOption[] = toggleOptionsLeft;
+  toggleOptionsRight: ToggleGroupOption[] = toggleOptionsRight;
   optionSelectedValueLeft = 'List';
+  optionSelectedValueRight = 'All';
 
   constructor(private dumpsService: DumpsService) { }
 
