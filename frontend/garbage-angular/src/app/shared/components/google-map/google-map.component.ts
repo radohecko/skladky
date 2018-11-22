@@ -8,8 +8,8 @@ import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
 })
 export class GoogleMapComponent implements OnInit {
 
-  @Input() height = 300;
-  @Input() width = 500;
+  @Input() height = 100;
+  @Input() width = 100;
 
   // TODO: change type based on our needs
   @Output() location: any;
