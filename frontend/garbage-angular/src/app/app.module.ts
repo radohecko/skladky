@@ -27,6 +27,7 @@ import { DumpEditComponent } from './core/dumps/components/dump-edit/dump-edit.c
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { GoogleMapComponent } from './shared/components/google-map/google-map.component';
 import { ToggleButtonsComponent } from './shared/components/toggle-buttons/toggle-buttons.component';
+import { DumpMapViewComponent } from './core/dumps/components/dump-map-view/dump-map-view.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ToggleButtonsComponent } from './shared/components/toggle-buttons/toggl
     PageHeaderComponent,
     DumpEditComponent,
     GoogleMapComponent,
-    ToggleButtonsComponent
+    ToggleButtonsComponent,
+    DumpMapViewComponent
   ],
   imports: [
     BrowserModule,

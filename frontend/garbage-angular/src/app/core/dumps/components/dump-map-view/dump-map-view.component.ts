@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Dump } from 'src/app/shared/interfaces/dump';
-import { DumpsService, toggleOptionsLeft, toggleOptionsRight } from '../../services/dumps.service';
-import { Subscription } from 'rxjs';
 import { ToggleGroupOption, ToggleGroupValue } from 'src/app/shared/components/toggle-buttons/toggle-buttons.component';
+import { toggleOptionsLeft, toggleOptionsRight, DumpsService } from '../../services/dumps.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Dump } from 'src/app/shared/interfaces/dump';
 
 @Component({
-  selector: 'app-dump-list',
-  templateUrl: './dump-list.component.html',
-  styleUrls: ['./dump-list.component.scss']
+  selector: 'app-dump-map-view',
+  templateUrl: './dump-map-view.component.html',
+  styleUrls: ['./dump-map-view.component.scss']
 })
-export class DumpListComponent implements OnInit {
+export class DumpMapViewComponent implements OnInit {
 
   dumps: Dump[];
   filteredDumps: Dump[];
@@ -18,7 +18,7 @@ export class DumpListComponent implements OnInit {
 
   toggleOptionsLeft: ToggleGroupOption[] = toggleOptionsLeft;
   toggleOptionsRight: ToggleGroupOption[] = toggleOptionsRight;
-  optionSelectedValueLeft = 'List';
+  optionSelectedValueLeft = 'Map';
   optionSelectedValueRight = 'All';
 
   constructor(private dumpsService: DumpsService, private router: Router) { }

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './core/home/home.component';
 import { DumpsComponent } from './core/dumps/dumps.component';
 import { DumpListComponent } from './core/dumps/components/dump-list/dump-list.component';
-import { DumpMapComponent } from './core/dumps/components/dump-map/dump-map.component';
+import { DumpMapViewComponent } from './core/dumps/components/dump-map-view/dump-map-view.component';
 import { StatsComponent } from './core/stats/stats.component';
 
 const router: Routes = [
@@ -23,7 +23,7 @@ const router: Routes = [
       },
       {
         path: 'map',
-        component: DumpMapComponent
+        component: DumpMapViewComponent
       }
     ]
   },

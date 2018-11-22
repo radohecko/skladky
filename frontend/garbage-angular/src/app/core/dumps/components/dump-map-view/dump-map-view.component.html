@@ -1,4 +1,4 @@
-<app-page-header title="Dumps List"></app-page-header>
+<app-page-header title="Dumps Map"></app-page-header>
 <div class="actions">
   <div class="actions-left">
     <app-toggle-buttons [options]="toggleOptionsLeft"
@@ -11,9 +11,7 @@
                         (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
   </div>
 </div>
-
 <div class="cards"
      *ngIf="dumps">
-  <app-dump-detail *ngFor="let dump of filteredDumps"
-                   [dump]="dump"></app-dump-detail>
+  <app-dump-map [dumps]="dumps"></app-dump-map>
 </div>
