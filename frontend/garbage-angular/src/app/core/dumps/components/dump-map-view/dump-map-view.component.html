@@ -1,11 +1,13 @@
 <app-page-header title="Dumps Map"></app-page-header>
 <div class="actions">
   <div class="actions-left">
+    <div class="title">Change view: </div>
     <app-toggle-buttons [options]="toggleOptionsLeft"
                         [selectedValue]="optionSelectedValueLeft"
                         (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
   </div>
   <div class="actions-right">
+    <div class="title">Filter by status: </div>
     <app-toggle-buttons [options]="toggleOptionsRight"
                         [selectedValue]="optionSelectedValueRight"
                         (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
