@@ -1,1 +1,6 @@
 <app-page-header title="Dumps Map"></app-page-header>
+<div class="actions">
+  <app-toggle-buttons [options]="toggleOptionsLeft"
+                      [selectedValue]="optionSelectedValue"
+                      (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
+</div>

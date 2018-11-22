@@ -26,6 +26,7 @@ import { PageHeaderComponent } from './shared/components/page-header/page-header
 import { DumpEditComponent } from './core/dumps/components/dump-edit/dump-edit.component';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { GoogleMapComponent } from './shared/components/google-map/google-map.component';
+import { ToggleButtonsComponent } from './shared/components/toggle-buttons/toggle-buttons.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { GoogleMapComponent } from './shared/components/google-map/google-map.co
     FooterToolbarComponent,
     PageHeaderComponent,
     DumpEditComponent,
-    GoogleMapComponent
+    GoogleMapComponent,
+    ToggleButtonsComponent
   ],
   imports: [
     BrowserModule,

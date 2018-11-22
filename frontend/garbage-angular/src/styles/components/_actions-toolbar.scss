@@ -1,0 +1,9 @@
+@import '../variables';
+
+.actions {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+  background: $color-light-grey;
+}

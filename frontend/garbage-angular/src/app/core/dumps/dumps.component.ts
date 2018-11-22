@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Dump } from 'src/app/shared/interfaces/dump';
-import { DumpsService } from './services/dumps.service';
 import { MatDialog } from '@angular/material';
 import { DumpAddComponent } from './components/dump-add/dump-add.component';
+import { ToggleGroupOption } from 'src/app/shared/components/toggle-buttons/toggle-buttons.component';
 
 @Component({
   selector: 'app-dumps',
@@ -12,9 +10,24 @@ import { DumpAddComponent } from './components/dump-add/dump-add.component';
 })
 export class DumpsComponent implements OnInit {
 
+  toggleOptionsLeft: ToggleGroupOption[] = [
+    {
+      value: 'List',
+      label: 'List'
+    },
+    {
+      value: 'Map',
+      label: 'Map'
+    }
+  ];
+  optionSelectedValueLeft = 'List';
+
   constructor(public dialog: MatDialog) { }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  onSelectedValueChange($event) {
+    console.log($event);
   }
 
   onOpenAddReport() {

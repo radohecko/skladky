@@ -1,0 +1,8 @@
+<button *ngFor="let option of options"
+        class="toggle-button"
+        [class.active]="isSelected(option)"
+        (click)="onButtonClick(option)">
+    <span>
+        {{ option.label }}
+    </span>
+</button>Í
