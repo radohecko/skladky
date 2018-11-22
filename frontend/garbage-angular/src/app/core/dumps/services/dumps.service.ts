@@ -28,11 +28,11 @@ export class DumpsService {
 export const toggleOptionsLeft: ToggleGroupOption[] = [
   {
     value: 'List',
-    label: 'List'
+    label: 'List View'
   },
   {
     value: 'Map',
-    label: 'Map'
+    label: 'Map View'
   }
 ];
 
