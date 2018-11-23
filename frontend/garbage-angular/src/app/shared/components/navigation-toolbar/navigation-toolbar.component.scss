@@ -1,5 +1,5 @@
 #logo {
-    height: 40px;
+    height: 35px;
     margin-right: 20px;
 }
 
@@ -12,14 +12,18 @@ a {
     text-decoration: none;
     color: black;
     font-style: normal;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 .nav-item {
     padding: 20px;
 }
 
-.active-link {
-    background-color: #e3f3df;
+mat-toolbar {
+    min-height: 60px;
+    //background-color: #033801;
+}
 
+.active-link {
+    background-color:#e3f3df;
+    color: black;
 }
