@@ -60,7 +60,9 @@ export class StatsComponent implements OnInit, OnDestroy {
 
 
         return Observable.create((observer: Observer<number[]>) => {
-            // Invokes geocode method of Google Maps API geocoding.
+
+            // TODO move geocoding -> where inserting new report into DB
+
             this.dumps.forEach(async element => {
                 const loc = new google.maps.LatLng(element.location.latitude, element.location.longitude);
                 this.geocoder.geocode({ location: loc }, (
@@ -70,9 +72,15 @@ export class StatsComponent implements OnInit, OnDestroy {
                                 if (results[0]['address_components']) {
                                     if (results[0]['address_components'][3]) {
                                         region = results[0]['address_components'][3]['long_name'];
-                                        console.log(region);
-                                        if (region && regions.indexOf(region) !== -1) {
-                                            reportsByRegions[regions.indexOf(region)] += 1;
+                                        if (region) {
+                                            if (regions.indexOf(region) !== -1) {
+                                                reportsByRegions[regions.indexOf(region)] += 1;
+                                            } else if (results[0]['address_components'][5]) {
+                                                region = results[0]['address_components'][5]['long_name'];
+                                                if (regions.indexOf(region) !== -1) {
+                                                    reportsByRegions[regions.indexOf(region)] += 1;
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -212,32 +220,68 @@ export class StatsComponent implements OnInit, OnDestroy {
 
     }
 
+    generateColors(size) {
+
+        const colors = ['rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'];
+        const borders = ['rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'];
+        if (size > 6) {
+            for (let i = 6; i < size; i++) {
+                const r = Math.floor(Math.random() * (256));
+                const g = Math.floor(Math.random() * (256));
+                const b = Math.floor(Math.random() * (256));
+                if (!(this.getColor(r, g, b, 0.2) in colors)) {
+                    colors.push(this.getColor(r, g, b, 0.2));
+                    borders.push(this.getColor(r, g, b, 1));
+                }
+            }
+        }
+
+        return [colors, borders];
+    }
+
+    getColor(r, g, b, alpha) {
+        return 'rgba(' + r + ',' + g + ', ' + b + ', ' + alpha + ')';
+    }
+
+
+
     showPieChart() {
+        const materialCounts = new Map();
+        this.dumps.forEach(el => {
+            el.materials.forEach(material => {
+                if (materialCounts.has(material)) {
+                    materialCounts.set(material, materialCounts.get(material) + 1);
+                } else {
+                    materialCounts.set(material, 1);
+                }
+            });
+
+        });
+
+        const keys = Array.from(materialCounts.keys());
+        const vals = Array.from(materialCounts.values());
+
+        const [colors, borders] = this.generateColors(materialCounts.size);
         const ctx = document.getElementById('chart4');
         const chart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: keys,
                 datasets: [
                     {
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255,99,132,1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
+                        data: vals,
+                        backgroundColor: colors,
+                        borderColor: borders,
                         borderWidth: 1
                     }
                 ]
