@@ -24,3 +24,26 @@ a {
 mat-toolbar {
     min-height: 60px;
 }
+
+@media only screen and (max-width: 600px) {
+    #logo {
+        height: 22px;
+        margin-right: 0px;
+        margin-top: 10px;
+    }
+
+    a {
+        font-size: 13px;    
+        padding: 10px;
+        padding-top: 20px;
+        padding-bottom: 19px;
+    }
+
+    #logo-link {
+        padding-left: 7px;
+    }
+
+    mat-toolbar {
+        min-height: 40px;
+    }
+}
