@@ -20,7 +20,10 @@
 </div>
 
 <div class="pager">
-  <div class="title">Page {{page}}<!-- out of {{(filteredDumps.length/perPage) | number:'1.0-0'}}-->:</div>
+  <div class="title">
+    Page {{page}} 
+    <ng-container *ngIf="filteredDumps">out of {{(filteredDumps.length/perPage) | number:'1.0-0'}}</ng-container>
+  </div>
   <app-toggle-buttons [options]="toggleOptionsPage"
                       (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
 </div>
