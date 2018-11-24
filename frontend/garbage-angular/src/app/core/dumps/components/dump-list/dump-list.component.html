@@ -15,6 +15,15 @@
 
 <div class="cards"
      *ngIf="dumps">
-  <app-dump-detail *ngFor="let dump of filteredDumps"
+  <app-dump-detail *ngFor="let dump of filteredDumps | slice: (perPage*(page-1)):(perPage*page)"
                    [dump]="dump"></app-dump-detail>
+</div>
+
+<div class="pager">
+  <div class="title">
+    Page {{page}} 
+    <ng-container *ngIf="filteredDumps">out of {{(filteredDumps.length/perPage) | ceil}}</ng-container>
+  </div>
+  <app-toggle-buttons [options]="toggleOptionsPage"
+                      (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
 </div>
