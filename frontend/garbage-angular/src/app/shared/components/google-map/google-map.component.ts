@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, HostBinding, Output } from '@angular/core';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
+import { Dump } from '../../interfaces/dump';
 
 @Component({
   selector: 'app-google-map',
@@ -10,6 +11,8 @@ export class GoogleMapComponent implements OnInit {
 
   @Input() height = 100;
   @Input() width = 100;
+  @Input() data: Dump[];
+  @Input() showGeolocation = true;
 
   // TODO: change type based on our needs
   @Output() location: any;
@@ -17,6 +20,8 @@ export class GoogleMapComponent implements OnInit {
   map: any;
   infoWindow: any;
   geocoder: any;
+  customMarker: any;
+  myPositionMarker: any;
 
   constructor(private mapsApiLoader: MapsAPILoader, private wrapper: GoogleMapsAPIWrapper) {
     this.mapsApiLoader = mapsApiLoader;
@@ -24,6 +29,7 @@ export class GoogleMapComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('shared googlemap init');
     this.mapsApiLoader.load().then(() => {
       this.geocoder = new google.maps.Geocoder;
       this.infoWindow = new google.maps.InfoWindow;
@@ -35,17 +41,30 @@ export class GoogleMapComponent implements OnInit {
     });
   }
 
+  getMapComponent() {
+    return {'map': this.map, 'infoWindow': this.infoWindow, 'geocoder': this.geocoder};
+  }
+
   initMap() {
     // Try HTML5 geolocation.
+    const self = this;
+    // click listener for creating markers
+    this.map.addListener('click', function(event) {
+      self.clearMarker(self.customMarker);
+      self.customMarker = self.createMarker(event.latLng);
+    });
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const pos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        this.infoWindow.setPosition(pos);
-        this.geocodeLatLng(this.geocoder, this.map, this.infoWindow, pos);
-        this.infoWindow.setContent('Your position.');
+        // set marker for your position
+        if (this.showGeolocation) {
+            this.myPositionMarker = this.createMarker(pos);
+        } else {
+          this.infoWindow.setContent('Your position.');
+        }
         this.infoWindow.open(this.map);
         this.map.setCenter(pos);
       }, () => {
@@ -57,38 +76,43 @@ export class GoogleMapComponent implements OnInit {
     }
   }
 
-  geocodeLatLng(geocoder, map, infowindow, pos) {
+  geocodeLatLng(geocoder, map, infowindow, pos, createMarker) {
+    const self = this;
     geocoder.geocode({'location': pos}, function(results, status) {
       if (status === 'OK') {
         if (results[0]) {
-          map.setZoom(11);
-          const marker = new google.maps.Marker({
-            position: pos,
-            map: map
-          });
+          // set address string on your marker
           infowindow.setContent(results[0].formatted_address);
-          infowindow.open(map, marker);
+          infowindow.setPosition(pos);
         } else {
           window.alert('No results found');
         }
       } else {
+        self.clearMarker(self.customMarker);
         window.alert('Geocoder failed due to: ' + status);
       }
     });
   }
 
   handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
     infoWindow.setContent(browserHasGeolocation ?
       'Error: The Geolocation service failed.' :
       'Error: Your browser doesn\'t support geolocation.');
     infoWindow.open(this.map);
   }
 
-  /**
-   *  TODO: Add custom marker into map with readeble location title check link
-   * link - https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
-   * */
-  customMarker() { }
+  createMarker(position) {
+    this.geocodeLatLng(this.geocoder, this.map, this.infoWindow, position, false);
+    return new google.maps.Marker({
+      position,
+      map: this.map
+    });
+  }
 
+  clearMarker(marker) {
+    console.log('clearing');
+    if (marker) {
+      marker.setMap(null);
+    }
+  }
 }
