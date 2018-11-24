@@ -41,10 +41,6 @@ export class GoogleMapComponent implements OnInit {
     });
   }
 
-  getMapComponent() {
-    return {'map': this.map, 'infoWindow': this.infoWindow, 'geocoder': this.geocoder};
-  }
-
   initMap() {
     // Try HTML5 geolocation.
     const self = this;
@@ -52,6 +48,8 @@ export class GoogleMapComponent implements OnInit {
     this.map.addListener('click', function(event) {
       self.clearMarker(self.customMarker);
       self.customMarker = self.createMarker(event.latLng);
+      self.infoWindow.open(self.map, self.customMarker);
+      console.log(self.customMarker);
     });
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -62,28 +60,25 @@ export class GoogleMapComponent implements OnInit {
         // set marker for your position
         if (this.showGeolocation) {
             this.myPositionMarker = this.createMarker(pos);
-        } else {
-          this.infoWindow.setContent('Your position.');
+            this.infoWindow.open(self.map, this.myPositionMarker);
         }
-        this.infoWindow.open(this.map);
         this.map.setCenter(pos);
       }, () => {
-        this.handleLocationError(true, this.infoWindow, this.map.getCenter());
+        this.handleLocationError(true, this.infoWindow);
       });
     } else {
       // Browser doesn't support Geolocation
-      this.handleLocationError(false, this.infoWindow, this.map.getCenter());
+      this.handleLocationError(false, this.infoWindow);
     }
   }
 
-  geocodeLatLng(geocoder, map, infowindow, pos, createMarker) {
+  geocodeLatLng(pos) {
     const self = this;
-    geocoder.geocode({'location': pos}, function(results, status) {
+    this.geocoder.geocode({'location': pos}, function(results, status) {
       if (status === 'OK') {
         if (results[0]) {
           // set address string on your marker
-          infowindow.setContent(results[0].formatted_address);
-          infowindow.setPosition(pos);
+          self.infoWindow.setContent(results[0].formatted_address);
         } else {
           window.alert('No results found');
         }
@@ -94,7 +89,7 @@ export class GoogleMapComponent implements OnInit {
     });
   }
 
-  handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  handleLocationError(browserHasGeolocation, infoWindow) {
     infoWindow.setContent(browserHasGeolocation ?
       'Error: The Geolocation service failed.' :
       'Error: Your browser doesn\'t support geolocation.');
@@ -102,11 +97,16 @@ export class GoogleMapComponent implements OnInit {
   }
 
   createMarker(position) {
-    this.geocodeLatLng(this.geocoder, this.map, this.infoWindow, position, false);
+    this.setInfoWindowToLoading();
+    this.geocodeLatLng(position);
     return new google.maps.Marker({
       position,
-      map: this.map
+      map: this.map,
     });
+  }
+
+  setInfoWindowToLoading() {
+    this.infoWindow.setContent('Loading...');
   }
 
   clearMarker(marker) {
