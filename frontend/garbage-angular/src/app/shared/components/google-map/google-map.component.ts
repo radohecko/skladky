@@ -16,6 +16,7 @@ export class GoogleMapComponent implements OnInit {
 
   map: any;
   infoWindow: any;
+  geocoder: any;
 
   constructor(private mapsApiLoader: MapsAPILoader, private wrapper: GoogleMapsAPIWrapper) {
     this.mapsApiLoader = mapsApiLoader;
@@ -24,6 +25,7 @@ export class GoogleMapComponent implements OnInit {
 
   ngOnInit() {
     this.mapsApiLoader.load().then(() => {
+      this.geocoder = new google.maps.Geocoder;
       this.infoWindow = new google.maps.InfoWindow;
       this.map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: -34.397, lng: 150.644 },
@@ -42,7 +44,8 @@ export class GoogleMapComponent implements OnInit {
           lng: position.coords.longitude
         };
         this.infoWindow.setPosition(pos);
-        this.infoWindow.setContent('Location found.');
+        this.geocodeLatLng(this.geocoder, this.map, this.infoWindow, pos);
+        this.infoWindow.setContent('Your position.');
         this.infoWindow.open(this.map);
         this.map.setCenter(pos);
       }, () => {
@@ -52,6 +55,26 @@ export class GoogleMapComponent implements OnInit {
       // Browser doesn't support Geolocation
       this.handleLocationError(false, this.infoWindow, this.map.getCenter());
     }
+  }
+
+  geocodeLatLng(geocoder, map, infowindow, pos) {
+    geocoder.geocode({'location': pos}, function(results, status) {
+      if (status === 'OK') {
+        if (results[0]) {
+          map.setZoom(11);
+          const marker = new google.maps.Marker({
+            position: pos,
+            map: map
+          });
+          infowindow.setContent(results[0].formatted_address);
+          infowindow.open(map, marker);
+        } else {
+          window.alert('No results found');
+        }
+      } else {
+        window.alert('Geocoder failed due to: ' + status);
+      }
+    });
   }
 
   handleLocationError(browserHasGeolocation, infoWindow, pos) {
