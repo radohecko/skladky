@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Dump } from 'src/app/shared/interfaces/dump';
-import { DumpsService, toggleOptionsLeft, toggleOptionsRight } from '../../services/dumps.service';
+import { DumpsService, toggleOptionsLeft, toggleOptionsRight, toggleOptionsPage } from '../../services/dumps.service';
 import { Subscription } from 'rxjs';
 import { ToggleGroupOption, ToggleGroupValue } from 'src/app/shared/components/toggle-buttons/toggle-buttons.component';
 import { Router } from '@angular/router';
@@ -20,6 +20,10 @@ export class DumpListComponent implements OnInit {
   toggleOptionsRight: ToggleGroupOption[] = toggleOptionsRight;
   optionSelectedValueLeft = 'List';
   optionSelectedValueRight = 'All';
+
+  toggleOptionsPage: ToggleGroupOption[] = toggleOptionsPage;
+  page = 1;
+  perPage = 10;
 
   constructor(private dumpsService: DumpsService, private router: Router) { }
 
@@ -52,10 +56,20 @@ export class DumpListComponent implements OnInit {
       case 'Resolved':
       case 'In Process':
         this.filterByStatus($event);
+        this.page = 1;
+        break;
+      case 'Next':
+        if ((this.page * this.perPage) < this.filteredDumps.length) {
+          this.page++;
+        }
+        break;
+      case 'Previous':
+        if (this.page > 1) {
+            this.page--;
+        }
         break;
       default:
         break;
     }
   }
-
 }

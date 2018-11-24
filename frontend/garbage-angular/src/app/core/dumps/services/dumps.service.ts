@@ -54,3 +54,14 @@ export const toggleOptionsRight: ToggleGroupOption[] = [
     label: 'In Process'
   }
 ];
+
+export const toggleOptionsPage: ToggleGroupOption[] = [
+  {
+    value: 'Previous',
+    label: '<'
+  },
+  {
+    value: 'Next',
+    label: '>'
+  }
+];
