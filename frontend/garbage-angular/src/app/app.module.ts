@@ -28,6 +28,7 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { GoogleMapComponent } from './shared/components/google-map/google-map.component';
 import { ToggleButtonsComponent } from './shared/components/toggle-buttons/toggle-buttons.component';
 import { DumpMapViewComponent } from './core/dumps/components/dump-map-view/dump-map-view.component';
+import { NgMathPipesModule } from 'angular-pipes';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { DumpMapViewComponent } from './core/dumps/components/dump-map-view/dump
     ReactiveFormsModule,
     AuthModule,
     DialogModule,
+    NgMathPipesModule,
     AgmCoreModule.forRoot({apiKey: 'AIzaSyDVTT8btuhog4XIke6JG4wv38ABrf85qXc'})
   ],
   entryComponents: [
