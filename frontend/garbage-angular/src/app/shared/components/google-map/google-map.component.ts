@@ -7,11 +7,11 @@ import { Dump } from '../../interfaces/dump';
   templateUrl: './google-map.component.html',
   styleUrls: ['./google-map.component.scss']
 })
+
 export class GoogleMapComponent implements OnInit {
 
   @Input() height = 100;
   @Input() width = 100;
-  @Input() showGeolocation = true;
   @Input() dumps: Dump[];
   @Input() enableMarking = true;
 
@@ -32,13 +32,19 @@ export class GoogleMapComponent implements OnInit {
   myPositionMarker: google.maps.Marker;
   dumpMarkers: google.maps.Marker[];
 
+  icons = {
+    MY_POSITION: '../../../../assets/my_position.png',
+    DUMP_PENDING: '../../../../assets/pending.png',
+    DUMP_IN_PROCESS: '../../../../assets/in_process.png',
+    DUMP_RESOLVED: '../../../../assets/resolved.png'
+  };
+
   constructor(private mapsApiLoader: MapsAPILoader, private wrapper: GoogleMapsAPIWrapper) {
     this.mapsApiLoader = mapsApiLoader;
     this.wrapper = wrapper;
   }
 
   ngOnInit() {
-    console.log('shared googlemap init');
     this.mapsApiLoader.load().then(() => {
       this.geocoder = new google.maps.Geocoder;
       this.infoWindow = new google.maps.InfoWindow;
@@ -47,7 +53,6 @@ export class GoogleMapComponent implements OnInit {
         zoom: 12
       });
       this.initMap();
-      console.log('google-map dumps:', this.dumps);
     });
   }
 
@@ -58,9 +63,8 @@ export class GoogleMapComponent implements OnInit {
     if (this.enableMarking) {
       this.map.addListener('click', function(event) {
         self.clearMarker(self.customMarker);
-        self.customMarker = self.createMarker(event.latLng, true);
+        self.customMarker = self.createMarker(event.latLng, null, true);
         self.infoWindow.open(self.map, self.customMarker);
-        console.log(self.customMarker);
       });
     }
     // show all dumps on map
@@ -74,10 +78,8 @@ export class GoogleMapComponent implements OnInit {
           lng: position.coords.longitude
         };
         // set marker for your position
-        if (this.showGeolocation) {
-            this.myPositionMarker = this.createMarker(pos, true);
-            this.infoWindow.open(self.map, this.myPositionMarker);
-        }
+        this.myPositionMarker = this.createMarker(pos, this.icons.MY_POSITION, true);
+        this.infoWindow.open(self.map, this.myPositionMarker);
         this.map.setCenter(pos);
       }, () => {
         this.handleLocationError(true, this.infoWindow);
@@ -112,8 +114,8 @@ export class GoogleMapComponent implements OnInit {
     infoWindow.open(this.map);
   }
 
-  // creates marker and optionally shows address
-  createMarker(position, showAddressInfo) {
+  // creates marker, optional: sets icon, optional: shows address
+  createMarker(position, icon, showAddressInfo) {
     this.setInfoWindowToLoading();
     if (showAddressInfo) {
       this.geocodeLatLng(position);
@@ -121,6 +123,7 @@ export class GoogleMapComponent implements OnInit {
     return new google.maps.Marker({
       position,
       map: this.map,
+      icon
     });
   }
 
@@ -129,22 +132,31 @@ export class GoogleMapComponent implements OnInit {
   }
 
   clearMarker(marker) {
-    console.log('clearing');
     if (marker) {
       marker.setMap(null);
     }
   }
 
   markAllDumps() {
-    this.dumps.forEach(dump => console.log(dump.location));
     this.dumps.forEach(dump => {
       const pos = {
         lat: dump.location.latitude,
         lng: dump.location.longitude
       };
-      this.createMarker(pos, false);
+      const icon = this.getMarkerIconByStatus(dump.status);
+      this.createMarker(pos, icon, false);
     });
-    console.log('marking all dumps!');
+  }
+
+  getMarkerIconByStatus(status) {
+    switch (status) {
+      case 'In Process':
+        return this.icons.DUMP_IN_PROCESS;
+      case 'Resolved':
+        return this.icons.DUMP_RESOLVED;
+      case 'Pending':
+        return this.icons.DUMP_PENDING;
+    }
   }
 
 }
