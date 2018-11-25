@@ -11,17 +11,25 @@ export class GoogleMapComponent implements OnInit {
 
   @Input() height = 100;
   @Input() width = 100;
-  @Input() data: Dump[];
   @Input() showGeolocation = true;
+  @Input() dumps: Dump[];
 
   // TODO: change type based on our needs
   @Output() location: any;
 
-  map: any;
-  infoWindow: any;
+  // google map
+  map: google.maps.Map;
+
+  // info window used to show address
+  infoWindow: google.maps.InfoWindow;
+
+  // gets string address from position
   geocoder: any;
-  customMarker: any;
-  myPositionMarker: any;
+
+  // markers
+  customMarker: google.maps.Marker;
+  myPositionMarker: google.maps.Marker;
+  dumpMarkers: google.maps.Marker[];
 
   constructor(private mapsApiLoader: MapsAPILoader, private wrapper: GoogleMapsAPIWrapper) {
     this.mapsApiLoader = mapsApiLoader;
@@ -38,6 +46,7 @@ export class GoogleMapComponent implements OnInit {
         zoom: 12
       });
       this.initMap();
+      console.log('google-map dumps:', this.dumps);
     });
   }
 
@@ -47,10 +56,14 @@ export class GoogleMapComponent implements OnInit {
     // click listener for creating markers
     this.map.addListener('click', function(event) {
       self.clearMarker(self.customMarker);
-      self.customMarker = self.createMarker(event.latLng);
+      self.customMarker = self.createMarker(event.latLng, true);
       self.infoWindow.open(self.map, self.customMarker);
       console.log(self.customMarker);
     });
+    // show all dumps on map
+    if (this.dumps) {
+      this.markAllDumps();
+    }
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const pos = {
@@ -59,7 +72,7 @@ export class GoogleMapComponent implements OnInit {
         };
         // set marker for your position
         if (this.showGeolocation) {
-            this.myPositionMarker = this.createMarker(pos);
+            this.myPositionMarker = this.createMarker(pos, true);
             this.infoWindow.open(self.map, this.myPositionMarker);
         }
         this.map.setCenter(pos);
@@ -96,9 +109,12 @@ export class GoogleMapComponent implements OnInit {
     infoWindow.open(this.map);
   }
 
-  createMarker(position) {
+  // creates marker and optionally shows address
+  createMarker(position, showAddressInfo) {
     this.setInfoWindowToLoading();
-    this.geocodeLatLng(position);
+    if (showAddressInfo) {
+      this.geocodeLatLng(position);
+    }
     return new google.maps.Marker({
       position,
       map: this.map,
@@ -115,4 +131,17 @@ export class GoogleMapComponent implements OnInit {
       marker.setMap(null);
     }
   }
+
+  markAllDumps() {
+    this.dumps.forEach(dump => console.log(dump.location));
+    this.dumps.forEach(dump => {
+      const pos = {
+        lat: dump.location.latitude,
+        lng: dump.location.longitude
+      };
+      this.createMarker(pos, false);
+    });
+    console.log('marking all dumps!');
+  }
+
 }
