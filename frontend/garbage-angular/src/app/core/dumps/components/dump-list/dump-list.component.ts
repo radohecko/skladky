@@ -4,7 +4,6 @@ import { DumpsService, toggleOptionsLeft, toggleOptionsRight, toggleOptionsPage 
 import { Subscription } from 'rxjs';
 import { ToggleGroupOption, ToggleGroupValue } from 'src/app/shared/components/toggle-buttons/toggle-buttons.component';
 import { Router } from '@angular/router';
-import { CeilPipe } from 'angular-pipes';
 
 @Component({
   selector: 'app-dump-list',

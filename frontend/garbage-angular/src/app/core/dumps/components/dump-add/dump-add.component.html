@@ -1,6 +1,51 @@
 <div class="container">
   <div class="map">
-    <app-google-map [height]="100"
-                    [width]="100"></app-google-map>
+    <div class="map-container">
+      <app-google-map [height]="100"
+                      [width]="100"></app-google-map>
+    </div>
   </div>
+
+  <form [formGroup]="form">
+    <mat-form-field>
+      <input matInput
+             placeholder="Location"
+             formControlName="location">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Status" formControlName="status">
+        <mat-option *ngFor="let s of statusOptions"
+                    [value]="s.value">
+          {{ s.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-radio-group>
+      <mat-radio-button value="car">Car</mat-radio-button>
+      <mat-radio-button value="lorry">Lorry</mat-radio-button>
+      <mat-radio-button value="bag">Bag</mat-radio-button>
+    </mat-radio-group>
+
+    <mat-form-field>
+      <input matInput
+             placeholder="Materials"
+             formControlName="materials">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="Dangerous substances contained"
+             formControlName="substances">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="Photo"
+             formControlName="image">
+    </mat-form-field>
+    <div class="actions">
+        <button mat-raised-button color="primary">Save</button>
+        <button mat-raised-button>Cancel</button>
+    </div>
+  </form>
 </div>
