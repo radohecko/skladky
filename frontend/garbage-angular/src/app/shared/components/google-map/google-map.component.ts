@@ -13,6 +13,7 @@ export class GoogleMapComponent implements OnInit {
   @Input() width = 100;
   @Input() showGeolocation = true;
   @Input() dumps: Dump[];
+  @Input() enableMarking = true;
 
   // TODO: change type based on our needs
   @Output() location: any;
@@ -53,13 +54,15 @@ export class GoogleMapComponent implements OnInit {
   initMap() {
     // Try HTML5 geolocation.
     const self = this;
-    // click listener for creating markers
-    this.map.addListener('click', function(event) {
-      self.clearMarker(self.customMarker);
-      self.customMarker = self.createMarker(event.latLng, true);
-      self.infoWindow.open(self.map, self.customMarker);
-      console.log(self.customMarker);
-    });
+    // click listener for creating markers (disabled in dumps-map)
+    if (this.enableMarking) {
+      this.map.addListener('click', function(event) {
+        self.clearMarker(self.customMarker);
+        self.customMarker = self.createMarker(event.latLng, true);
+        self.infoWindow.open(self.map, self.customMarker);
+        console.log(self.customMarker);
+      });
+    }
     // show all dumps on map
     if (this.dumps) {
       this.markAllDumps();
