@@ -32,6 +32,7 @@ import { NgMathPipesModule } from 'angular-pipes';
 
 @NgModule({
   declarations: [
+    GoogleMapComponent,
     AppComponent,
     DumpsComponent,
     DumpMapComponent,
@@ -44,7 +45,6 @@ import { NgMathPipesModule } from 'angular-pipes';
     FooterToolbarComponent,
     PageHeaderComponent,
     DumpEditComponent,
-    GoogleMapComponent,
     ToggleButtonsComponent,
     DumpMapViewComponent
   ],

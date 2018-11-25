@@ -1,3 +1,5 @@
+declare const google: any;
+
 import { Component, OnInit, Input } from '@angular/core';
 import { Dump } from 'src/app/shared/interfaces/dump';
 
