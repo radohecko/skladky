@@ -1,7 +1,16 @@
 @import "../../../../../styles/variables";
 
+$desktop: 960px;
+$tablet: 768px;
+$mobile-large: 640px;
+$mobile: 480px;
+$mobile-small: 300px;
+
 :host {
   width: 80%;
+  @media only screen and (max-width: $mobile-large){
+    width: 90%;
+  }
 }
 
 .card {
@@ -9,18 +18,31 @@
   flex-flow: column;
   margin: 2rem;
   position: relative;
+  @media only screen and (max-width: $mobile-large){
+    padding-bottom: 16px;
+  }
 
   mat-card-title {
     font-size: 2.5rem;
     color: $color-dark-grey;
+    @media only screen and (max-width: $mobile-large){
+      font-size: 1.2em;
+    }
   }
 
   &-content {
     display: flex;
     flex-flow: row;
+    @media only screen and (max-width: $mobile-large){
+      width: 100%;
+      flex-flow: column;
+    }
 
     &-image {
       margin-right: 1.5rem;
+      @media only screen and (max-width: $mobile-large){
+        margin: 1rem 0rem;
+      }
 
       &:hover {
         cursor: pointer;
@@ -31,6 +53,10 @@
       &-title {
         font-size: 1.8rem;
         margin-bottom: 1rem;
+        @media only screen and (max-width: $mobile-large){
+          font-size: 1.3rem;
+          margin-bottom: 0.8rem;
+        }
       }
     }
   }
@@ -48,6 +74,13 @@
   right: 3rem;
   font-size: 3.5rem;
   display: none;
+  @media only screen and (max-width: $mobile-large){
+    width: 16px;
+    height: 16px;
+    font-size: 2.5rem;
+    top: 2.5rem;
+    right: 2.5rem;
+  }
 
   &:hover {
     color: #92b9dc;
@@ -69,4 +102,17 @@
 
 .description {
   color: $color-mid-grey;
+}
+
+
+.mat-card{
+  @media only screen and (max-width: $mobile-large){
+    margin: 1rem 0rem;
+  }
+}
+
+img{
+  @media only screen and (max-width: $mobile-large){
+    width: 100%;
+  }
 }
