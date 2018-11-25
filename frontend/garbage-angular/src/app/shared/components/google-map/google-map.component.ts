@@ -91,11 +91,23 @@ export class GoogleMapComponent implements OnInit {
     }
   }
 
+  getRegion(array) {
+    return array.filter(o =>
+        Object.keys(o).some(k => o[k].includes('Region') || o[k].includes('kraj')));
+  }
+
   geocodeLatLng(pos) {
     const self = this;
     this.geocoder.geocode({'location': pos}, function(results, status) {
       if (status === 'OK') {
         if (results[0]) {
+          // try to get region
+          try {
+            self.location = self.getRegion(results[0].address_components)[0]['long_name'];
+            console.log('kraj: ', self.location);
+          } catch (e) {
+            console.log(e);
+          }
           // set address string on your marker
           self.infoWindow.setContent(results[0].formatted_address);
         } else {
@@ -145,7 +157,7 @@ export class GoogleMapComponent implements OnInit {
         lng: dump.location.longitude
       };
       const icon = this.getMarkerIconByStatus(dump.status);
-      this.createMarker(pos, icon, false);
+      this.createMarker(pos, icon, true);
     });
   }
 
