@@ -1,3 +1,9 @@
+$desktop: 960px;
+$tablet: 768px;
+$mobile-large: 640px;
+$mobile: 480px;
+$mobile-small: 300px;
+
 .button-add {
   position: fixed;
   bottom: 2rem;
@@ -6,4 +12,9 @@
   font-weight: 100;
   width: 8rem;
   height: 8rem;
+  @media only screen and (max-width: $mobile-large){
+    width: 6rem;
+    height: 6rem;
+    font-size: 4rem;
+  }
 }
