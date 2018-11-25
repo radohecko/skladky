@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, HostBinding, Output } from '@angular/core';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
+import { Dump } from '../../interfaces/dump';
 
 @Component({
   selector: 'app-google-map',
@@ -10,6 +11,8 @@ export class GoogleMapComponent implements OnInit {
 
   @Input() height = 100;
   @Input() width = 100;
+  @Input() data: Dump[];
+  @Input() showGeolocation = true;
 
   // TODO: change type based on our needs
   @Output() location: any;
@@ -17,6 +20,8 @@ export class GoogleMapComponent implements OnInit {
   map: any;
   infoWindow: any;
   geocoder: any;
+  customMarker: any;
+  myPositionMarker: any;
 
   constructor(private mapsApiLoader: MapsAPILoader, private wrapper: GoogleMapsAPIWrapper) {
     this.mapsApiLoader = mapsApiLoader;
@@ -24,6 +29,7 @@ export class GoogleMapComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('shared googlemap init');
     this.mapsApiLoader.load().then(() => {
       this.geocoder = new google.maps.Geocoder;
       this.infoWindow = new google.maps.InfoWindow;
@@ -37,58 +43,76 @@ export class GoogleMapComponent implements OnInit {
 
   initMap() {
     // Try HTML5 geolocation.
+    const self = this;
+    // click listener for creating markers
+    this.map.addListener('click', function(event) {
+      self.clearMarker(self.customMarker);
+      self.customMarker = self.createMarker(event.latLng);
+      self.infoWindow.open(self.map, self.customMarker);
+      console.log(self.customMarker);
+    });
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const pos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        this.infoWindow.setPosition(pos);
-        this.geocodeLatLng(this.geocoder, this.map, this.infoWindow, pos);
-        this.infoWindow.setContent('Your position.');
-        this.infoWindow.open(this.map);
+        // set marker for your position
+        if (this.showGeolocation) {
+            this.myPositionMarker = this.createMarker(pos);
+            this.infoWindow.open(self.map, this.myPositionMarker);
+        }
         this.map.setCenter(pos);
       }, () => {
-        this.handleLocationError(true, this.infoWindow, this.map.getCenter());
+        this.handleLocationError(true, this.infoWindow);
       });
     } else {
       // Browser doesn't support Geolocation
-      this.handleLocationError(false, this.infoWindow, this.map.getCenter());
+      this.handleLocationError(false, this.infoWindow);
     }
   }
 
-  geocodeLatLng(geocoder, map, infowindow, pos) {
-    geocoder.geocode({'location': pos}, function(results, status) {
+  geocodeLatLng(pos) {
+    const self = this;
+    this.geocoder.geocode({'location': pos}, function(results, status) {
       if (status === 'OK') {
         if (results[0]) {
-          map.setZoom(11);
-          const marker = new google.maps.Marker({
-            position: pos,
-            map: map
-          });
-          infowindow.setContent(results[0].formatted_address);
-          infowindow.open(map, marker);
+          // set address string on your marker
+          self.infoWindow.setContent(results[0].formatted_address);
         } else {
           window.alert('No results found');
         }
       } else {
+        self.clearMarker(self.customMarker);
         window.alert('Geocoder failed due to: ' + status);
       }
     });
   }
 
-  handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
+  handleLocationError(browserHasGeolocation, infoWindow) {
     infoWindow.setContent(browserHasGeolocation ?
       'Error: The Geolocation service failed.' :
       'Error: Your browser doesn\'t support geolocation.');
     infoWindow.open(this.map);
   }
 
-  /**
-   *  TODO: Add custom marker into map with readeble location title check link
-   * link - https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
-   * */
-  customMarker() { }
+  createMarker(position) {
+    this.setInfoWindowToLoading();
+    this.geocodeLatLng(position);
+    return new google.maps.Marker({
+      position,
+      map: this.map,
+    });
+  }
 
+  setInfoWindowToLoading() {
+    this.infoWindow.setContent('Loading...');
+  }
+
+  clearMarker(marker) {
+    console.log('clearing');
+    if (marker) {
+      marker.setMap(null);
+    }
+  }
 }
