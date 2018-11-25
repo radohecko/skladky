@@ -14,6 +14,7 @@ export class GoogleMapComponent implements OnInit {
   @Input() width = 100;
   @Input() dumps: Dump[];
   @Input() enableMarking = true;
+  @Input() zoom = 12;
 
   // TODO: change type based on our needs
   @Output() location: any;
@@ -50,7 +51,7 @@ export class GoogleMapComponent implements OnInit {
       this.infoWindow = new google.maps.InfoWindow;
       this.map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: -34.397, lng: 150.644 },
-        zoom: 12
+        zoom: this.zoom
       });
       this.initMap();
     });
