@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, HostBinding, Output, EventEmitter } from '@angular/core';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
 import { Dump } from '../../interfaces/dump';
+import { GoogleLocation } from '../../interfaces/location';
 
 @Component({
   selector: 'app-google-map',
@@ -62,7 +63,7 @@ export class GoogleMapComponent implements OnInit {
     const self = this;
     // click listener for creating markers (disabled in dumps-map)
     if (this.enableMarking) {
-      this.map.addListener('click', function(event) {
+      this.map.addListener('click', function (event) {
         self.clearMarker(self.customMarker);
         self.customMarker = self.createMarker(event.latLng, null, true, true);
         self.infoWindow.open(self.map, self.customMarker);
@@ -93,27 +94,26 @@ export class GoogleMapComponent implements OnInit {
 
   getRegion(array) {
     return array.filter(o =>
-        Object.keys(o).some(k => o[k].includes('Region') || o[k].includes('kraj')));
+      Object.keys(o).some(k => o[k].includes('Region') || o[k].includes('kraj')));
   }
 
   // TODO: adresu ukladat do DB uz pri pridavani novej skladky, kvoli query limit
   geocodeLatLng(pos, setInfoContent) {
     const self = this;
-    this.geocoder.geocode({'location': pos}, function(results, status) {
+    this.geocoder.geocode({ 'location': pos }, function (results, status) {
       if (status === 'OK') {
         if (results[0]) {
           // try to get region
           try {
             const region = self.getRegion(results[0].address_components)[0]['long_name'];
-            self.location.emit(
-              {
-                lat: pos.lat,
-                lng: pos.lng,
-                region: region,
-                adressName: results[0]
-              }
-            );
-            console.log('kraj: ', region);
+            const data: GoogleLocation = {
+              lat: pos.lat,
+              lng: pos.lng,
+              region: region,
+              adressName: results[0].formatted_address.toString()
+            };
+
+            self.location.emit(data);
           } catch (e) {
             console.log(e);
           }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Dump } from 'src/app/shared/interfaces/dump';
@@ -28,8 +28,23 @@ export class DumpsService {
     );
   }
 
-  uploadFile(file: File) {
-    const ref = this.storage.ref(`${this.basePath}/${file.name}`);
+  addDump(data: Dump, file: File | null) {
+    const id = this.afs.createId();
+    const dumpRef: AngularFirestoreDocument<Dump> = this.afs.doc(`dumps/${id}`);
+    dumpRef.set(data)
+      .then(() => {
+        if (file) {
+          this.uploadFile(id, file);
+        }
+        console.log('Document successfully written!');
+      })
+      .catch((error) => {
+        console.error('Error writing document: ', error);
+      });
+  }
+
+  uploadFile(id: string, file: File) {
+    const ref = this.storage.ref(`${this.basePath}/${id}`);
     const task = ref.put(file);
     // observe percentage changes
     this.uploadPercent$ = task.percentageChanges();

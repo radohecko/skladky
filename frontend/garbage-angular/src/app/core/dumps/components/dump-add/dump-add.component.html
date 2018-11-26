@@ -16,7 +16,7 @@
     <mat-form-field>
       <input matInput
              placeholder="Location"
-             formControlName="location">
+             formControlName="locationName">
     </mat-form-field>
 
     <mat-form-field>
@@ -36,28 +36,67 @@
       <mat-radio-button value="bag">Bag</mat-radio-button>
     </mat-radio-group>
 
-    <mat-form-field>
-      <input matInput
-             placeholder="Materials"
-             formControlName="materials">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput
-             placeholder="Dangerous substances contained"
-             formControlName="substances">
-    </mat-form-field>
+    <div formArrayName="materials">
+      <div class="form-field"
+           *ngFor="let material of materials.controls; let i=index">
+        <mat-form-field class="full-width">
+          <input matInput
+                 placeholder="Materials"
+                 [formControlName]="i">
+        </mat-form-field>
+        <button *ngIf="materialsLength-1 !== i || materialsLength === i+1 && i !== 0"
+                mat-mini-fab
+                color="warn"
+                [class.remove]="materialsLength === i+1"
+                (click)="removeMaterial()"> x </button>
+        <button *ngIf="materialsLength-1 === i"
+                mat-mini-fab
+                color="primary"
+                (click)="addMaterial()"> + </button>
 
+      </div>
+    </div>
+
+    <div formArrayName="substances">
+      <div class="form-field"
+           *ngFor="let substance of substances.controls; let i=index">
+        <mat-form-field class="full-width">
+          <input matInput
+                 placeholder="Dangerous substances contained"
+                 [formControlName]="i">
+        </mat-form-field>
+        <button *ngIf="substancesLength-1 !== i || substancesLength === i+1 && i !== 0"
+                mat-mini-fab
+                color="warn"
+                [class.remove]="substancesLength === i+1"
+                (click)="removeSubstance()"> x </button>
+
+        <button *ngIf="substancesLength-1 === i"
+                mat-mini-fab
+                color="primary"
+                (click)="addSubstance()"> + </button>
+
+      </div>
+    </div>
+
+    <span class="label">Image</span>
     <input placeholder="Photo"
            type="file"
-           (change)="uploadFile($event)"
-           formControlName="image">
+           accept="image/*"
+           (change)="uploadFile($event)">
 
-    <div class="actions">
-      <button mat-raised-button
-              color="primary"
-              (click)="saveForm()">Save</button>
-      <button mat-raised-button
-              (click)="onClose()">Cancel</button>
-    </div>
+    <mat-form-field>
+      <input matInput
+             placeholder="Email"
+             formControlName="email">
+    </mat-form-field>
   </form>
+
+  <div class="actions">
+    <button mat-raised-button
+            color="primary"
+            (click)="saveForm()">Save</button>
+    <button mat-raised-button
+            (click)="onClose()">Cancel</button>
+  </div>
 </div>

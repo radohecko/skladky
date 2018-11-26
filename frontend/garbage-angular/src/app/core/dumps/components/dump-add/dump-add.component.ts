@@ -1,24 +1,26 @@
-declare const google: any;
-
-import { Component, OnInit } from '@angular/core';
-import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Status } from 'src/app/shared/interfaces/status';
 import { DumpsService } from '../../services/dumps.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MatDialogRef } from '@angular/material';
+import { firestore } from 'firebase/app';
+import { Dump } from 'src/app/shared/interfaces/dump';
+import { GoogleLocation } from 'src/app/shared/interfaces/location';
+import { unsubscribe } from 'src/app/shared/utils/subscription.util';
 
 @Component({
   selector: 'app-dump-add',
   templateUrl: './dump-add.component.html',
   styleUrls: ['./dump-add.component.scss']
 })
-export class DumpAddComponent implements OnInit {
+export class DumpAddComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   percentageSubscription: Subscription;
   uploadPercentage: number;
-  location: any;
+  location: GoogleLocation;
+  file: File;
   statusOptions: Status[] = [
     { label: 'Resolved', value: 'Resolved' },
     { label: 'Pending', value: 'Pending' },
@@ -27,6 +29,22 @@ export class DumpAddComponent implements OnInit {
 
   color = 'primary';
   mode = 'query';
+
+  get materials() {
+    return this.form.get('materials') as FormArray;
+  }
+
+  get substances() {
+    return this.form.get('substances') as FormArray;
+  }
+
+  get materialsLength() {
+    return this.materials.length;
+  }
+
+  get substancesLength() {
+    return this.substances.length;
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -37,33 +55,69 @@ export class DumpAddComponent implements OnInit {
     this.createForm();
   }
 
+  ngOnDestroy() {
+    unsubscribe(this.percentageSubscription);
+  }
+
   createForm() {
     this.form = this.fb.group({
-      location: [],
+      locationName: ['', Validators.required],
       status: [this.statusOptions[1].value],
-      amount: [],
-      materials: [],
-      substances: [],
-      image: [],
+      amount: ['car', Validators.required],
+      materials: this.fb.array([
+        this.fb.control(null)
+      ]),
+      substances: this.fb.array([
+        this.fb.control(null)
+      ]),
+      email: ['', Validators.email]
     });
   }
 
-  setLocationTitle($event) {
+  setLocationTitle($event: GoogleLocation) {
     this.location = $event;
-    this.form.get('location').setValue($event.adressName.formatted_address);
-    console.log($event.adressName.formatted_address);
+    this.form.get('locationName').setValue($event.adressName);
   }
 
   uploadFile($event) {
-    this.dumpsService.uploadFile($event.target.files[0]);
-    this.percentageSubscription = this.dumpsService.uploadPercent$.subscribe(
-      percentage =>
-        this.uploadPercentage = percentage);
+    this.file = $event.target.files[0];
   }
 
   saveForm() {
     const value = this.form.value;
-    console.log(value);
+    const data: Dump = {
+      ...this.form.value,
+      location: new firestore.GeoPoint(this.location.lat, this.location.lng),
+      region: this.location.region,
+      timestamp: new Date()
+    };
+    if (this.file) {
+      this.dumpsService.addDump(data, this.file);
+      if (this.dumpsService.uploadPercent$) {
+        this.percentageSubscription = this.dumpsService.uploadPercent$.subscribe(
+          percentage =>
+            this.uploadPercentage = percentage);
+      }
+    } else {
+      this.dumpsService.addDump(data, null);
+      this.onClose();
+    }
+  }
+
+  addMaterial() {
+    this.materials.push(this.fb.control(''));
+  }
+
+  addSubstance() {
+    this.substances.push(this.fb.control(''));
+  }
+
+  removeMaterial(index: number) {
+    this.materials.removeAt(index);
+  }
+
+  removeSubstance(index: number) {
+    this.substances.removeAt(index);
   }
 
   onClose() {

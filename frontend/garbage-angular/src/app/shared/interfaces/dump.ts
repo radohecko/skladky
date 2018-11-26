@@ -3,10 +3,12 @@ import Timestamp = firestore.Timestamp;
 import Geopoint = firestore.GeoPoint;
 
 export interface Dump {
-  id: string;
+  id: string | null;
   email: string | null;
-  image: null;
+  image: File | null;
+  locationName: string;
   location: Geopoint;
+  region: string;
   materials: string[];
   substances: string[];
   amount: string;

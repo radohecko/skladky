@@ -17,7 +17,8 @@ export class HomeComponent implements OnInit {
 
   onOpenAddReport() {
     const dialogRef = this.dialog.open(DumpAddComponent, {
-      width: '650px'
+      width: '650px',
+      height: '800px'
     });
   }
 }
