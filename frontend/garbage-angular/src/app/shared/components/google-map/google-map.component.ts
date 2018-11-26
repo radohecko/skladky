@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostBinding, Output } from '@angular/core';
+import { Component, OnInit, Input, HostBinding, Output, EventEmitter } from '@angular/core';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
 import { Dump } from '../../interfaces/dump';
 
@@ -17,7 +17,7 @@ export class GoogleMapComponent implements OnInit {
   @Input() zoom = 12;
 
   // TODO: change type based on our needs
-  @Output() location: any;
+  @Output() location: EventEmitter<any> = new EventEmitter();
 
   // google map
   map: google.maps.Map;
@@ -104,8 +104,16 @@ export class GoogleMapComponent implements OnInit {
         if (results[0]) {
           // try to get region
           try {
-            self.location = self.getRegion(results[0].address_components)[0]['long_name'];
-            console.log('kraj: ', self.location);
+            const region = self.getRegion(results[0].address_components)[0]['long_name'];
+            self.location.emit(
+              {
+                lat: pos.lat,
+                lng: pos.lng,
+                region: region,
+                adressName: results[0]
+              }
+            );
+            console.log('kraj: ', region);
           } catch (e) {
             console.log(e);
           }

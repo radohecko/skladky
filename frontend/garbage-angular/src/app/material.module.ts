@@ -17,7 +17,8 @@ import {
   MatDialogModule,
   MatAutocompleteModule,
   MatCheckboxModule,
-  MatRadioModule
+  MatRadioModule,
+  MatProgressBarModule
 } from '@angular/material';
 
 
@@ -39,7 +40,8 @@ import {
     MatDialogModule,
     MatAutocompleteModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatProgressBarModule
   ],
   exports: [
     MatToolbarModule,
@@ -57,7 +59,8 @@ import {
     MatDialogModule,
     MatAutocompleteModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatProgressBarModule
   ],
   declarations: []
 })

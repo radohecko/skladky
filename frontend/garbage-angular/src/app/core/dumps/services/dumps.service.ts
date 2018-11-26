@@ -4,14 +4,18 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Dump } from 'src/app/shared/interfaces/dump';
 import { ToggleGroupOption } from 'src/app/shared/components/toggle-buttons/toggle-buttons.component';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Injectable()
 export class DumpsService {
 
   dumpsCollection: AngularFirestoreCollection<Dump>;
   dumpsObservable$: Observable<Dump[]>;
+  uploadPercent$: Observable<number>;
 
-  constructor(private afs: AngularFirestore) { }
+  private basePath = '/uploads';
+
+  constructor(private afs: AngularFirestore, private storage: AngularFireStorage) { }
 
   getDumps() {
     this.dumpsCollection = this.afs.collection<Dump>(`dumps`);
@@ -22,6 +26,13 @@ export class DumpsService {
         return { id, ...data };
       }))
     );
+  }
+
+  uploadFile(file: File) {
+    const ref = this.storage.ref(`${this.basePath}/${file.name}`);
+    const task = ref.put(file);
+    // observe percentage changes
+    this.uploadPercent$ = task.percentageChanges();
   }
 }
 

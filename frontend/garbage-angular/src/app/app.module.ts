@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app.routing.module';
 import { MaterialModule } from './material.module';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -54,6 +55,7 @@ import { NgMathPipesModule } from 'angular-pipes';
     MaterialModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
     FormsModule,

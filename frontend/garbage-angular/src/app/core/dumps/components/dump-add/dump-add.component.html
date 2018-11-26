@@ -1,8 +1,14 @@
+<mat-progress-bar *ngIf="uploadPercentage < 100 && uploadPercentage"
+                  [color]="color"
+                  [mode]="mode">
+</mat-progress-bar>
+
 <div class="container">
   <div class="map">
     <div class="map-container">
       <app-google-map [height]="100"
-                      [width]="100"></app-google-map>
+                      [width]="100"
+                      (location)="setLocationTitle($event)"></app-google-map>
     </div>
   </div>
 
@@ -14,7 +20,8 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select placeholder="Status" formControlName="status">
+      <mat-select placeholder="Status"
+                  formControlName="status">
         <mat-option *ngFor="let s of statusOptions"
                     [value]="s.value">
           {{ s.label }}
@@ -22,7 +29,8 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-radio-group>
+    <span class="label">Amount</span>
+    <mat-radio-group formControlName="amount">
       <mat-radio-button value="car">Car</mat-radio-button>
       <mat-radio-button value="lorry">Lorry</mat-radio-button>
       <mat-radio-button value="bag">Bag</mat-radio-button>
@@ -38,14 +46,18 @@
              placeholder="Dangerous substances contained"
              formControlName="substances">
     </mat-form-field>
-    <mat-form-field>
-      <input matInput
-             placeholder="Photo"
-             formControlName="image">
-    </mat-form-field>
+
+    <input placeholder="Photo"
+           type="file"
+           (change)="uploadFile($event)"
+           formControlName="image">
+
     <div class="actions">
-        <button mat-raised-button color="primary">Save</button>
-        <button mat-raised-button>Cancel</button>
+      <button mat-raised-button
+              color="primary"
+              (click)="saveForm()">Save</button>
+      <button mat-raised-button
+              (click)="onClose()">Cancel</button>
     </div>
   </form>
 </div>
