@@ -64,13 +64,9 @@ export class GoogleMapComponent implements OnInit {
     if (this.enableMarking) {
       this.map.addListener('click', function(event) {
         self.clearMarker(self.customMarker);
-        self.customMarker = self.createMarker(event.latLng, null, true);
+        self.customMarker = self.createMarker(event.latLng, null, true, true);
         self.infoWindow.open(self.map, self.customMarker);
       });
-    }
-    // show all dumps on map
-    if (this.dumps) {
-      this.markAllDumps();
     }
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -79,9 +75,13 @@ export class GoogleMapComponent implements OnInit {
           lng: position.coords.longitude
         };
         // set marker for your position
-        this.myPositionMarker = this.createMarker(pos, this.icons.MY_POSITION, true);
+        this.myPositionMarker = this.createMarker(pos, this.icons.MY_POSITION, true, true);
         this.infoWindow.open(self.map, this.myPositionMarker);
         this.map.setCenter(pos);
+        // show all dumps on map
+        if (this.dumps) {
+          this.markAllDumps();
+        }
       }, () => {
         this.handleLocationError(true, this.infoWindow);
       });
@@ -96,7 +96,8 @@ export class GoogleMapComponent implements OnInit {
         Object.keys(o).some(k => o[k].includes('Region') || o[k].includes('kraj')));
   }
 
-  geocodeLatLng(pos) {
+  // TODO: adresu ukladat do DB uz pri pridavani novej skladky, kvoli query limit
+  geocodeLatLng(pos, setInfoContent) {
     const self = this;
     this.geocoder.geocode({'location': pos}, function(results, status) {
       if (status === 'OK') {
@@ -109,13 +110,15 @@ export class GoogleMapComponent implements OnInit {
             console.log(e);
           }
           // set address string on your marker
-          self.infoWindow.setContent(results[0].formatted_address);
+          if (setInfoContent) {
+            self.infoWindow.setContent(results[0].formatted_address);
+          }
         } else {
           window.alert('No results found');
         }
       } else {
         self.clearMarker(self.customMarker);
-        window.alert('Geocoder failed due to: ' + status);
+        console.log('Geocoder failed due to: ' + status);
       }
     });
   }
@@ -128,10 +131,10 @@ export class GoogleMapComponent implements OnInit {
   }
 
   // creates marker, optional: sets icon, optional: shows address
-  createMarker(position, icon, showAddressInfo) {
+  createMarker(position, icon, showAddressInfo, setInfoContent) {
     this.setInfoWindowToLoading();
     if (showAddressInfo) {
-      this.geocodeLatLng(position);
+      this.geocodeLatLng(position, setInfoContent);
     }
     return new google.maps.Marker({
       position,
@@ -157,7 +160,7 @@ export class GoogleMapComponent implements OnInit {
         lng: dump.location.longitude
       };
       const icon = this.getMarkerIconByStatus(dump.status);
-      this.createMarker(pos, icon, true);
+      this.createMarker(pos, icon, true, false);
     });
   }
 
