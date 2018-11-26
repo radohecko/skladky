@@ -1,9 +1,3 @@
-<div class="map">
-  <div class="map-container">
-    <app-google-map [height]="250"
-                    [width]="100"
-                    [dumps]="dumps"
-                    [enableMarking]="false"
-                    [zoom]="9"></app-google-map>
-  </div>
-</div>
+<div id="map"
+     [style.width.%]="width"
+     [style.height.%]="height"></div>

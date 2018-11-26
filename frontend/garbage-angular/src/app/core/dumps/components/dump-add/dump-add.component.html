@@ -6,9 +6,9 @@
 <div class="container">
   <div class="map">
     <div class="map-container">
-      <app-google-map [height]="100"
+      <app-dump-map [height]="100"
                       [width]="100"
-                      (location)="setLocationTitle($event)"></app-google-map>
+                      (location)="setLocationTitle($event)"></app-dump-map>
     </div>
   </div>
 
@@ -52,6 +52,7 @@
         <button *ngIf="materialsLength-1 === i"
                 mat-mini-fab
                 color="primary"
+                title="Add new material"
                 (click)="addMaterial()"> + </button>
 
       </div>
@@ -74,6 +75,7 @@
         <button *ngIf="substancesLength-1 === i"
                 mat-mini-fab
                 color="primary"
+                title="Add new substance"
                 (click)="addSubstance()"> + </button>
 
       </div>
