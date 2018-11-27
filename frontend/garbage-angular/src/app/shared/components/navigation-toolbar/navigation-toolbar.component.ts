@@ -11,6 +11,7 @@ export class NavigationToolbarComponent implements OnInit, OnChanges {
 
   token = false;
   email: string;
+  toggleMenu = false;
 
   constructor(private dialog: MatDialog, private authService: AuthService) { }
 
@@ -50,4 +51,7 @@ export class NavigationToolbarComponent implements OnInit, OnChanges {
     this.authService.logOut();
   }
 
+  onToggleMenu() {
+    this.toggleMenu = !this.toggleMenu;
+  }
 }
