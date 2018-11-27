@@ -1,3 +1,32 @@
-<p>
-  auth-dialog works!
-</p>
+<div class="header">
+  <h1 class="header-title">{{ title }}</h1>
+</div>
+<div class="container">
+  <form [formGroup]="form"
+        class="form">
+    <mat-form-field>
+      <input matInput
+             type="email"
+             placeholder="Email"
+             formControlName="email"
+             [errorStateMatcher]="matcher">
+      <mat-error *ngIf="email.hasError('email') && !email.hasError('required')">
+        Please enter a valid email address
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             type="password"
+             placeholder="Password"
+             formControlName="password">
+    </mat-form-field>
+    <div class="form-actions">
+      <button mat-raised-button
+              (click)="onClose()">Cancel</button>
+      <button mat-raised-button
+              color="primary"
+              (click)="submitForm()"
+              [disabled]="!form.valid">{{ title }}</button>
+    </div>
+  </form>
+</div>

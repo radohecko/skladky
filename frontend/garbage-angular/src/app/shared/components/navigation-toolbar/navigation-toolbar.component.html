@@ -1,12 +1,33 @@
+<div class="top-toolbar"
+     *ngIf="token">
+  <div class="label">{{ email }}</div>
+  <div class="action-button"
+       (click)="logOut()">Log out</div>
+</div>
 <mat-toolbar color="beige">
   <mat-toolbar-row>
-    <a routerLink="home" id="logo-link" ><img src="../../../../../assets/ForestDump.png" id="logo" alt="ForestDump logo"></a>
+    <a routerLink="home"
+       id="logo-link"><img src="../../../../../assets/ForestDump.png"
+           id="logo"
+           alt="ForestDump logo"></a>
     <nav>
-        <ul class="nav">
-            <li><a class="nav-item" routerLink="home" routerLinkActive="active-link">Home</a></li>
-            <li><a class="nav-item" routerLink="dumps" routerLinkActive="active-link">Dumplist</a></li>
-            <li><a class="nav-item" routerLink="stats" routerLinkActive="active-link">Stats</a></li>
-        </ul>
-      </nav>
+      <ul class="column">
+        <li><a class="column-item"
+             routerLink="home"
+             routerLinkActive="active-link">Home</a></li>
+        <li><a class="column-item"
+             routerLink="dumps"
+             routerLinkActive="active-link">Dumplist</a></li>
+        <li><a class="column-item"
+             routerLink="stats"
+             routerLinkActive="active-link">Stats</a></li>
+      </ul>
+      <ul class="column">
+        <li><a class="column-item"
+             (click)="onOpenSignIn()">Sign In</a></li>
+        <li><a class="column-item"
+             (click)="onOpenSignUp()">Sign Up</a></li>
+      </ul>
+    </nav>
   </mat-toolbar-row>
 </mat-toolbar>

@@ -1,49 +1,58 @@
 #logo {
-    height: 30px;
-    margin-right: 20px;
-    margin-top: 4px;
+  height: 30px;
+  margin-right: 20px;
+  margin-top: 4px;
 }
 
-.nav {
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  .column {
     display: flex;
     list-style-type: none;
+
+    &-item {
+      padding: 20px;
+    }
+  }
 }
 
 a {
-    text-decoration: none;
-    color: black;
-    font-size: 20px;    
-    padding: 20px;
-
-}
-
-.active-link {
-    background-color:#e3f3df;
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
 }
 
 mat-toolbar {
-    min-height: 60px;
+  min-height: 60px;
+}
+
+.active-link {
+  background-color: #e3f3df;
 }
 
 @media only screen and (max-width: 600px) {
-    #logo {
-        height: 22px;
-        margin-right: 0px;
-        margin-top: 10px;
-    }
+  #logo {
+    height: 22px;
+    margin-right: 0px;
+    margin-top: 10px;
+  }
 
-    a {
-        font-size: 13px;    
-        padding: 10px;
-        padding-top: 19px;
-        padding-bottom: 18px;
-    }
+  a {
+    font-size: 13px;
+    padding: 10px;
+    padding-top: 19px;
+    padding-bottom: 18px;
+  }
 
-    #logo-link {
-        padding-left: 7px;
-    }
+  #logo-link {
+    padding-left: 7px;
+  }
 
-    mat-toolbar {
-        min-height: 40px;
-    }
+  mat-toolbar {
+    min-height: 40px;
+  }
 }
