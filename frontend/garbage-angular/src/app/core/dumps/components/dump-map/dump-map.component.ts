@@ -48,7 +48,7 @@ export class DumpMapComponent implements OnInit {
     this.mapsApiLoader.load().then(() => {
       this.geocoder = new google.maps.Geocoder;
       this.infoWindow = new google.maps.InfoWindow;
-      this.map = new google.maps.Map(document.getElementById('map'), {
+      this.map = new google.maps.Map(document.getElementById('DumpMap'), {
         center: { lat: -34.397, lng: 150.644 },
         zoom: this.zoom
       });
