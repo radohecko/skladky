@@ -5,7 +5,7 @@ import Geopoint = firestore.GeoPoint;
 export interface Dump {
   id: string | null;
   email: string | null;
-  image: File | null;
+  image: string | null;
   locationName: string;
   location: Geopoint;
   region: string;

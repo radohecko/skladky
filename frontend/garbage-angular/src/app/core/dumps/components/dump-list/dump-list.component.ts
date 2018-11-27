@@ -25,7 +25,7 @@ export class DumpListComponent implements OnInit {
   page = 1;
   perPage = 4;
 
-  constructor(private dumpsService: DumpsService, private router: Router) {}
+  constructor(private dumpsService: DumpsService, private router: Router) { }
 
   ngOnInit() {
     this.dumpsService.getDumps();
@@ -65,7 +65,7 @@ export class DumpListComponent implements OnInit {
         break;
       case 'Previous':
         if (this.page > 1) {
-            this.page--;
+          this.page--;
         }
         break;
       default:

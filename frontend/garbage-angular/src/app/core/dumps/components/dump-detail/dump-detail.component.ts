@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Dump } from 'src/app/shared/interfaces/dump';
 import { MatDialog } from '@angular/material';
 import { DumpEditComponent } from '../dump-edit/dump-edit.component';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dump-detail',
@@ -12,9 +14,20 @@ export class DumpDetailComponent implements OnInit {
 
   @Input() dump: Dump;
 
-  constructor(public dialog: MatDialog) { }
+  imageUrl: Observable<string | null>;
 
-  ngOnInit() { }
+  constructor(public dialog: MatDialog, private storage: AngularFireStorage) { }
+
+  ngOnInit() {
+    if (this.dump.image !== null) {
+      this.getImages(this.dump.image);
+    }
+  }
+
+  getImages(id: string) {
+    const ref = this.storage.ref(`/uploads/${id}`);
+    this.imageUrl = ref.getDownloadURL();
+  }
 
   // TODO: Open image in new tab - full size
   onOpenImage() { }

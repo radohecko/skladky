@@ -31,7 +31,8 @@ export class DumpsService {
   addDump(data: Dump, file: File | null) {
     const id = this.afs.createId();
     const dumpRef: AngularFirestoreDocument<Dump> = this.afs.doc(`dumps/${id}`);
-    dumpRef.set(data)
+    const image = file !== null ? id : null;
+    dumpRef.set({ ...data, image: image })
       .then(() => {
         if (file) {
           this.uploadFile(id, file);
@@ -49,6 +50,7 @@ export class DumpsService {
     // observe percentage changes
     this.uploadPercent$ = task.percentageChanges();
   }
+
 }
 
 export const toggleOptionsLeft: ToggleGroupOption[] = [
