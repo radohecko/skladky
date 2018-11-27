@@ -49,4 +49,10 @@ export class AuthService {
     return this.token !== null;
   }
 
+  getUserEmail() {
+    if  (this.token) {
+      return this.userEmail;
+    }
+  }
+
 }

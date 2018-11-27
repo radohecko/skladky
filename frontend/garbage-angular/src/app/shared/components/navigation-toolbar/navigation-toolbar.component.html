@@ -1,7 +1,7 @@
 <div class="top-toolbar"
-     *ngIf="token">
-  <div class="label">{{ email }}</div>
-  <div class="action-button"
+     *ngIf="authService.isAuthenticated()">
+  <div class="top-toolbar-label">{{ authService.getUserEmail() }}</div>
+  <div class="top-toolbar-button"
        (click)="logOut()">Log out</div>
 </div>
 <mat-toolbar color="beige">
@@ -29,22 +29,24 @@
              (click)="onOpenSignUp()">Sign Up</a></li>
       </ul>
     </nav>
-    <button id="menuButton" (click)="onToggleMenu()" [ngClass]="toggleMenu ? 'change' : ''">
+    <button id="menuButton"
+            (click)="onToggleMenu()"
+            [ngClass]="toggleMenu ? 'change' : ''">
       <div class="bar1"> </div>
       <div class="bar2"> </div>
       <div class="bar3"> </div>
     </button>
     <nav [ngClass]="toggleMenu ? 'toggleMenuStyle' : 'hidden'">
-        <ul class="list">
-          <li><a routerLink="home"
-               routerLinkActive="active-link">Home</a></li>
-          <li><a routerLink="dumps"
-               routerLinkActive="active-link">Dumplist</a></li>
-          <li><a routerLink="stats"
-               routerLinkActive="active-link">Stats</a></li>
-          <li><a (click)="onOpenSignIn()">Sign In</a></li>
-          <li><a (click)="onOpenSignUp()">Sign Up</a></li>
-        </ul>
-      </nav>
+      <ul class="list">
+        <li><a routerLink="home"
+             routerLinkActive="active-link">Home</a></li>
+        <li><a routerLink="dumps"
+             routerLinkActive="active-link">Dumplist</a></li>
+        <li><a routerLink="stats"
+             routerLinkActive="active-link">Stats</a></li>
+        <li><a (click)="onOpenSignIn()">Sign In</a></li>
+        <li><a (click)="onOpenSignUp()">Sign Up</a></li>
+      </ul>
+    </nav>
   </mat-toolbar-row>
 </mat-toolbar>

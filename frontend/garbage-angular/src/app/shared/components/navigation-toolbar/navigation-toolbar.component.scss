@@ -1,3 +1,26 @@
+@import "../../../../styles/variables";
+
+.top-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+  font-size: 13px;
+
+  &-label {
+    color: $color-primary-blue;
+    margin-right: 8px;
+  }
+
+  &-button {
+    color: $color-primary-blue;
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+}
+
 #logo {
   height: 30px;
   margin-right: 20px;
@@ -52,22 +75,26 @@ mat-toolbar {
 }
 
 .change .bar1 {
-  -webkit-transform: rotate(-45deg) translate(-5px, 6px) ;
-  transform: rotate(-45deg) translate(-5px, 6px) ;
+  -webkit-transform: rotate(-45deg) translate(-5px, 6px);
+  transform: rotate(-45deg) translate(-5px, 6px);
 }
+
 .change .bar2 {
   opacity: 0;
 }
+
 .change .bar3 {
-  -webkit-transform: rotate(45deg) translate(-7px, -8px) ;
-  transform: rotate(45deg) translate(-7px, -8px) ;
+  -webkit-transform: rotate(45deg) translate(-7px, -8px);
+  transform: rotate(45deg) translate(-7px, -8px);
 }
 
 .list {
   list-style-type: none;
 }
 
-.hidden { display: none; }
+.hidden {
+  display: none;
+}
 
 .toggleMenuStyle {
   display: flex;
@@ -79,7 +106,6 @@ mat-toolbar {
   z-index: 1000;
   top: 55px;
 }
-
 
 @media only screen and (max-width: 600px) {
   #logo {
@@ -104,10 +130,16 @@ mat-toolbar {
     display: flex;
     justify-content: center;
   }
+
   ul {
     width: 100%;
   }
 
-  .wideScreen { display: none; }
-  #menuButton { display: inline-block; }
+  .wideScreen {
+    display: none;
+  }
+
+  #menuButton {
+    display: inline-block;
+  }
 }
