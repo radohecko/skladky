@@ -44,8 +44,19 @@ export class DumpsService {
       });
   }
 
-  updateDump(data: Dump, file: File | null) {
-
+  updateDump(id: string, data: Dump, file: File | null) {
+    const dumpRef: AngularFirestoreDocument<Dump> = this.afs.doc(`dumps/${id}`);
+    const image = file !== null ? id : null;
+    dumpRef.update({ ...data, image: image })
+      .then(() => {
+        if (file) {
+          this.uploadFile(id, file);
+        }
+        console.log('Document successfully written!');
+      })
+      .catch((error) => {
+        console.error('Error writing document: ', error);
+      });
   }
 
   uploadFile(id: string, file: File) {

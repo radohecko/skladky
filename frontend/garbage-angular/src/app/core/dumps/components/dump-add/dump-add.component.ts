@@ -132,14 +132,14 @@ export class DumpAddComponent implements OnInit, OnDestroy {
       timestamp: new Date()
     };
     if (this.file) {
-      this.dumpsService.updateDump(data, this.file);
+      this.dumpsService.updateDump(this.dump.id, data, this.file);
       if (this.dumpsService.uploadPercent$) {
         this.percentageSubscription = this.dumpsService.uploadPercent$.subscribe(
           percentage =>
             this.uploadPercentage = percentage);
       }
     } else {
-      this.dumpsService.updateDump(data, null);
+      this.dumpsService.updateDump(this.dump.id, data, null);
       this.onClose();
     }
   }
