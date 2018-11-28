@@ -97,9 +97,14 @@
   </form>
 
   <div class="actions">
-    <button mat-raised-button
+    <button *ngIf="!dump"
+            mat-raised-button
             color="primary"
             (click)="saveForm()">Save</button>
+    <button *ngIf="dump"
+            mat-raised-button
+            color="primary"
+            (click)="updateForm()">Update</button>
     <button mat-raised-button
             (click)="onClose()">Cancel</button>
   </div>

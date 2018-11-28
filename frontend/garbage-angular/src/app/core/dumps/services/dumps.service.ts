@@ -44,6 +44,10 @@ export class DumpsService {
       });
   }
 
+  updateDump(data: Dump, file: File | null) {
+
+  }
+
   uploadFile(id: string, file: File) {
     const ref = this.storage.ref(`${this.basePath}/${id}`);
     const task = ref.put(file);

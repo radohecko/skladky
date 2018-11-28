@@ -4,6 +4,9 @@ import { MatDialog } from '@angular/material';
 import { DumpEditComponent } from '../dump-edit/dump-edit.component';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/auth';
+import { ConfirmDialogComponent } from 'src/app/shared/components/dialog/common-dialogs/confirm-dialog/confirm-dialog.component';
+import { DialogService } from 'src/app/shared/components/dialog';
 
 @Component({
   selector: 'app-dump-detail',
@@ -16,7 +19,11 @@ export class DumpDetailComponent implements OnInit {
 
   imageUrl: Observable<string | null>;
 
-  constructor(public dialog: MatDialog, private storage: AngularFireStorage) { }
+  constructor(
+    public dialog: MatDialog,
+    private storage: AngularFireStorage,
+    private authService: AuthService,
+    private dialogService: DialogService) { }
 
   ngOnInit() {
     if (this.dump.image !== null) {
@@ -33,10 +40,14 @@ export class DumpDetailComponent implements OnInit {
   onOpenImage() { }
 
   onOpenEdit() {
-    const dialogRef = this.dialog.open(DumpEditComponent, {
-      width: '650px',
-      data: this.dump
-    });
+    if (this.authService.isAuthenticated()) {
+      const dialogRef = this.dialog.open(DumpEditComponent, {
+        width: '650px',
+        data: this.dump
+      });
+    } else {
+      this.dialogService.confirm('You are not signed in!');
+    }
   }
 
 }

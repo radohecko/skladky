@@ -10,7 +10,7 @@ export class ConfirmDialogComponent implements OnInit {
 
   @Input() text: string;
   @Input() confirmText =  'Potvrdiť';
-  @Input() cancelText = 'Zrušiť';
+  @Input() cancelText = 'Cancel';
 
   constructor(public dialogRef: MatDialogRef<ConfirmDialogComponent>) { }
 

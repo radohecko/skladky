@@ -123,6 +123,27 @@ export class DumpAddComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateForm() {
+    const value = this.form.value;
+    const data: Dump = {
+      ...this.form.value,
+      location: new firestore.GeoPoint(this.location.lat, this.location.lng),
+      region: this.location.region,
+      timestamp: new Date()
+    };
+    if (this.file) {
+      this.dumpsService.updateDump(data, this.file);
+      if (this.dumpsService.uploadPercent$) {
+        this.percentageSubscription = this.dumpsService.uploadPercent$.subscribe(
+          percentage =>
+            this.uploadPercentage = percentage);
+      }
+    } else {
+      this.dumpsService.updateDump(data, null);
+      this.onClose();
+    }
+  }
+
   addMaterial() {
     this.materials.push(this.fb.control(''));
   }
