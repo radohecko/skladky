@@ -20,11 +20,11 @@ export class DumpDetailComponent implements OnInit {
 
   ngOnInit() {
     if (this.dump.image !== null) {
-      this.getImages(this.dump.image);
+      this.getImage(this.dump.image);
     }
   }
 
-  getImages(id: string) {
+  getImage(id: string) {
     const ref = this.storage.ref(`/uploads/${id}`);
     this.imageUrl = ref.getDownloadURL();
   }

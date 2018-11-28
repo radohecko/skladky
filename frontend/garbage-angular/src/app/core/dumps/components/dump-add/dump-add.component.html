@@ -7,8 +7,9 @@
   <div class="map">
     <div class="map-container">
       <app-dump-map [height]="100"
-                      [width]="100"
-                      (location)="setLocationTitle($event)"></app-dump-map>
+                    [width]="100"
+                    [dump]="dump"
+                    (location)="setLocationTitle($event)"></app-dump-map>
     </div>
   </div>
 
@@ -82,7 +83,8 @@
     </div>
 
     <span class="label">Image</span>
-    <input placeholder="Photo"
+    <input style="margin-bottom: 8px"
+           placeholder="Photo"
            type="file"
            accept="image/*"
            (change)="uploadFile($event)">

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material';
+import { Dump } from 'src/app/shared/interfaces/dump';
 
 @Component({
   selector: 'app-dump-edit',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DumpEditComponent implements OnInit {
 
-  constructor() { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Dump) { }
 
   ngOnInit() {
   }

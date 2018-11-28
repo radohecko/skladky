@@ -1,13 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Status } from 'src/app/shared/interfaces/status';
 import { DumpsService } from '../../services/dumps.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { MatDialogRef } from '@angular/material';
 import { firestore } from 'firebase/app';
 import { Dump } from 'src/app/shared/interfaces/dump';
 import { GoogleLocation } from 'src/app/shared/interfaces/location';
 import { unsubscribe } from 'src/app/shared/utils/subscription.util';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-dump-add',
@@ -15,6 +16,8 @@ import { unsubscribe } from 'src/app/shared/utils/subscription.util';
   styleUrls: ['./dump-add.component.scss']
 })
 export class DumpAddComponent implements OnInit, OnDestroy {
+
+  @Input() dump: Dump;
 
   form: FormGroup;
   percentageSubscription: Subscription;
@@ -49,10 +52,15 @@ export class DumpAddComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private dumpsService: DumpsService,
-    private dialogRef: MatDialogRef<DumpAddComponent>) { }
+    private dialogRef: MatDialogRef<DumpAddComponent>,
+    private storage: AngularFireStorage) { }
 
   ngOnInit() {
     this.createForm();
+    if (this.dump) {
+      console.log(this.dump);
+      this.setDefaultValues();
+    }
   }
 
   ngOnDestroy() {
@@ -62,7 +70,7 @@ export class DumpAddComponent implements OnInit, OnDestroy {
   createForm() {
     this.form = this.fb.group({
       locationName: ['', Validators.required],
-      status: [this.statusOptions[1].value],
+      status: [this.statusOptions[1].value, Validators.required],
       amount: ['car', Validators.required],
       materials: this.fb.array([
         this.fb.control(null)
@@ -71,6 +79,17 @@ export class DumpAddComponent implements OnInit, OnDestroy {
         this.fb.control(null)
       ]),
       email: ['', Validators.email]
+    });
+  }
+
+  setDefaultValues() {
+    this.form = this.fb.group({
+      locationName: [this.dump.locationName, Validators.required],
+      status: [this.dump.status, Validators.required],
+      amount: [this.dump.amount, Validators.required],
+      materials: this.fb.array(this.dump.materials || []),
+      substances: this.fb.array(this.dump.substances || []),
+      email: [this.dump.email || '', Validators.email]
     });
   }
 

@@ -13,6 +13,7 @@ export class DumpMapComponent implements OnInit {
   @Input() height = 100;
   @Input() width = 100;
   @Input() dumps: Dump[];
+  @Input() dump: Dump;
   @Input() enableMarking = true;
   @Input() zoom = 12;
 
@@ -45,6 +46,10 @@ export class DumpMapComponent implements OnInit {
   }
 
   ngOnInit() {
+    // TODO: set marker based on dump.location
+    if (this.dump) {
+      // init map with marker
+    }
     this.mapsApiLoader.load().then(() => {
       this.geocoder = new google.maps.Geocoder;
       this.infoWindow = new google.maps.InfoWindow;
