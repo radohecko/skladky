@@ -46,9 +46,13 @@ export class DumpMapComponent implements OnInit {
   }
 
   ngOnInit() {
-    // TODO: set marker based on dump.location
     if (this.dump) {
+      const pos = {
+        lat: this.dump.location.latitude,
+        lng: this.dump.location.longitude,
+      };
       // init map with marker
+      this.createMarker(pos, null, true, false);
     }
     this.mapsApiLoader.load().then(() => {
       this.geocoder = new google.maps.Geocoder;
@@ -66,7 +70,11 @@ export class DumpMapComponent implements OnInit {
     if (this.enableMarking) {
       this.map.addListener('click', function (event) {
         self.clearMarker(self.customMarker);
-        self.customMarker = self.createMarker(event.latLng, null, true, true);
+        const pos = {
+          lat: event.latLng.lat(),
+          lng: event.latLng.lng(),
+        };
+        self.customMarker = self.createMarker(pos, null, true, true);
         self.infoWindow.open(self.map, self.customMarker);
       });
     }
@@ -121,6 +129,28 @@ export class DumpMapComponent implements OnInit {
       }
     });
   }
+
+  // geocodeAddress(address) {
+  //   const self = this;
+  //   this.geocoder.geocode({'address': address}, function(results, status) {
+  //     if (status === 'OK') {
+  //       this.map.setCenter(results[0].geometry.location);
+  //       const data: GoogleLocation = {
+  //         lat: pos.lat,
+  //         lng: pos.lng,
+  //         region: region,
+  //         adressName: results[0].formatted_address.toString()
+  //       };
+  //       self.location.emit(data);
+  //       const marker = new google.maps.Marker({
+  //         map: self.map,
+  //         position: results[0].geometry.location
+  //       });
+  //     } else {
+  //       alert('Geocode was not successful for the following reason: ' + status);
+  //     }
+  //   });
+  // }
 
   handleLocationError(browserHasGeolocation, infoWindow) {
     infoWindow.setContent(browserHasGeolocation ?
