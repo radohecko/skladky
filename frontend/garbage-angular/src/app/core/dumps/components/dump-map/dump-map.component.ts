@@ -58,7 +58,7 @@ export class DumpMapComponent implements OnInit {
       this.geocoder = new google.maps.Geocoder;
       this.infoWindow = new google.maps.InfoWindow;
       this.map = new google.maps.Map(document.getElementById('DumpMap'), {
-        center: { lat: -34.397, lng: 150.644 },
+        center: { lat: 48.155527, lng: 17.106345 },
         zoom: this.zoom
       });
       this.initMap();
@@ -106,6 +106,7 @@ export class DumpMapComponent implements OnInit {
       if (status === 'OK') {
         if (results[0]) {
           try {
+            console.log(results[0].address_components);
             const region = self.getRegion(results[0].address_components)[0]['long_name'];
             const data: GoogleLocation = {
               lat: pos.lat,
@@ -136,9 +137,9 @@ export class DumpMapComponent implements OnInit {
   //     if (status === 'OK') {
   //       this.map.setCenter(results[0].geometry.location);
   //       const data: GoogleLocation = {
-  //         lat: pos.lat,
-  //         lng: pos.lng,
-  //         region: region,
+  //         lat: results[0].geometry.location.lat,
+  //         lng: results[0].geometry.location.lng,
+  //         region: 'TODO',
   //         adressName: results[0].formatted_address.toString()
   //       };
   //       self.location.emit(data);
