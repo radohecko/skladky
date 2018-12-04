@@ -19,18 +19,19 @@
              type="password"
              placeholder="Password"
              formControlName="password"
-             [errorStateMatcher]="matcher">
+             [errorStateMatcher]="matcher"
+             (keyup.enter)="submitForm()">
       <mat-error *ngIf="password.hasError('minlength') || password.invalid">
-        Minimum password length 6 characters  
+        Minimum password length 6 characters
       </mat-error>
     </mat-form-field>
     <div class="form-actions">
       <button mat-raised-button
-              (click)="onClose()">Cancel</button>
-      <button mat-raised-button
               color="primary"
               (click)="submitForm()"
               [disabled]="!form.valid">{{ title }}</button>
+      <button mat-raised-button
+              (click)="onClose()">Cancel</button>
     </div>
   </form>
 </div>

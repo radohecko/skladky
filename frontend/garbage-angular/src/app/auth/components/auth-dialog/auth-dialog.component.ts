@@ -44,14 +44,17 @@ export class AuthDialogComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.data === 'Sign Up') {
-      this.authService.signUp(this.email.value, this.password.value);
-      console.log('1');
-    } else {
-      this.authService.signIn(this.email.value, this.password.value);
-      console.log('2');
+    console.log(this.form.valid);
+    if (this.form.valid) {
+      if (this.data === 'Sign Up') {
+        this.authService.signUp(this.email.value, this.password.value);
+        console.log('1');
+      } else {
+        this.authService.signIn(this.email.value, this.password.value);
+        console.log('2');
+      }
+      this.onClose();
     }
-    this.onClose();
   }
 
   onClose() {

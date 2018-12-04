@@ -17,6 +17,7 @@ export class NavigationToolbarComponent implements OnInit {
 
   onOpenSignIn() {
     const dialogRef = this.dialog.open(AuthDialogComponent, {
+      disableClose: true,
       width: '400px',
       height: '300px'
     });
@@ -24,6 +25,7 @@ export class NavigationToolbarComponent implements OnInit {
 
   onOpenSignUp() {
     const dialogRef = this.dialog.open(AuthDialogComponent, {
+      disableClose: true,
       width: '400px',
       height: '300px',
       data: 'Sign Up'
