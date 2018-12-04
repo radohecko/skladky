@@ -18,7 +18,11 @@
       <input matInput
              type="password"
              placeholder="Password"
-             formControlName="password">
+             formControlName="password"
+             [errorStateMatcher]="matcher">
+      <mat-error *ngIf="password.hasError('minlength') || password.invalid">
+        Minimum password length 6 characters  
+      </mat-error>
     </mat-form-field>
     <div class="form-actions">
       <button mat-raised-button
