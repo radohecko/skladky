@@ -52,8 +52,8 @@ export class GoogleMapComponent implements OnInit {
       this.geocoder = new google.maps.Geocoder;
       this.infoWindow = new google.maps.InfoWindow;
       this.map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: -34.397, lng: 150.644 },
-        zoom: 12
+        center: { lat: 48.155527, lng: 17.106345 },
+        zoom: 11
       });
       this.initMap();
     });
