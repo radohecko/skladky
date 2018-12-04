@@ -43,6 +43,7 @@ export class DumpDetailComponent implements OnInit {
     if (this.authService.isAuthenticated()) {
       const dialogRef = this.dialog.open(DumpEditComponent, {
         width: '650px',
+        height: '600px',
         data: this.dump
       });
     } else {
