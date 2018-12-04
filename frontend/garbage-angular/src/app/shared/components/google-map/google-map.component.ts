@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostBinding, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, HostBinding, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
 import { Dump } from '../../interfaces/dump';
 import { GoogleLocation } from '../../interfaces/location';
@@ -9,11 +9,12 @@ import { GoogleLocation } from '../../interfaces/location';
   styleUrls: ['./google-map.component.scss']
 })
 
-export class GoogleMapComponent implements OnInit {
+export class GoogleMapComponent implements OnChanges, OnInit {
 
   @Input() height = 100;
   @Input() width = 100;
   @Input() dumps: Dump[];
+  @Input() filteredDumps: Dump[];
   @Input() enableMarking = true;
   @Input() zoom = 12;
 
@@ -47,7 +48,9 @@ export class GoogleMapComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.dumps);
+    console.log('all: ', this.dumps);
+    console.log('filtered: ', this.filteredDumps);
+    this.dumpMarkers = [];
     this.mapsApiLoader.load().then(() => {
       this.geocoder = new google.maps.Geocoder;
       this.infoWindow = new google.maps.InfoWindow;
@@ -57,6 +60,14 @@ export class GoogleMapComponent implements OnInit {
       });
       this.initMap();
     });
+  }
+
+  //TODO: da sa to lepsie?
+  ngOnChanges() {
+    if (this.map) {
+      this.dumps = this.filteredDumps;
+      this.markAllDumps();
+    }
   }
 
   initMap() {
@@ -142,7 +153,9 @@ export class GoogleMapComponent implements OnInit {
 
   // creates marker, optional: sets icon, optional: shows address
   createMarker(position, icon, showAddressInfo, setInfoContent) {
-    this.setInfoWindowToLoading();
+    if (setInfoContent) {
+      this.setInfoWindowToLoading();
+    }
     if (showAddressInfo) {
       this.geocodeLatLng(position, setInfoContent);
     }
@@ -163,14 +176,23 @@ export class GoogleMapComponent implements OnInit {
     }
   }
 
+  clearAllMarkers() {
+    if (this.dumpMarkers) {
+      this.dumpMarkers.forEach(marker => this.clearMarker(marker));
+      this.dumpMarkers.splice(0, this.dumpMarkers.length);
+    }
+  }
+
   markAllDumps() {
+    this.clearAllMarkers();
     this.dumps.forEach(dump => {
       const pos = {
         lat: dump.location.latitude,
         lng: dump.location.longitude
       };
       const icon = this.getMarkerIconByStatus(dump.status);
-      this.createMarker(pos, icon, false, false);
+      const newMarker = this.createMarker(pos, icon, false, false);
+      this.dumpMarkers.push(newMarker);
     });
   }
 
