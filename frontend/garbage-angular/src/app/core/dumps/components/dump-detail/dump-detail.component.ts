@@ -6,7 +6,8 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth';
 import { ConfirmDialogComponent } from 'src/app/shared/components/dialog/common-dialogs/confirm-dialog/confirm-dialog.component';
-import { DialogService } from 'src/app/shared/components/dialog';
+import { DialogService, DialogContentComponent } from 'src/app/shared/components/dialog';
+import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 
 @Component({
   selector: 'app-dump-detail',
@@ -36,8 +37,13 @@ export class DumpDetailComponent implements OnInit {
     this.imageUrl = ref.getDownloadURL();
   }
 
-  // TODO: Open image in new tab - full size
-  onOpenImage() { }
+  onOpenImage() {
+    if (this.dump.image) {
+      const dialogRef = this.dialog.open(ImageDialogComponent, {
+        data: this.dump.image
+      });
+    }
+  }
 
   onOpenEdit() {
     if (this.authService.isAuthenticated()) {
