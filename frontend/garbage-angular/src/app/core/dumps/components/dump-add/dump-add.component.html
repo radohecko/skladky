@@ -22,7 +22,8 @@
 
     <mat-form-field>
       <mat-select placeholder="Status"
-                  formControlName="status">
+                  formControlName="status"
+                  [disabled]="true">
         <mat-option *ngFor="let s of statusOptions"
                     [value]="s.value">
           {{ s.label }}

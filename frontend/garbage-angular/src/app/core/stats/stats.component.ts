@@ -38,10 +38,7 @@ export class StatsComponent implements OnInit, OnDestroy {
         this.dumpsSubscription = this.dumpsService.dumpsObservable$.subscribe(data => {
             this.dumps = data;
             this.showDoughnutChart();
-            this.regionsObservable$ = this.geocode();
-            this.regionsSubscription = this.regionsObservable$.subscribe(loc_array => {
-                this.showRadarChart(loc_array);
-            });
+            this.showRadarChart();
             this.showLineChart();
             this.showPieChart();
         });
@@ -51,52 +48,6 @@ export class StatsComponent implements OnInit, OnDestroy {
         unsubscribe(this.dumpsSubscription);
         unsubscribe(this.regionsSubscription);
     }
-
-    geocode(): Observable<number[]> {
-        let region;
-        const reportsByRegions = [0, 0, 0, 0, 0, 0, 0, 0];
-        const regions = ['Bratislavský kraj', 'Trnavský kraj',
-            'Trenčiansky kraj', 'Nitriansky kraj', 'Žilinský kraj', 'Banskobystrický kraj', 'Prešovský kraj', 'Košický kraj'];
-
-
-        return Observable.create((observer: Observer<number[]>) => {
-
-            // TODO move geocoding -> where inserting new report into DB
-
-            this.dumps.forEach(async element => {
-                const loc = new google.maps.LatLng(element.location.latitude, element.location.longitude);
-                this.geocoder.geocode({ location: loc }, (
-                    (results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus) => {
-                        if (status === google.maps.GeocoderStatus.OK) {
-                            if (results[0]) {
-                                if (results[0]['address_components']) {
-                                    if (results[0]['address_components'][3]) {
-                                        region = results[0]['address_components'][3]['long_name'];
-                                        if (region) {
-                                            if (regions.indexOf(region) !== -1) {
-                                                reportsByRegions[regions.indexOf(region)] += 1;
-                                            } else if (results[0]['address_components'][5]) {
-                                                region = results[0]['address_components'][5]['long_name'];
-                                                if (regions.indexOf(region) !== -1) {
-                                                    reportsByRegions[regions.indexOf(region)] += 1;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if (this.dumps.indexOf(element) === this.dumps.length - 1) {
-                                observer.next(reportsByRegions);
-                                observer.complete();
-                            }
-                        }
-                    }
-                )
-                );
-            });
-        });
-    }
-
 
     showDoughnutChart() {
         const resolved = this.dumps.filter(el => {
@@ -138,16 +89,40 @@ export class StatsComponent implements OnInit, OnDestroy {
         });
     }
 
-    showRadarChart(reportsByRegions) {
+    showRadarChart() {
+        const regions = ['Bratislavský kraj', 'Trnavský kraj',
+            'Trenčiansky kraj', 'Nitriansky kraj', 'Žilinský kraj', 'Banskobystrický kraj', 'Prešovský kraj', 'Košický kraj'];
+        const EngRegions = ['Bratislava Region', 'Trnava Region', 'Trenčín Region', 'Nitra Region',
+            'Žilina Region', 'Banská Bystrica Region', 'Prešov Region', 'Košice Region'];
+        const reportsByRegions = new Map();
+        regions.forEach(reg => {
+            reportsByRegions.set(reg, 0);
+        });
+        this.dumps.forEach(dump => {
+
+            if (reportsByRegions.has(dump.region)) {
+
+                reportsByRegions.set(dump.region, reportsByRegions.get(dump.region) + 1);
+
+            } else if (EngRegions.indexOf(dump.region) > -1) {
+                console.log(dump.region);
+                reportsByRegions.set(regions[EngRegions.indexOf(dump.region)],
+                    reportsByRegions.get(regions[EngRegions.indexOf(dump.region)]) + 1);
+            }
+        });
+        const keys = Array.from(reportsByRegions.keys());
+        const vals = Array.from(reportsByRegions.values());
+        console.log(keys);
+        console.log(vals);
         const ctx = document.getElementById('chart2');
         const chart = new Chart(ctx, {
             type: 'radar',
             data: {
-                labels: ['Bratislavský', 'Trnavský', 'Trenčiansky', 'Nitriansky', 'Žilinský', 'Banskobystrický', 'Prešovský', 'Košický'],
+                labels: regions,
                 datasets: [
                     {
                         label: 'Reported Dump Location Area',
-                        data: reportsByRegions,
+                        data: vals,
                         backgroundColor: [
                             'rgba(75, 192, 192, 0.2)'
                         ],
