@@ -47,12 +47,13 @@ export class GoogleMapComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.dumps);
     this.mapsApiLoader.load().then(() => {
       this.geocoder = new google.maps.Geocoder;
       this.infoWindow = new google.maps.InfoWindow;
       this.map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: -34.397, lng: 150.644 },
-        zoom: this.zoom
+        zoom: 12
       });
       this.initMap();
     });
@@ -105,6 +106,7 @@ export class GoogleMapComponent implements OnInit {
         if (results[0]) {
           // try to get region
           try {
+            console.log(results[0].address_components);
             const region = self.getRegion(results[0].address_components)[0]['long_name'];
             const data: GoogleLocation = {
               lat: pos.lat,
@@ -168,7 +170,7 @@ export class GoogleMapComponent implements OnInit {
         lng: dump.location.longitude
       };
       const icon = this.getMarkerIconByStatus(dump.status);
-      this.createMarker(pos, icon, true, false);
+      this.createMarker(pos, icon, false, false);
     });
   }
 
