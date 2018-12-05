@@ -38,6 +38,7 @@
     </div>
   </mat-card-content>
   <mat-icon class="edit"
+            *ngIf="this.authService.isAuthenticated()"
             (click)="onOpenEdit()"
             title="Edit">edit</mat-icon>
 </mat-card>

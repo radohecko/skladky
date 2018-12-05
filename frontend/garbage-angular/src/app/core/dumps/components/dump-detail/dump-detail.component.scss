@@ -60,12 +60,6 @@ $mobile-small: 300px;
       }
     }
   }
-
-  &:hover {
-    .edit {
-      display: block;
-    }
-  }
 }
 
 .edit {
@@ -73,7 +67,7 @@ $mobile-small: 300px;
   top: 3rem;
   right: 3rem;
   font-size: 3.5rem;
-  display: none;
+  display: block;
   @media only screen and (max-width: $mobile-large){
     width: 16px;
     height: 16px;

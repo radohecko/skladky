@@ -111,14 +111,18 @@ mat-toolbar {
   top: 55px;
 }
 
-@media only screen and (max-width: 600px) {
+.nick {
+  font-size: 17px;
+}
+
+@media only screen and (max-width: 680px) {
   #logo {
     height: 25px;
     margin-top: 10px;
   }
-
+  
   a {
-    font-size: 13px;
+    font-size: 15px;
     padding-left: 100%;
     padding-right: 100%;
     align-content: center;
@@ -127,9 +131,11 @@ mat-toolbar {
   #logo-link {
     padding-left: 7px;
     padding-right: 0;
-    width: 80%;
+    width: 30%;
   }
+}
 
+@media only screen and (max-width: 580px) {
   li {
     display: flex;
     justify-content: center;
@@ -145,5 +151,14 @@ mat-toolbar {
 
   #menuButton {
     display: inline-block;
+  }
+
+  mat-toolbar-row {
+    display: flex;
+    justify-content: space-between; 
+  }
+
+  .row-item:hover {
+    cursor: pointer;
   }
 }
