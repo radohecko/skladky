@@ -18,8 +18,7 @@ export class GoogleMapComponent implements OnChanges, OnInit {
   @Input() enableMarking = true;
   @Input() zoom = 12;
 
-  // TODO: change type based on our needs
-  @Output() location: EventEmitter<any> = new EventEmitter();
+  @Output() location: EventEmitter<GoogleLocation> = new EventEmitter();
 
   // google map
   map: google.maps.Map;
