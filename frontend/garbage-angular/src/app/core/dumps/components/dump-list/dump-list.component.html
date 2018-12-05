@@ -39,5 +39,8 @@
     Page {{page}}
     <ng-container *ngIf="filteredDumps">out of {{(filteredDumps.length/perPage) | ceil}}</ng-container>
   </div>
-  <app-toggle-buttons [options]="toggleOptionsPage" (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
+  <div class="page-buttons">
+    <button class="page-button" (click)="onPrevious()">	&#60;</button>
+    <button class="page-button" (click)="onNext()">	&#62;</button>
+  </div>
 </div>

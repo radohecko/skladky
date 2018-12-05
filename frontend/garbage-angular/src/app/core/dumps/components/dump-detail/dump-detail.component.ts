@@ -23,7 +23,7 @@ export class DumpDetailComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private storage: AngularFireStorage,
-    private authService: AuthService,
+    public authService: AuthService,
     private dialogService: DialogService) { }
 
   ngOnInit() {
