@@ -2,16 +2,16 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import * as sendGrid from '@sendgrid/mail';
 
-admin.initializeApp(functions.config().firebase);
-
 const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG);
+
+admin.initializeApp(functions.config().firebase);
 sendGrid.setApiKey(firebaseConfig.sendGrid.key);
 
 export const firestoreEmail = functions.firestore
-  .document('dumps/{dumpId}/')
+  .document('dumps/{id}/')
   .onUpdate(event => {
 
-    const dumpId = event.params.dumpId;
+    const dumpId = event.params.id;
     const db = admin.firestore();
 
     return db.collection('dumps').doc(dumpId)
@@ -20,7 +20,7 @@ export const firestoreEmail = functions.firestore
 
         const dump = doc.data()
 
-        if (dump.email !== '') {
+        if (dump.email !== '' && dump.status === 'Resolved') {
           const msg = {
             to: dump.email,
             from: 'forestdumps2018@gmail.com',
