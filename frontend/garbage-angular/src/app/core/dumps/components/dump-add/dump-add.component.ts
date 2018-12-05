@@ -67,6 +67,9 @@ export class DumpAddComponent implements OnInit, OnDestroy {
     unsubscribe(this.percentageSubscription);
   }
 
+  // TODO: validate materials
+  // TODO: substance -||-
+
   createForm() {
     this.form = this.fb.group({
       locationName: ['', Validators.required],
