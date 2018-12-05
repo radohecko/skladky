@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url("https://fonts.googleapis.com/css?family=Roboto");
 
 .container {
   width: 100%;
@@ -39,7 +39,7 @@ form {
 
 mat-radio-group {
   margin-bottom: 20px;
-  
+
   mat-radio-button {
     margin-right: 10px;
   }
@@ -50,7 +50,7 @@ mat-progress-bar {
 }
 
 .label {
-  color: rgba(0,0,0,.54);
+  color: rgba(0, 0, 0, 0.54);
   font-family: 'Roboto', sans-serif;
   font-size: 12px;
   font-weight: 400;

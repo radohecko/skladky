@@ -15,14 +15,14 @@
 </div>
 <div class="cards"
      *ngIf="filteredDumps">
-     <div class="map">
-        <div class="map-container">
-          <app-google-map [height]="100"
-                          [width]="100"
-                          [dumps]="dumps"
-                          [filteredDumps]="filteredDumps"
-                          [enableMarking]="false"
-                          [zoom]="9"></app-google-map>
-        </div>
-      </div>
+  <div class="map">
+    <div class="map-container">
+      <app-google-map [height]="100"
+                      [width]="100"
+                      [dumps]="dumps"
+                      [filteredDumps]="filteredDumps"
+                      [enableMarking]="false"
+                      [zoom]="9"></app-google-map>
+    </div>
+  </div>
 </div>

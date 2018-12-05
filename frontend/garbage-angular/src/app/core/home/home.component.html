@@ -1,11 +1,15 @@
 <main>
-  <p class="homepage-text" id="first-line">Found an illegal dump?</p>
-  <p class="homepage-text" id="second-line">Do you care?</p>
-  <p class="homepage-text" id="third-line">Tell us and help to clean it up!</p>
-  <button id="report" (click)="onOpenAddReport()"> </button>
+  <p class="homepage-text"
+     id="first-line">Found an illegal dump?</p>
+  <p class="homepage-text"
+     id="second-line">Do you care?</p>
+  <p class="homepage-text"
+     id="third-line">Tell us and help to clean it up!</p>
+  <button id="report"
+          (click)="onOpenAddReport()"> </button>
   <div id="container">
     <div id="map">
-      <app-google-map [height]="100" 
+      <app-google-map [height]="100"
                       [width]="100"
                       [enableMarking]="false"></app-google-map>
     </div>

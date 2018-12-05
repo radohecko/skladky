@@ -18,7 +18,8 @@ $mobile-small: 300px;
   background-size: 73%;
   background-repeat: no-repeat;
   border: none;
-  @media only screen and (max-width: $mobile-large){
+
+  @media only screen and (max-width: $mobile-large) {
     width: 6rem;
     height: 6rem;
     font-size: 4rem;

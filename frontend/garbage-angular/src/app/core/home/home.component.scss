@@ -1,73 +1,71 @@
 main {
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 
 #container {
-    position: relative;
-    height: 400px;
-    width: 100%;
+  position: relative;
+  height: 400px;
+  width: 100%;
 }
 
 #map {
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 #first-line {
-    margin-top: 30px;
-    font-size: 30px;
+  margin-top: 30px;
+  font-size: 30px;
 }
 
 #second-line {
-    font-size: 25px;
+  font-size: 25px;
 }
 
 #third-line {
-    font-size: 20px;
-    font-weight: bold;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 #report {
-    min-height: 180px;
-    min-width: 100px;
-
-    margin-bottom: 20px;
-    margin-top: 10px;
-
-    background-image: url(../../../assets/pin.png);
-    background-position: center;
-    background-size: 100%;
-    background-repeat: no-repeat;
+  min-height: 180px;
+  min-width: 100px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  background-image: url(../../../assets/pin.png);
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 
 #report:hover {
-    transform: scale(1.1, 1.1);
-    -webkit-transform: scale(1.1, 1.1);
-    -moz-transform: scale(1.1, 1.1);
-    -ms-transform: scale(1.1, 1.1);
+  transform: scale(1.1, 1.1);
+  -webkit-transform: scale(1.1, 1.1);
+  -moz-transform: scale(1.1, 1.1);
+  -ms-transform: scale(1.1, 1.1);
 }
 
 button {
-    border: none;
-    background: none;
-    cursor: pointer;
+  border: none;
+  background: none;
+  cursor: pointer;
 }
 
-@media only screen and (max-width: 600px) { 
-    #first-line {
-        font-size: 24px;
-    }
+@media only screen and (max-width: 600px) {
+  #first-line {
+    font-size: 24px;
+  }
 
-    #second-line {
-        font-size: 20px;
-    }
-    
-    #third-line {
-        font-size: 18px;
-    }
+  #second-line {
+    font-size: 20px;
+  }
+
+  #third-line {
+    font-size: 18px;
+  }
 }

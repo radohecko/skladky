@@ -22,14 +22,14 @@ $mobile-small: 300px;
   margin-bottom: 20px;
 }
 
-.title{
-  @media only screen and (max-width: $mobile-large){
+.title {
+  @media only screen and (max-width: $mobile-large) {
     font-size: 0.8em;
   }
 }
 
-.buttons{
-  @media only screen and (max-width: $mobile-large){
+.buttons {
+  @media only screen and (max-width: $mobile-large) {
     display: none;
   }
 }
@@ -86,9 +86,10 @@ $mobile-small: 300px;
   }
 }
 
-.selects{
+.selects {
   display: none;
-  @media only screen and (max-width: $mobile-large){
+
+  @media only screen and (max-width: $mobile-large) {
     display: block;
     width: 90px;
     font-size: 1.4rem;

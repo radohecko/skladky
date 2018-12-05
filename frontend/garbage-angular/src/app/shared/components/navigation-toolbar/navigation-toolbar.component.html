@@ -16,16 +16,18 @@
              routerLink="stats"
              routerLinkActive="active-link">Stats</a></li>
       </ul>
-      <ul class="column" *ngIf="!authService.isAuthenticated()">
+      <ul class="column"
+          *ngIf="!authService.isAuthenticated()">
         <li><a class="column-item"
              (click)="onOpenSignIn()">Sign In</a></li>
         <li><a class="column-item"
              (click)="onOpenSignUp()">Sign Up</a></li>
       </ul>
-      <ul class="column" *ngIf="authService.isAuthenticated()">
+      <ul class="column"
+          *ngIf="authService.isAuthenticated()">
         <li class="nick">{{ authService.getUserEmail() }}</li>
         <li><a class="column-item"
-              (click)="logOut()">Log out</a></li>
+             (click)="logOut()">Log out</a></li>
       </ul>
     </nav>
     <button id="menuButton"
@@ -45,12 +47,15 @@
              routerLinkActive="active-link">Stats</a></li>
       </ul>
       <ul *ngIf="!authService.isAuthenticated()">
-        <li><a class="row-item" (click)="onOpenSignIn()">Sign In</a></li>
-        <li><a class="row-item" (click)="onOpenSignUp()">Sign Up</a></li>
+        <li><a class="row-item"
+             (click)="onOpenSignIn()">Sign In</a></li>
+        <li><a class="row-item"
+             (click)="onOpenSignUp()">Sign Up</a></li>
       </ul>
       <ul *ngIf="authService.isAuthenticated()">
-          <li><a class="row-item" (click)="logOut()">Log Out</a></li>
-        </ul>
+        <li><a class="row-item"
+             (click)="logOut()">Log Out</a></li>
+      </ul>
     </nav>
   </mat-toolbar-row>
 </mat-toolbar>

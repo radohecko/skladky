@@ -8,7 +8,8 @@ $mobile-small: 300px;
 
 :host {
   width: 80%;
-  @media only screen and (max-width: $mobile-large){
+
+  @media only screen and (max-width: $mobile-large) {
     width: 90%;
   }
 }
@@ -18,14 +19,17 @@ $mobile-small: 300px;
   flex-flow: column;
   margin: 2rem;
   position: relative;
-  @media only screen and (max-width: $mobile-large){
+
+  @media only screen and (max-width: $mobile-large) {
     padding-bottom: 16px;
   }
 
   mat-card-title {
     font-size: 2.5rem;
     color: $color-dark-grey;
-    @media only screen and (max-width: $mobile-large){
+    white-space: nowrap;
+
+    @media only screen and (max-width: $mobile-large) {
       font-size: 1.2em;
     }
   }
@@ -33,14 +37,16 @@ $mobile-small: 300px;
   &-content {
     display: flex;
     flex-flow: row;
-    @media only screen and (max-width: $mobile-large){
+
+    @media only screen and (max-width: $mobile-large) {
       width: 100%;
       flex-flow: column;
     }
 
     &-image {
       margin-right: 1.5rem;
-      @media only screen and (max-width: $mobile-large){
+
+      @media only screen and (max-width: $mobile-large) {
         margin: 1rem 0rem;
       }
 
@@ -53,7 +59,8 @@ $mobile-small: 300px;
       &-title {
         font-size: 1.8rem;
         margin-bottom: 1rem;
-        @media only screen and (max-width: $mobile-large){
+
+        @media only screen and (max-width: $mobile-large) {
           font-size: 1.3rem;
           margin-bottom: 0.8rem;
         }
@@ -68,7 +75,8 @@ $mobile-small: 300px;
   right: 3rem;
   font-size: 3.5rem;
   display: block;
-  @media only screen and (max-width: $mobile-large){
+
+  @media only screen and (max-width: $mobile-large) {
     width: 16px;
     height: 16px;
     font-size: 2.5rem;
@@ -98,20 +106,23 @@ $mobile-small: 300px;
   color: $color-mid-grey;
 }
 
-
-.mat-card{
-  @media only screen and (max-width: $mobile-large){
+.mat-card {
+  @media only screen and (max-width: $mobile-large) {
     margin: 1rem 0rem;
   }
 }
 
-img{
-  @media only screen and (max-width: $mobile-large){
+img {
+  @media only screen and (max-width: $mobile-large) {
     width: auto;
     max-width: 100%;
     align-items: center;
-    
   }
+
   width: auto;
   max-height: 225px;
+}
+
+.mat-card-header-text {
+  margin: 0;
 }
