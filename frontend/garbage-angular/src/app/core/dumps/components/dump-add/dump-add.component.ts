@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Status } from 'src/app/shared/interfaces/status';
 import { DumpsService } from '../../services/dumps.service';
 import { Subscription, Observable } from 'rxjs';
@@ -58,17 +58,19 @@ export class DumpAddComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     if (this.dump) {
-      console.log(this.dump);
       this.setDefaultValues();
     }
+    this.form.statusChanges.subscribe(status => {
+      if (status === 'INVALID') {
+        this.materials.controls[0].markAsTouched();
+        this.materials.controls[0].markAsDirty();
+      }
+    });
   }
 
   ngOnDestroy() {
     unsubscribe(this.percentageSubscription);
   }
-
-  // TODO: validate materials
-  // TODO: substance -||-
 
   createForm() {
     this.form = this.fb.group({
@@ -76,10 +78,10 @@ export class DumpAddComponent implements OnInit, OnDestroy {
       status: [{ value: this.statusOptions[1].value, disabled: true }, Validators.required],
       amount: ['car', Validators.required],
       materials: this.fb.array([
-        this.fb.control(null)
-      ]),
+        this.fb.control('', Validators.required)
+      ], Validators.required),
       substances: this.fb.array([
-        this.fb.control(null)
+        this.fb.control('')
       ]),
       email: ['', Validators.email]
     });
@@ -148,11 +150,13 @@ export class DumpAddComponent implements OnInit, OnDestroy {
   }
 
   addMaterial() {
-    this.materials.push(this.fb.control(''));
+    this.materials.push(this.fb.control('', Validators.required));
+    this.materials.controls[this.materialsLength - 1].markAsTouched();
   }
 
   addSubstance() {
-    this.substances.push(this.fb.control(''));
+    this.substances.push(this.fb.control('', Validators.required));
+    this.substances.controls[this.substancesLength - 1].markAsTouched();
   }
 
   removeMaterial(index: number) {
@@ -161,6 +165,24 @@ export class DumpAddComponent implements OnInit, OnDestroy {
 
   removeSubstance(index: number) {
     this.substances.removeAt(index);
+    if (this.substancesLength === 1 && this.substances.controls[0].value === '') {
+      this.substances.controls[0].clearValidators();
+      this.substances.controls[0].markAsUntouched();
+    }
+  }
+
+  showMaterialAddButton(index: number, control: FormControl) {
+    if (index === this.materialsLength - 1 && control.value !== '') {
+      return true;
+    }
+    return false;
+  }
+
+  showSubstanceslAddButton(index: number, control: FormControl) {
+    if (index === this.substancesLength - 1 && control.value !== '') {
+      return true;
+    }
+    return false;
   }
 
   onClose() {

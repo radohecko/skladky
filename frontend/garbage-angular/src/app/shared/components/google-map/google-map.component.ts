@@ -59,7 +59,6 @@ export class GoogleMapComponent implements OnChanges, OnInit {
     });
   }
 
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes.filteredDumps && changes.filteredDumps.currentValue !== changes.filteredDumps.previousValue) {
       if (this.map) {

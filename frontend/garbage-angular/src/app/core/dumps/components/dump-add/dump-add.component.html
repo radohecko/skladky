@@ -16,7 +16,7 @@
   <form [formGroup]="form">
     <mat-form-field>
       <input matInput
-             placeholder="Location"
+             placeholder="Location *"
              formControlName="locationName">
     </mat-form-field>
 
@@ -30,7 +30,7 @@
       </mat-select>
     </mat-form-field>
 
-    <span class="label">Amount</span>
+    <span class="label">Amount *</span>
     <mat-radio-group formControlName="amount">
       <mat-radio-button value="car">Car</mat-radio-button>
       <mat-radio-button value="lorry">Lorry</mat-radio-button>
@@ -42,15 +42,15 @@
            *ngFor="let material of materials.controls; let i=index">
         <mat-form-field class="full-width">
           <input matInput
-                 placeholder="Materials"
+                 placeholder="Materials *"
                  [formControlName]="i">
         </mat-form-field>
         <button *ngIf="materialsLength-1 !== i || materialsLength === i+1 && i !== 0"
                 mat-mini-fab
                 color="warn"
-                [class.remove]="materialsLength === i+1"
-                (click)="removeMaterial()"> x </button>
-        <button *ngIf="materialsLength-1 === i"
+                (click)="removeMaterial(i)"> x </button>
+        <button *ngIf="showMaterialAddButton(i, material)"
+                class="add"
                 mat-mini-fab
                 color="primary"
                 title="Add new material"
@@ -70,13 +70,13 @@
         <button *ngIf="substancesLength-1 !== i || substancesLength === i+1 && i !== 0"
                 mat-mini-fab
                 color="warn"
-                [class.remove]="substancesLength === i+1"
-                (click)="removeSubstance()"> x </button>
+                (click)="removeSubstance(i)"> x </button>
 
-        <button *ngIf="substancesLength-1 === i"
+        <button *ngIf="showSubstanceslAddButton(i, substance)"
                 mat-mini-fab
                 color="primary"
                 title="Add new substance"
+                class="add"
                 (click)="addSubstance()"> + </button>
 
       </div>
@@ -100,6 +100,7 @@
     <button *ngIf="!dump"
             mat-raised-button
             color="primary"
+            [disabled]="!form.valid"
             (click)="saveForm()">Report</button>
     <button *ngIf="dump"
             mat-raised-button
