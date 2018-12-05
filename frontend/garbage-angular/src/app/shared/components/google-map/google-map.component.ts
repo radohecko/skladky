@@ -62,9 +62,11 @@ export class GoogleMapComponent implements OnChanges, OnInit {
 
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.map && changes.map.currentValue !== changes.map.previousValue) {
-      this.dumps = this.filteredDumps;
-      this.markAllDumps();
+    if (changes.filteredDumps && changes.filteredDumps.currentValue !== changes.filteredDumps.previousValue) {
+      if (this.map) {
+        this.dumps = this.filteredDumps;
+        this.markAllDumps();
+      }
     }
   }
 
