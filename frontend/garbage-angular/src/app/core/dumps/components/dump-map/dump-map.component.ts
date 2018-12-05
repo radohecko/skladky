@@ -46,13 +46,12 @@ export class DumpMapComponent implements OnInit {
   }
 
   ngOnInit() {
+    let pos: { lat: number, lng: number } | null = null;
     if (this.dump) {
-      const pos = {
+      pos = {
         lat: this.dump.location.latitude,
         lng: this.dump.location.longitude,
       };
-      // init map with marker
-      this.createMarker(pos, null, true, false);
     }
     this.mapsApiLoader.load().then(() => {
       this.geocoder = new google.maps.Geocoder;
@@ -61,11 +60,11 @@ export class DumpMapComponent implements OnInit {
         center: { lat: 48.155527, lng: 17.106345 },
         zoom: this.zoom
       });
-      this.initMap();
+      this.initMap(pos);
     });
   }
 
-  initMap() {
+  initMap(dumpPosition: { lat: number, lng: number } | null = null) {
     const self = this;
     if (this.enableMarking) {
       this.map.addListener('click', function (event) {
@@ -78,20 +77,25 @@ export class DumpMapComponent implements OnInit {
         self.infoWindow.open(self.map, self.customMarker);
       });
     }
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        this.myPositionMarker = this.createMarker(pos, this.icons.MY_POSITION, true, true);
-        this.infoWindow.open(self.map, this.myPositionMarker);
-        this.map.setCenter(pos);
-      }, () => {
-        this.handleLocationError(true, this.infoWindow);
-      });
+    if (dumpPosition) {
+      self.customMarker = self.createMarker(dumpPosition, null, true, true);
+      self.infoWindow.open(self.map, self.customMarker);
     } else {
-      this.handleLocationError(false, this.infoWindow);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          this.myPositionMarker = this.createMarker(pos, this.icons.MY_POSITION, true, true);
+          this.infoWindow.open(self.map, this.myPositionMarker);
+          this.map.setCenter(pos);
+        }, () => {
+          this.handleLocationError(true, this.infoWindow);
+        });
+      } else {
+        this.handleLocationError(false, this.infoWindow);
+      }
     }
   }
 
@@ -106,7 +110,6 @@ export class DumpMapComponent implements OnInit {
       if (status === 'OK') {
         if (results[0]) {
           try {
-            console.log(results[0].address_components);
             const region = self.getRegion(results[0].address_components)[0]['long_name'];
             const data: GoogleLocation = {
               lat: pos.lat,
@@ -192,5 +195,4 @@ export class DumpMapComponent implements OnInit {
         return this.icons.DUMP_PENDING;
     }
   }
-
 }

@@ -48,8 +48,6 @@ export class GoogleMapComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
-    console.log('all: ', this.dumps);
-    console.log('filtered: ', this.filteredDumps);
     this.dumpMarkers = [];
     this.mapsApiLoader.load().then(() => {
       this.geocoder = new google.maps.Geocoder;
@@ -62,18 +60,17 @@ export class GoogleMapComponent implements OnChanges, OnInit {
     });
   }
 
-  //TODO: da sa to lepsie?
-  ngOnChanges() {
-    if (this.map) {
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.map && changes.map.currentValue !== changes.map.previousValue) {
       this.dumps = this.filteredDumps;
       this.markAllDumps();
     }
   }
 
   initMap() {
-    // Try HTML5 geolocation.
     const self = this;
-    // click listener for creating markers (disabled in dumps-map)
+
     if (this.enableMarking) {
       this.map.addListener('click', function (event) {
         self.clearMarker(self.customMarker);
@@ -87,11 +84,11 @@ export class GoogleMapComponent implements OnChanges, OnInit {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        // set marker for your position
+
         this.myPositionMarker = this.createMarker(pos, this.icons.MY_POSITION, true, true);
         this.infoWindow.open(self.map, this.myPositionMarker);
         this.map.setCenter(pos);
-        // show all dumps on map
+
         if (this.dumps) {
           this.markAllDumps();
         }
@@ -109,15 +106,12 @@ export class GoogleMapComponent implements OnChanges, OnInit {
       Object.keys(o).some(k => o[k].includes('Region') || o[k].includes('kraj')));
   }
 
-  // TODO: adresu ukladat do DB uz pri pridavani novej skladky, kvoli query limit
   geocodeLatLng(pos, setInfoContent) {
     const self = this;
     this.geocoder.geocode({ 'location': pos }, function (results, status) {
       if (status === 'OK') {
         if (results[0]) {
-          // try to get region
           try {
-            console.log(results[0].address_components);
             const region = self.getRegion(results[0].address_components)[0]['long_name'];
             const data: GoogleLocation = {
               lat: pos.lat,
@@ -130,7 +124,6 @@ export class GoogleMapComponent implements OnChanges, OnInit {
           } catch (e) {
             console.log(e);
           }
-          // set address string on your marker
           if (setInfoContent) {
             self.infoWindow.setContent(results[0].formatted_address);
           }
