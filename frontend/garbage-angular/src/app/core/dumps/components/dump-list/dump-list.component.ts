@@ -23,7 +23,7 @@ export class DumpListComponent implements OnInit {
 
   toggleOptionsPage: ToggleGroupOption[] = toggleOptionsPage;
   page = 1;
-  perPage = 4;
+  perPage = 3;
 
   constructor(private dumpsService: DumpsService, private router: Router) { }
 
