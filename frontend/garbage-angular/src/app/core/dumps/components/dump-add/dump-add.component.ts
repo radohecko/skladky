@@ -73,7 +73,7 @@ export class DumpAddComponent implements OnInit, OnDestroy {
   createForm() {
     this.form = this.fb.group({
       locationName: ['', Validators.required],
-      status: [this.statusOptions[1].value, Validators.required],
+      status: [{value: this.statusOptions[1].value, disabled: true}, Validators.required],
       amount: ['car', Validators.required],
       materials: this.fb.array([
         this.fb.control(null)
