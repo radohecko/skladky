@@ -30,6 +30,7 @@ import { GoogleMapComponent } from './shared/components/google-map/google-map.co
 import { ToggleButtonsComponent } from './shared/components/toggle-buttons/toggle-buttons.component';
 import { DumpMapViewComponent } from './core/dumps/components/dump-map-view/dump-map-view.component';
 import { NgMathPipesModule } from 'angular-pipes';
+import { ImageDialogComponent } from './core/dumps/components/image-dialog/image-dialog.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { NgMathPipesModule } from 'angular-pipes';
     PageHeaderComponent,
     DumpEditComponent,
     ToggleButtonsComponent,
-    DumpMapViewComponent
+    DumpMapViewComponent,
+    ImageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +69,8 @@ import { NgMathPipesModule } from 'angular-pipes';
   ],
   entryComponents: [
     DumpEditComponent,
-    DumpAddComponent
+    DumpAddComponent,
+    ImageDialogComponent
   ],
   providers: [DumpsService, DialogService, GoogleMapsAPIWrapper],
   bootstrap: [AppComponent]

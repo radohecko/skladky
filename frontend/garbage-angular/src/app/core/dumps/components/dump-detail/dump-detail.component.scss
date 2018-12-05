@@ -113,6 +113,11 @@ $mobile-small: 300px;
 
 img{
   @media only screen and (max-width: $mobile-large){
-    width: 100%;
+    width: auto;
+    max-width: 100%;
+    align-items: center;
+    
   }
+  width: auto;
+  max-height: 225px;
 }
