@@ -105,6 +105,7 @@
     <button *ngIf="dump"
             mat-raised-button
             color="primary"
+            [disabled]="!form.valid"
             (click)="updateForm()">Update</button>
     <button mat-raised-button
             (click)="onClose()">Cancel</button>
