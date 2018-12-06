@@ -45,13 +45,31 @@ export class DumpListComponent implements OnInit {
   onNext() {
     if ((this.page * this.perPage) < this.filteredDumps.length) {
       this.page++;
+      this.enable('pageback');
+      if (this.page === Math.ceil(this.filteredDumps.length / this.perPage)) {
+        this.disable('pagenext');
+      }
     }
   }
 
   onPrevious() {
     if (this.page > 1) {
       this.page--;
+      this.enable('pagenext');
+      if (this.page === 1) {
+        this.disable('pageback');
+      }
     }
+  }
+
+  disable(button_id) {
+    const el = document.getElementById(button_id);
+    el.disabled = true;
+  }
+
+  enable(button_id) {
+    const el = document.getElementById(button_id);
+    el.disabled = false;
   }
 
   onSelectedValueChange($event: ToggleGroupValue) {
@@ -68,6 +86,7 @@ export class DumpListComponent implements OnInit {
       case 'In Process':
         this.filterByStatus($event);
         this.page = 1;
+        this.disable('pageback');
         break;
       default:
         break;

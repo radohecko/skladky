@@ -1,16 +1,12 @@
 <div class="actions">
   <div class="actions-left">
     <div class="title">Change view: </div>
-    <app-toggle-buttons class="buttons"
-                        [options]="toggleOptionsLeft"
-                        [selectedValue]="optionSelectedValueLeft"
-                        (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
+    <app-toggle-buttons class="buttons" [options]="toggleOptionsLeft" [selectedValue]="optionSelectedValueLeft"
+      (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
 
     <mat-form-field class="selects">
-      <mat-select [(value)]="optionSelectedValueLeft"
-                  (selectionChange)="onSelectedValueChange($event.value)">
-        <mat-option *ngFor="let option of toggleOptionsLeft"
-                    [value]="option.value">
+      <mat-select [(value)]="optionSelectedValueLeft" (selectionChange)="onSelectedValueChange($event.value)">
+        <mat-option *ngFor="let option of toggleOptionsLeft" [value]="option.value">
           {{option.value}}
         </mat-option>
       </mat-select>
@@ -19,16 +15,12 @@
   </div>
   <div class="actions-right">
     <div class="title">Filter by status: </div>
-    <app-toggle-buttons class="buttons"
-                        [options]="toggleOptionsRight"
-                        [selectedValue]="optionSelectedValueRight"
-                        (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
+    <app-toggle-buttons class="buttons" [options]="toggleOptionsRight" [selectedValue]="optionSelectedValueRight"
+      (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
 
     <mat-form-field class="selects">
-      <mat-select [(value)]="optionSelectedValueRight"
-                  (selectionChange)="onSelectedValueChange($event.value)">
-        <mat-option *ngFor="let option of toggleOptionsRight"
-                    [value]="option.value">
+      <mat-select [(value)]="optionSelectedValueRight" (selectionChange)="onSelectedValueChange($event.value)">
+        <mat-option *ngFor="let option of toggleOptionsRight" [value]="option.value">
           {{option.value}}
         </mat-option>
       </mat-select>
@@ -36,10 +28,8 @@
   </div>
 </div>
 
-<div class="cards"
-     *ngIf="dumps">
-  <app-dump-detail *ngFor="let dump of filteredDumps | slice: (perPage*(page-1)):(perPage*page)"
-                   [dump]="dump"></app-dump-detail>
+<div class="cards" *ngIf="dumps">
+  <app-dump-detail *ngFor="let dump of filteredDumps | slice: (perPage*(page-1)):(perPage*page)" [dump]="dump"></app-dump-detail>
 </div>
 
 <div class="pager">
@@ -48,9 +38,7 @@
     <ng-container *ngIf="filteredDumps">out of {{(filteredDumps.length/perPage) | ceil}}</ng-container>
   </div>
   <div class="page-buttons">
-    <button class="page-button"
-            (click)="onPrevious()"> &#60;</button>
-    <button class="page-button"
-            (click)="onNext()"> &#62;</button>
+    <button id="pageback" class="page-button" (click)="onPrevious()"> &#60;</button>
+    <button id="pagenext" class="page-button" (click)="onNext()"> &#62;</button>
   </div>
 </div>

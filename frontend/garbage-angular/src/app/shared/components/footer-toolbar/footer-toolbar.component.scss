@@ -12,6 +12,13 @@ mat-toolbar-row {
   font-size: 15px;
 }
 
+a {
+  font-size: 15px;
+  color: black;
+  margin-right: 10px;
+  margin-left: 5px;
+}
+
 @media only screen and (max-width: 600px) {
   #footer_text {
     font-size: 13px;
