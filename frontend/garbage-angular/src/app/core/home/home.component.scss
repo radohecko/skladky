@@ -1,11 +1,23 @@
 main {
   justify-content: center;
+  justify-items: center;
   align-items: center;
+  display: grid;
+  height: 100vh;
+  grid-template-areas:
+    "firstline"
+    "secondline"
+    "thirdline"
+    "button"
+    "map";
+  grid-template-columns: 100%;
+  grid-template-rows: 50px 50px 50px 200px auto;
 }
 
 #container {
+  grid-area: map;
   position: relative;
-  height: 400px;
+  height: 100%; //400px;
   width: 100%;
 }
 
@@ -19,24 +31,30 @@ main {
 }
 
 #first-line {
+  grid-area: firstline;
   margin-top: 30px;
   font-size: 30px;
 }
 
 #second-line {
+  grid-area: secondline;
   font-size: 25px;
 }
 
 #third-line {
+  grid-area: thirdline;
   font-size: 20px;
   font-weight: bold;
 }
 
 #report {
+  grid-area: button;
   min-height: 180px;
   min-width: 100px;
+
   margin-bottom: 20px;
   margin-top: 10px;
+
   background-image: url(../../../assets/pin.png);
   background-position: center;
   background-size: 100%;
