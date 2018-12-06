@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { DumpsComponent } from './core/dumps/dumps.component';
@@ -65,6 +66,7 @@ import { ImageDialogComponent } from './core/dumps/components/image-dialog/image
     AuthModule,
     DialogModule,
     NgMathPipesModule,
+    HttpClientModule,
     AgmCoreModule.forRoot({apiKey: 'AIzaSyDVTT8btuhog4XIke6JG4wv38ABrf85qXc'})
   ],
   entryComponents: [
@@ -72,7 +74,7 @@ import { ImageDialogComponent } from './core/dumps/components/image-dialog/image
     DumpAddComponent,
     ImageDialogComponent
   ],
-  providers: [DumpsService, DialogService, GoogleMapsAPIWrapper],
+  providers: [DumpsService, DialogService, GoogleMapsAPIWrapper, HttpClientModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

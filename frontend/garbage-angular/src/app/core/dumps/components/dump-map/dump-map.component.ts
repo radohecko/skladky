@@ -2,6 +2,9 @@ import { Component, OnInit, Input, EventEmitter, Output, SimpleChange, OnChanges
 import { Dump } from 'src/app/shared/interfaces/dump';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
 import { GoogleLocation } from 'src/app/shared/interfaces/location';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dump-map',
@@ -19,6 +22,7 @@ export class DumpMapComponent implements OnInit, OnChanges {
   @Input() searchAddress: string;
 
   @Output() location: EventEmitter<GoogleLocation> = new EventEmitter();
+  @Output() predictedLocations: EventEmitter<String[]> = new EventEmitter();
 
   // google map
   map: google.maps.Map;
@@ -34,6 +38,7 @@ export class DumpMapComponent implements OnInit, OnChanges {
   myPositionMarker: google.maps.Marker;
   dumpMarkers: google.maps.Marker[];
 
+  // my position - Google location object
   myCurrentPosition: GoogleLocation;
 
   icons = {
@@ -43,16 +48,15 @@ export class DumpMapComponent implements OnInit, OnChanges {
     DUMP_RESOLVED: '../../../../assets/resolved.png'
   };
 
-  constructor(private mapsApiLoader: MapsAPILoader, private wrapper: GoogleMapsAPIWrapper) {
+  constructor(private mapsApiLoader: MapsAPILoader, private wrapper: GoogleMapsAPIWrapper, private httpClient: HttpClient) {
     this.mapsApiLoader = mapsApiLoader;
     this.wrapper = wrapper;
   }
 
+  // TODO: emit geolocation object after one of predictions is selected
   ngOnChanges(changes: SimpleChanges) {
     if (changes.searchAddress && changes.searchAddress.currentValue !== changes.searchAddress.previousValue) {
-      // TODO: function to find location
-      // TODO: emit Geolocation object - this.location.emit(data)
-      console.log(`Dump-map: ${this.searchAddress}`);
+      this.makeApiCall(this.searchAddress, this.handlePredictionsResponse);
     }
   }
 
@@ -71,6 +75,7 @@ export class DumpMapComponent implements OnInit, OnChanges {
         center: { lat: 48.155527, lng: 17.106345 },
         zoom: this.zoom
       });
+
       this.initMap(pos);
     });
   }
@@ -135,42 +140,100 @@ export class DumpMapComponent implements OnInit, OnChanges {
             };
             self.location.emit(data);
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
           self.infoWindow.setContent(results[0].formatted_address);
-          // if (setInfoContent) {
-          // }
         } else {
           window.alert('No results found');
         }
       } else {
         self.clearMarker(self.customMarker);
-        console.log('Geocoder failed due to: ' + status);
+        console.error('Geocoder failed due to: ' + status);
       }
     });
   }
 
-  //   const self = this;
-  // geocodeAddress(address) {
-  //   this.geocoder.geocode({'address': address}, function(results, status) {
-  //     if (status === 'OK') {
-  //       this.map.setCenter(results[0].geometry.location);
-  //       const data: GoogleLocation = {
-  //         lat: results[0].geometry.location.lat,
-  //         lng: results[0].geometry.location.lng,
-  //         region: 'TODO',
-  //         adressName: results[0].formatted_address.toString()
-  //       };
-  //       self.location.emit(data);
-  //       const marker = new google.maps.Marker({
-  //         map: self.map,
-  //         position: results[0].geometry.location
-  //       });
-  //     } else {
-  //       alert('Geocode was not successful for the following reason: ' + status);
-  //     }
-  //   });
-  // }
+  makeApiCall(address: string, responseHandler: any) {
+    // this.loading = true;
+    const options = {
+      withCredentials: false,
+    };
+    const queryOptions = {
+      input: address,
+      key: environment.firebase.apiKey,
+      types: 'address'
+    };
+    this.addGranularOptions(queryOptions);
+    const corsProxyUrl = 'https://cors-anywhere.herokuapp.com';
+    const API_URL = 'https://maps.googleapis.com/maps/api/place/autocomplete';
+    const BASE_URL = corsProxyUrl + '/' + API_URL;
+    const queryString = this.encodeQuery(queryOptions);
+    const callUrl = BASE_URL + '/json?' + queryString;
+    console.log('url:', callUrl);
+    this.httpClient.get(callUrl, options)
+      .toPromise()
+      .then((response: any) => {
+        this.handlePredictionsResponse(response);
+        // this.loading = false;
+      })
+      .catch((err) => {
+        console.error(err);
+        // this.loading = false;
+      });
+  }
+
+  encodeQuery(data: any) {
+    const ret = [];
+    for (const d of Object.keys(data)) {
+      ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+    }
+    return ret.join('&');
+  }
+
+  addGranularOptions(queryOptions: any) {
+    // set predictions near your current position
+    if (this.myCurrentPosition) {
+      const latStr = this.myCurrentPosition.lat.toString();
+      const lngStr = this.myCurrentPosition.lng.toString();
+      queryOptions.location = [latStr, lngStr];
+    } else { // without current position - set near bratislava
+      queryOptions.location = ['48.155527', '17.106345'];
+    }
+    queryOptions.radius = 1;
+    // queryOptions.strictbounds = true;
+  }
+
+  handlePredictionsResponse(response: any) {
+    if (response && response.predictions.length > 0) {
+      // console.log('predictions: ', response);
+      this.predictedLocations.emit(response.predictions);
+      console.log('emitting predictions: ', response.predictions);
+    } else {
+      console.error('nem ok');
+    }
+  }
+
+  // TODO: geocodeAddress only after one location is selected
+  geocodeAddress(address: string) {
+    const self = this;
+    this.geocoder.geocode({ 'address': address }, function (results, status) {
+      if (status === 'OK') {
+        console.log('results: ', results[0]);
+        const region = self.getRegion(results[0].address_components)[0]['long_name'];
+        const data: GoogleLocation = {
+          lat: results[0].geometry.location.lat(),
+          lng: results[0].geometry.location.lng(),
+          region: region,
+          adressName: results[0].formatted_address.toString()
+        };
+        console.log('emitting: ', data);
+        // self.location.emit(data);
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+        return null;
+      }
+    });
+  }
 
   handleLocationError(browserHasGeolocation, infoWindow) {
     infoWindow.setContent(browserHasGeolocation ?
