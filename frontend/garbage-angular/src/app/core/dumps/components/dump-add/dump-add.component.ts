@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Status } from 'src/app/shared/interfaces/status';
 import { DumpsService } from '../../services/dumps.service';
@@ -19,11 +19,13 @@ export class DumpAddComponent implements OnInit, OnDestroy {
 
   @Input() dump: Dump;
 
+  searchAdress: string;
   form: FormGroup;
   percentageSubscription: Subscription;
   uploadPercentage: number;
   location: GoogleLocation;
   file: File;
+  addressSubscription: Subscription;
   statusOptions: Status[] = [
     { label: 'Resolved', value: 'Resolved' },
     { label: 'Pending', value: 'Pending' },
@@ -60,16 +62,24 @@ export class DumpAddComponent implements OnInit, OnDestroy {
     if (this.dump) {
       this.setDefaultValues();
     }
-    this.form.statusChanges.subscribe(status => {
+    this.addressSubscription = this.form.statusChanges.subscribe(status => {
       if (status === 'INVALID') {
         this.materials.controls[0].markAsTouched();
         this.materials.controls[0].markAsDirty();
+      }
+    });
+
+    this.form.get('locationName').valueChanges.subscribe(address => {
+      console.log(address);
+      if (address.length > 4) {
+        this.searchAdress = address;
       }
     });
   }
 
   ngOnDestroy() {
     unsubscribe(this.percentageSubscription);
+    unsubscribe(this.addressSubscription);
   }
 
   createForm() {

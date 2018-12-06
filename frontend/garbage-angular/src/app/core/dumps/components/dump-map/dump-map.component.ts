@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, SimpleChange, OnChanges, SimpleChanges } from '@angular/core';
 import { Dump } from 'src/app/shared/interfaces/dump';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
 import { GoogleLocation } from 'src/app/shared/interfaces/location';
@@ -8,14 +8,15 @@ import { GoogleLocation } from 'src/app/shared/interfaces/location';
   templateUrl: './dump-map.component.html',
   styleUrls: ['./dump-map.component.scss']
 })
-export class DumpMapComponent implements OnInit {
+export class DumpMapComponent implements OnInit, OnChanges {
 
   @Input() height = 100;
   @Input() width = 100;
   @Input() dumps: Dump[];
-  @Input() dump: Dump;
   @Input() enableMarking = true;
+  @Input() dump: Dump;
   @Input() zoom = 12;
+  @Input() searchAddress: string;
 
   @Output() location: EventEmitter<GoogleLocation> = new EventEmitter();
 
@@ -33,6 +34,8 @@ export class DumpMapComponent implements OnInit {
   myPositionMarker: google.maps.Marker;
   dumpMarkers: google.maps.Marker[];
 
+  myCurrentPosition: GoogleLocation;
+
   icons = {
     MY_POSITION: '../../../../assets/my_position.png',
     DUMP_PENDING: '../../../../assets/pending.png',
@@ -43,6 +46,14 @@ export class DumpMapComponent implements OnInit {
   constructor(private mapsApiLoader: MapsAPILoader, private wrapper: GoogleMapsAPIWrapper) {
     this.mapsApiLoader = mapsApiLoader;
     this.wrapper = wrapper;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.searchAddress && changes.searchAddress.currentValue !== changes.searchAddress.previousValue) {
+      // TODO: function to find location
+      // TODO: emit Geolocation object - this.location.emit(data)
+      console.log(`Dump-map: ${this.searchAddress}`);
+    }
   }
 
   ngOnInit() {
@@ -88,6 +99,11 @@ export class DumpMapComponent implements OnInit {
             lng: position.coords.longitude
           };
           this.myPositionMarker = this.createMarker(pos, this.icons.MY_POSITION, true, true);
+          this.myPositionMarker.addListener('click', function () {
+            self.geocodeLatLng(pos, true);
+            self.infoWindow.open(self.map, self.myPositionMarker);
+            self.clearMarker(self.customMarker);
+          });
           this.infoWindow.open(self.map, this.myPositionMarker);
           this.map.setCenter(pos);
         }, () => {
@@ -121,9 +137,9 @@ export class DumpMapComponent implements OnInit {
           } catch (e) {
             console.log(e);
           }
-          if (setInfoContent) {
-            self.infoWindow.setContent(results[0].formatted_address);
-          }
+          self.infoWindow.setContent(results[0].formatted_address);
+          // if (setInfoContent) {
+          // }
         } else {
           window.alert('No results found');
         }
@@ -134,8 +150,8 @@ export class DumpMapComponent implements OnInit {
     });
   }
 
-  // geocodeAddress(address) {
   //   const self = this;
+  // geocodeAddress(address) {
   //   this.geocoder.geocode({'address': address}, function(results, status) {
   //     if (status === 'OK') {
   //       this.map.setCenter(results[0].geometry.location);
