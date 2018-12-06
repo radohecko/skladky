@@ -234,10 +234,12 @@ export class StatsComponent implements OnInit, OnDestroy {
         const materialCounts = new Map();
         this.dumps.forEach(el => {
             el.materials.forEach(material => {
-                if (materialCounts.has(material)) {
-                    materialCounts.set(material, materialCounts.get(material) + 1);
-                } else {
-                    materialCounts.set(material, 1);
+                if (material) {
+                    if (materialCounts.has(material)) {
+                        materialCounts.set(material, materialCounts.get(material) + 1);
+                    } else {
+                        materialCounts.set(material, 1);
+                    }
                 }
             });
 

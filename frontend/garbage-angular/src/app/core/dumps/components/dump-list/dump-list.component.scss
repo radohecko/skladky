@@ -51,17 +51,25 @@ $mobile-small: 300px;
   border: 1px solid #9dcf96;
   box-sizing: border-box;
   background: linear-gradient(180deg, #e3f3d8, #e3f3d8);
-  box-shadow: inset 0 1px 0 0px rgba(247, 248, 250, 0.7), inset 0 -1px 0 0px rgba(247, 248, 250, 0.7);
+  box-shadow: inset 0 1px 0 0px rgba(247, 248, 250, 0.7),
+    inset 0 -1px 0 0px rgba(247, 248, 250, 0.7);
   cursor: pointer;
   user-select: none;
   outline: 0;
   min-width: 50px;
 
+  &:disabled {
+    background: linear-gradient(180deg, #d7dada, #d7dada);
+    color: #f2f3f4;
+    border: 1px solid #a8a8a8;
+    box-shadow: inset 0px 1px 0px 0px #c4c5c4, inset 0px -1px 0px 0px #c4c5c4;
+  }
+
   :host.full-width & {
     flex: 1 0 auto;
   }
 
-  &:hover:not(.active) {
+  &:hover:not(:disabled) {
     background: linear-gradient(0deg, #fece99, #fee0b7);
     border-color: #e39c4c;
   }
