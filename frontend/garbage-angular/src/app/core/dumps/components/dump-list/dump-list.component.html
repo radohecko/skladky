@@ -38,7 +38,7 @@
     <ng-container *ngIf="filteredDumps">out of {{(filteredDumps.length/perPage) | ceil}}</ng-container>
   </div>
   <div class="page-buttons">
-    <button id="pageback" class="page-button" (click)="onPrevious()"> &#60;</button>
-    <button id="pagenext" class="page-button" (click)="onNext()"> &#62;</button>
+    <button [disabled]="dis_prev" class="page-button" (click)="onPrevious()"> &#60;</button>
+    <button [disabled]="dis_next" class="page-button" (click)="onNext()"> &#62;</button>
   </div>
 </div>

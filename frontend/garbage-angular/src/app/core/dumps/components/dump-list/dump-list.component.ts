@@ -24,6 +24,9 @@ export class DumpListComponent implements OnInit {
   page = 1;
   perPage = 5;
 
+  dis_prev = true;
+  dis_next = false;
+
   constructor(private dumpsService: DumpsService, private router: Router) { }
 
   ngOnInit() {
@@ -45,9 +48,9 @@ export class DumpListComponent implements OnInit {
   onNext() {
     if ((this.page * this.perPage) < this.filteredDumps.length) {
       this.page++;
-      this.enable('pageback');
+      this.dis_prev = false;
       if (this.page === Math.ceil(this.filteredDumps.length / this.perPage)) {
-        this.disable('pagenext');
+        this.dis_next = true;
       }
     }
   }
@@ -55,21 +58,11 @@ export class DumpListComponent implements OnInit {
   onPrevious() {
     if (this.page > 1) {
       this.page--;
-      this.enable('pagenext');
+      this.dis_next = false;
       if (this.page === 1) {
-        this.disable('pageback');
+        this.dis_prev = true;
       }
     }
-  }
-
-  disable(button_id) {
-    const el = document.getElementById(button_id);
-    el.disabled = true;
-  }
-
-  enable(button_id) {
-    const el = document.getElementById(button_id);
-    el.disabled = false;
   }
 
   onSelectedValueChange($event: ToggleGroupValue) {
@@ -86,7 +79,7 @@ export class DumpListComponent implements OnInit {
       case 'In Process':
         this.filterByStatus($event);
         this.page = 1;
-        this.disable('pageback');
+        this.dis_prev = true;
         break;
       default:
         break;
