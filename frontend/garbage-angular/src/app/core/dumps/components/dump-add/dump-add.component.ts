@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Status } from 'src/app/shared/interfaces/status';
 import { DumpsService } from '../../services/dumps.service';
@@ -20,12 +20,14 @@ export class DumpAddComponent implements OnInit, OnDestroy {
   @Input() dump: Dump;
 
   searchAdress: string;
+  options: any[] = [];
   form: FormGroup;
-  percentageSubscription: Subscription;
   uploadPercentage: number;
   location: GoogleLocation;
   file: File;
+  percentageSubscription: Subscription;
   addressSubscription: Subscription;
+  locationSubscription: Subscription;
   statusOptions: Status[] = [
     { label: 'Resolved', value: 'Resolved' },
     { label: 'Pending', value: 'Pending' },
@@ -55,7 +57,8 @@ export class DumpAddComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private dumpsService: DumpsService,
     private dialogRef: MatDialogRef<DumpAddComponent>,
-    private storage: AngularFireStorage) { }
+    private storage: AngularFireStorage,
+    private changeDetectionRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.createForm();
@@ -69,10 +72,13 @@ export class DumpAddComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.form.get('locationName').valueChanges.subscribe(address => {
-      console.log(address);
-      if (address.length > 4) {
+    this.locationSubscription = this.form.get('locationName').valueChanges.subscribe(address => {
+      if (address.description) {
         this.searchAdress = address;
+      } else {
+        if (address.length > 4 && address !== this.location.adressName) {
+          this.searchAdress = address;
+        }
       }
     });
   }
@@ -80,6 +86,7 @@ export class DumpAddComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     unsubscribe(this.percentageSubscription);
     unsubscribe(this.addressSubscription);
+    unsubscribe(this.locationSubscription);
   }
 
   createForm() {
@@ -110,7 +117,14 @@ export class DumpAddComponent implements OnInit, OnDestroy {
 
   setLocationTitle($event: GoogleLocation) {
     this.location = $event;
+    console.log($event);
     this.form.get('locationName').setValue($event.adressName);
+  }
+
+  setOptions($event) {
+    this.options = $event;
+    this.changeDetectionRef.detectChanges();
+    // this.form.get('locationName').setValue(this.options[0].description);
   }
 
   uploadFile($event) {
@@ -120,7 +134,7 @@ export class DumpAddComponent implements OnInit, OnDestroy {
   saveForm() {
     const data: Dump = {
       ...this.form.value,
-      status:  this.statusOptions[1].value,
+      status: this.statusOptions[1].value,
       location: new firestore.GeoPoint(this.location.lat, this.location.lng),
       region: this.location.region,
       timestamp: new Date()
