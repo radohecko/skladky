@@ -118,9 +118,9 @@ export class DumpAddComponent implements OnInit, OnDestroy {
   }
 
   saveForm() {
-    const value = this.form.value;
     const data: Dump = {
       ...this.form.value,
+      status:  this.statusOptions[1].value,
       location: new firestore.GeoPoint(this.location.lat, this.location.lng),
       region: this.location.region,
       timestamp: new Date()
@@ -139,7 +139,6 @@ export class DumpAddComponent implements OnInit, OnDestroy {
   }
 
   updateForm() {
-    const value = this.form.value;
     const data: Dump = {
       ...this.form.value,
       location: new firestore.GeoPoint(this.location.lat, this.location.lng),

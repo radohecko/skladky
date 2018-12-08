@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyDVTT8btuhog4XIke6JG4wv38ABrf85qXc',
+    apiKey: 'AIzaSyDz5YPJ-Mi0K3mNOdAUf63wmifKRdNMih8',
     authDomain: 'forest-dump.firebaseapp.com',
     databaseURL: 'https://forest-dump.firebaseio.com',
     projectId: 'forest-dump',
