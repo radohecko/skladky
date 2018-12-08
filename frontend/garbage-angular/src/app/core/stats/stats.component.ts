@@ -105,15 +105,12 @@ export class StatsComponent implements OnInit, OnDestroy {
                 reportsByRegions.set(dump.region, reportsByRegions.get(dump.region) + 1);
 
             } else if (EngRegions.indexOf(dump.region) > -1) {
-                console.log(dump.region);
                 reportsByRegions.set(regions[EngRegions.indexOf(dump.region)],
                     reportsByRegions.get(regions[EngRegions.indexOf(dump.region)]) + 1);
             }
         });
         const keys = Array.from(reportsByRegions.keys());
         const vals = Array.from(reportsByRegions.values());
-        console.log(keys);
-        console.log(vals);
         const ctx = document.getElementById('chart2');
         const chart = new Chart(ctx, {
             type: 'radar',

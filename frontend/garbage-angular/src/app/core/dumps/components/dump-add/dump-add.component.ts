@@ -117,14 +117,12 @@ export class DumpAddComponent implements OnInit, OnDestroy {
 
   setLocationTitle($event: GoogleLocation) {
     this.location = $event;
-    console.log($event);
     this.form.get('locationName').setValue($event.adressName);
   }
 
   setOptions($event) {
     this.options = $event;
     this.changeDetectionRef.detectChanges();
-    // this.form.get('locationName').setValue(this.options[0].description);
   }
 
   uploadFile($event) {

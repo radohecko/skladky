@@ -53,10 +53,10 @@ export class DumpMapComponent implements OnInit, OnChanges {
     this.wrapper = wrapper;
   }
 
-  // TODO: emit geolocation object after one of predictions is selected
   ngOnChanges(changes: SimpleChanges) {
     if (changes.searchAddress && changes.searchAddress.currentValue !== changes.searchAddress.previousValue) {
       this.makeApiCall(this.searchAddress, this.handlePredictionsResponse);
+      this.geocodeAddress(this.searchAddress);
     }
   }
 
@@ -169,16 +169,13 @@ export class DumpMapComponent implements OnInit, OnChanges {
     const BASE_URL = corsProxyUrl + '/' + API_URL;
     const queryString = this.encodeQuery(queryOptions);
     const callUrl = BASE_URL + '/json?' + queryString;
-    console.log('url:', callUrl);
     this.httpClient.get(callUrl, options)
       .toPromise()
       .then((response: any) => {
         this.handlePredictionsResponse(response);
-        // this.loading = false;
       })
       .catch((err) => {
         console.error(err);
-        // this.loading = false;
       });
   }
 
@@ -205,20 +202,14 @@ export class DumpMapComponent implements OnInit, OnChanges {
 
   handlePredictionsResponse(response: any) {
     if (response && response.predictions.length > 0) {
-      // console.log('predictions: ', response);
       this.predictedLocations.emit(response.predictions);
-      console.log('emitting predictions: ', response.predictions);
-    } else {
-      console.error('nem ok');
     }
   }
 
-  // TODO: geocodeAddress only after one location is selected
   geocodeAddress(address: string) {
     const self = this;
     this.geocoder.geocode({ 'address': address }, function (results, status) {
       if (status === 'OK') {
-        console.log('results: ', results[0]);
         const region = self.getRegion(results[0].address_components)[0]['long_name'];
         const data: GoogleLocation = {
           lat: results[0].geometry.location.lat(),
@@ -226,11 +217,10 @@ export class DumpMapComponent implements OnInit, OnChanges {
           region: region,
           adressName: results[0].formatted_address.toString()
         };
-        console.log('emitting: ', data);
-        // self.location.emit(data);
+        self.initMap({ lat: data.lat, lng: data.lng });
+        self.location.emit(data);
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
-        return null;
       }
     });
   }
