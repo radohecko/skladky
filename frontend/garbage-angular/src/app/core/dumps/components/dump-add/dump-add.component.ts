@@ -128,7 +128,6 @@ export class DumpAddComponent implements OnInit, OnDestroy {
 
   setOptions($event) {
     this.options = $event;
-    console.log('change');
     this.changeDetectionRef.detectChanges();
   }
 
@@ -153,8 +152,8 @@ export class DumpAddComponent implements OnInit, OnDestroy {
       }
     } else {
       this.dumpsService.addDump(data, null);
-      this.onClose();
     }
+    this.onClose();
   }
 
   updateForm() {
