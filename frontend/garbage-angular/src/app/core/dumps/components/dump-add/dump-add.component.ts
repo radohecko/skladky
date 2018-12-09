@@ -19,6 +19,8 @@ export class DumpAddComponent implements OnInit, OnDestroy {
 
   @Input() dump: Dump;
 
+  @Output() selectedAddress: EventEmitter<String> = new EventEmitter();
+
   searchAdress: string;
   options: any[] = [];
   form: FormGroup;
@@ -104,6 +106,10 @@ export class DumpAddComponent implements OnInit, OnDestroy {
     });
   }
 
+  emitSelectedAddress($event) {
+    this.selectedAddress = $event;
+  }
+
   setDefaultValues() {
     this.form = this.fb.group({
       locationName: [this.dump.locationName, Validators.required],
@@ -122,6 +128,7 @@ export class DumpAddComponent implements OnInit, OnDestroy {
 
   setOptions($event) {
     this.options = $event;
+    console.log('change');
     this.changeDetectionRef.detectChanges();
   }
 

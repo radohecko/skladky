@@ -60,10 +60,12 @@ export class GoogleMapComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.filteredDumps && changes.filteredDumps.currentValue !== changes.filteredDumps.previousValue) {
-      if (this.map) {
-        this.dumps = this.filteredDumps;
-        this.markAllDumps();
+    if (changes.filteredDumps) {
+      if (changes.filteredDumps.currentValue !== changes.filteredDumps.previousValue) {
+        if (this.map) {
+          this.dumps = this.filteredDumps;
+          this.markAllDumps();
+        }
       }
     }
   }
@@ -121,7 +123,7 @@ export class GoogleMapComponent implements OnChanges, OnInit {
 
             self.location.emit(data);
           } catch (e) {
-            console.log(e);
+            console.error(e);
           }
           if (setInfoContent) {
             self.infoWindow.setContent(results[0].formatted_address);
@@ -131,7 +133,7 @@ export class GoogleMapComponent implements OnChanges, OnInit {
         }
       } else {
         self.clearMarker(self.customMarker);
-        console.log('Geocoder failed due to: ' + status);
+        console.error('Geocoder failed due to: ' + status);
       }
     });
   }

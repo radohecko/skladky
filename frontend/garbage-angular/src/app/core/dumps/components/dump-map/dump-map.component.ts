@@ -20,6 +20,7 @@ export class DumpMapComponent implements OnInit, OnChanges {
   @Input() dump: Dump;
   @Input() zoom = 12;
   @Input() searchAddress: string;
+  @Input() selectedAddress: string;
 
   @Output() location: EventEmitter<GoogleLocation> = new EventEmitter();
   @Output() predictedLocations: EventEmitter<String[]> = new EventEmitter();
@@ -54,9 +55,17 @@ export class DumpMapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.searchAddress && changes.searchAddress.currentValue !== changes.searchAddress.previousValue) {
-      this.makeApiCall(this.searchAddress, this.handlePredictionsResponse);
-      this.geocodeAddress(this.searchAddress);
+    if (this.map) {
+      if (changes.searchAddress) {
+        if (changes.searchAddress.currentValue !== changes.searchAddress.previousValue) {
+          this.makeApiCall(this.searchAddress, this.handlePredictionsResponse);
+        }
+      }
+      if (changes.selectedAddress) {
+        if (changes.selectedAddress.currentValue !== changes.selectedAddress.previousValue) {
+          this.geocodeAddress(this.searchAddress);
+        }
+      }
     }
   }
 
@@ -89,7 +98,7 @@ export class DumpMapComponent implements OnInit, OnChanges {
           lat: event.latLng.lat(),
           lng: event.latLng.lng(),
         };
-        self.customMarker = self.createMarker(pos, null, true, true);
+        self.customMarker = self.createMarker(pos, self.icons.DUMP_PENDING, true, true);
         self.infoWindow.open(self.map, self.customMarker);
       });
     }
@@ -144,7 +153,7 @@ export class DumpMapComponent implements OnInit, OnChanges {
           }
           self.infoWindow.setContent(results[0].formatted_address);
         } else {
-          window.alert('No results found');
+          console.error('No results found');
         }
       } else {
         self.clearMarker(self.customMarker);
@@ -202,7 +211,7 @@ export class DumpMapComponent implements OnInit, OnChanges {
 
   handlePredictionsResponse(response: any) {
     if (response && response.predictions.length > 0) {
-      this.predictedLocations.emit(response.predictions);
+        this.predictedLocations.emit(response.predictions);
     }
   }
 
@@ -220,7 +229,7 @@ export class DumpMapComponent implements OnInit, OnChanges {
         self.initMap({ lat: data.lat, lng: data.lng });
         self.location.emit(data);
       } else {
-        alert('Geocode was not successful for the following reason: ' + status);
+        console.error('Geocode was not successful for the following reason: ' + status);
       }
     });
   }
