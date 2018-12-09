@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Dump } from 'src/app/shared/interfaces/dump';
 import { ToggleGroupOption } from 'src/app/shared/components/toggle-buttons/toggle-buttons.component';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class DumpsService {
@@ -15,7 +16,7 @@ export class DumpsService {
 
   private basePath = '/uploads';
 
-  constructor(private afs: AngularFirestore, private storage: AngularFireStorage) { }
+  constructor(private afs: AngularFirestore, private storage: AngularFireStorage, private snackBar: MatSnackBar) { }
 
   getDumps() {
     this.dumpsCollection = this.afs.collection<Dump>(`dumps`);
@@ -37,9 +38,11 @@ export class DumpsService {
         if (file) {
           this.uploadFile(id, file);
         }
+        this.toastMessage('New dump added!');
         console.log('Document successfully written!');
       })
       .catch((error) => {
+        this.toastMessage('Adding dump attempt failed!');
         console.error('Error writing document: ', error);
       });
   }
@@ -52,9 +55,11 @@ export class DumpsService {
         if (file) {
           this.uploadFile(id, file);
         }
+        this.toastMessage('Dump edited!');
         console.log('Document successfully written!');
       })
       .catch((error) => {
+        this.toastMessage('Dump edit attempt failed!');
         console.error('Error writing document: ', error);
       });
   }
@@ -64,6 +69,12 @@ export class DumpsService {
     const task = ref.put(file);
     // observe percentage changes
     this.uploadPercent$ = task.percentageChanges();
+  }
+
+  toastMessage(message: string) {
+    this.snackBar.open(message, null, {
+      duration: 3000,
+    });
   }
 
 }

@@ -32,6 +32,7 @@ import { ToggleButtonsComponent } from './shared/components/toggle-buttons/toggl
 import { DumpMapViewComponent } from './core/dumps/components/dump-map-view/dump-map-view.component';
 import { NgMathPipesModule } from 'angular-pipes';
 import { ImageDialogComponent } from './core/dumps/components/image-dialog/image-dialog.component';
+import {MatSnackBarModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { ImageDialogComponent } from './core/dumps/components/image-dialog/image
     DialogModule,
     NgMathPipesModule,
     HttpClientModule,
+    MatSnackBarModule,
     AgmCoreModule.forRoot({apiKey: 'AIzaSyDVTT8btuhog4XIke6JG4wv38ABrf85qXc'})
   ],
   entryComponents: [

@@ -21,7 +21,9 @@ export class NavigationToolbarComponent implements OnInit {
       width: '400px',
       height: '300px'
     });
-    this.onToggleMenu();
+    if (this.toggleMenu) {
+      this.onToggleMenu();
+    }
   }
 
   onOpenSignUp() {
@@ -31,12 +33,16 @@ export class NavigationToolbarComponent implements OnInit {
       height: '300px',
       data: 'Sign Up'
     });
-    this.onToggleMenu();
+    if (this.toggleMenu) {
+      this.onToggleMenu();
+    }
   }
 
   logOut() {
     this.authService.logOut();
-    this.onToggleMenu();
+    if (this.toggleMenu) {
+      this.onToggleMenu();
+    }
   }
 
   onToggleMenu() {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class AuthService {
@@ -8,7 +9,7 @@ export class AuthService {
   token: string | null = null;
   userEmail: string;
 
-  constructor(private router: Router, private afAuth: AngularFireAuth) { }
+  constructor(private router: Router, private afAuth: AngularFireAuth, private snackBar: MatSnackBar) { }
 
   signIn(email: string, password: string) {
     this.afAuth.auth.signInWithEmailAndPassword(email, password)
@@ -19,6 +20,7 @@ export class AuthService {
               this.token = token;
               this.userEmail = email;
             });
+            this.toastMessage('Login successful!');
       })
       .catch(
         Error => {
@@ -27,6 +29,7 @@ export class AuthService {
           } else {
             console.log(Error);
           }
+          this.toastMessage('Login attempt failed!');
         }
       );
   }
@@ -36,7 +39,10 @@ export class AuthService {
       .then(user => {
         this.signIn(email, password);
       })
-      .catch(Error => console.log(Error));
+      .catch(Error => {
+        this.toastMessage('Signup attempt failed!');
+        console.log(Error);
+      });
   }
 
   logOut() {
@@ -50,9 +56,15 @@ export class AuthService {
   }
 
   getUserEmail() {
-    if  (this.token) {
+    if (this.token) {
       return this.userEmail;
     }
+  }
+
+  toastMessage(message: string) {
+    this.snackBar.open(message, null, {
+      duration: 3000,
+    });
   }
 
 }
