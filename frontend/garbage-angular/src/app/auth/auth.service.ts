@@ -49,6 +49,7 @@ export class AuthService {
     this.token = null;
     this.afAuth.auth.signOut();
     this.router.navigate(['/home']);
+    this.toastMessage('Logged out!');
   }
 
   isAuthenticated() {
