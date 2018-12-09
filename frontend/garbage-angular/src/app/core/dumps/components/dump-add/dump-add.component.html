@@ -21,8 +21,10 @@
              placeholder="Location *"
              formControlName="locationName">
     </mat-form-field> -->
-
+    <span class="title">Report a dump</span>
+<div class="form-field">
     <mat-form-field>
+        <mat-hint class="hint">Enter the location of the dump</mat-hint>
       <input type="text"
              matInput
              placeholder="Location *"
@@ -35,8 +37,11 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+  </div>
 
-    <mat-form-field>
+    <div class="form-field">
+    <mat-form-field class="full-width">
+        <mat-hint class="hint">Status will be set to 'Pending' until we'll resolve it!</mat-hint>
       <mat-select placeholder="Status"
                   formControlName="status">
         <mat-option *ngFor="let s of statusOptions"
@@ -45,18 +50,22 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+  </div>
 
     <span class="label">Amount *</span>
+   
     <mat-radio-group formControlName="amount">
       <mat-radio-button value="car">Car</mat-radio-button>
       <mat-radio-button value="lorry">Lorry</mat-radio-button>
       <mat-radio-button value="bag">Bag</mat-radio-button>
     </mat-radio-group>
+    <mat-hint class="label">Select the approximate amount of garbage, so we can prepare sufficient means</mat-hint>
 
     <div formArrayName="materials">
       <div class="form-field"
            *ngFor="let material of materials.controls; let i=index">
         <mat-form-field class="full-width">
+          <mat-hint class="hint">Enter the materials contained in the dump</mat-hint>
           <input matInput
                  placeholder="Materials *"
                  [formControlName]="i">
@@ -79,6 +88,7 @@
       <div class="form-field"
            *ngFor="let substance of substances.controls; let i=index">
         <mat-form-field class="full-width">
+            <mat-hint class="hint">Enter any dangerous substance if contained in the dump</mat-hint>
           <input matInput
                  placeholder="Dangerous substances contained"
                  [formControlName]="i">
@@ -104,12 +114,17 @@
            type="file"
            accept="image/*"
            (change)="uploadFile($event)">
+    <mat-hint class="label">You can upload a photo of the dump to let everyone see it</mat-hint>
 
     <mat-form-field>
+        <mat-hint class="hint">Enter your email in case you want to be updated on the process of cleaning up the dump</mat-hint>
       <input matInput
              placeholder="Email"
              formControlName="email">
     </mat-form-field>
+    <br>
+    <span class="label">* required fields</span>
+
   </form>
 
   <div class="actions">
