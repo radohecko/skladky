@@ -78,7 +78,7 @@ export class DumpAddComponent implements OnInit, OnDestroy {
       if (address.description) {
         this.searchAdress = address;
       } else {
-        if (address.length > 4 && address !== this.location.adressName) {
+        if (address.length >= 2 && (!this.location || address !== this.location.adressName)) {
           this.searchAdress = address;
         }
       }
