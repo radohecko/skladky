@@ -4,7 +4,6 @@ import { DumpsService, toggleOptionsLeft, toggleOptionsRight } from '../../servi
 import { Subscription } from 'rxjs';
 import { ToggleGroupOption, ToggleGroupValue } from 'src/app/shared/components/toggle-buttons/toggle-buttons.component';
 import { Router } from '@angular/router';
-import { ConsoleReporter } from 'jasmine';
 
 @Component({
   selector: 'app-dump-list',
