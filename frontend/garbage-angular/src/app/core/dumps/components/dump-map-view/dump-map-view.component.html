@@ -2,27 +2,39 @@
 <div class="actions">
   <div class="actions-left">
     <div class="title">Change view: </div>
-    <app-toggle-buttons [options]="toggleOptionsLeft"
-                        [selectedValue]="optionSelectedValueLeft"
-                        (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
+    <app-toggle-buttons class="buttons" [options]="toggleOptionsLeft" [selectedValue]="optionSelectedValueLeft"
+      (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
+
+
+    <mat-form-field class="selects">
+      <mat-select [(value)]="optionSelectedValueLeft" (selectionChange)="onSelectedValueChange($event.value)">
+        <mat-option *ngFor="let option of toggleOptionsLeft" [value]="option.value">
+          {{option.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
+
+
   <div class="actions-right">
     <div class="title">Filter by status: </div>
-    <app-toggle-buttons [options]="toggleOptionsRight"
-                        [selectedValue]="optionSelectedValueRight"
-                        (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
+    <app-toggle-buttons class="buttons" [options]="toggleOptionsRight" [selectedValue]="optionSelectedValueRight"
+      (selectedValueChange)="onSelectedValueChange($event)"></app-toggle-buttons>
+      
+      <mat-form-field class="selects">
+        <mat-select [(value)]="optionSelectedValueRight" (selectionChange)="onSelectedValueChange($event.value)">
+          <mat-option *ngFor="let option of toggleOptionsRight" [value]="option.value">
+            {{option.value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
   </div>
 </div>
-<div class="cards"
-     *ngIf="filteredDumps">
+<div class="cards" *ngIf="filteredDumps">
   <div class="map">
     <div class="map-container">
-      <app-google-map [height]="100"
-                      [width]="100"
-                      [dumps]="dumps"
-                      [filteredDumps]="filteredDumps"
-                      [enableMarking]="false"
-                      [zoom]="9"></app-google-map>
+      <app-google-map [height]="100" [width]="100" [dumps]="dumps" [filteredDumps]="filteredDumps" [enableMarking]="false"
+        [zoom]="9"></app-google-map>
     </div>
   </div>
 </div>

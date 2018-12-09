@@ -1,5 +1,12 @@
 @import "../../../../../styles/components/actions-toolbar";
 
+
+$desktop: 960px;
+$tablet: 768px;
+$mobile-large: 700px;
+$mobile: 480px;
+$mobile-small: 300px;
+
 .cards {
   display: flex;
   flex-flow: column;
@@ -25,4 +32,20 @@
 app-google-map {
   width: 100%;
   height: 100%;
+}
+
+.buttons {
+  @media only screen and (max-width: $mobile-large) {
+    display: none;
+  }
+}
+
+.selects {
+  display: none;
+
+  @media only screen and (max-width: $mobile-large) {
+    display: block;
+    width: 90px;
+    font-size: 1.4rem;
+  }
 }

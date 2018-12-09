@@ -242,8 +242,15 @@ export class StatsComponent implements OnInit, OnDestroy {
 
         });
 
-        const keys = Array.from(materialCounts.keys());
-        const vals = Array.from(materialCounts.values());
+        const sorted = new Map(Array.from(materialCounts.entries()).sort((a, b) => b[1] - a[1]));
+
+        let keys = Array.from(sorted.keys());
+        let vals = Array.from(sorted.values());
+        if (keys.length > 10) {
+            keys = keys.slice(0, 10);
+            vals = vals.slice(0, 10);
+        }
+
 
         const [colors, borders] = this.generateColors(materialCounts.size);
         const ctx = document.getElementById('chart4');
