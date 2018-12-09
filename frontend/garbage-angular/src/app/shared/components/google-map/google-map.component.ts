@@ -78,6 +78,9 @@ export class GoogleMapComponent implements OnChanges, OnInit {
         self.infoWindow.open(self.map, self.customMarker);
       });
     }
+    if (this.dumps) {
+      this.markAllDumps();
+    }
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const pos = {
@@ -88,10 +91,6 @@ export class GoogleMapComponent implements OnChanges, OnInit {
         this.myPositionMarker = this.createMarker(pos, this.icons.MY_POSITION, true, true);
         this.infoWindow.open(self.map, this.myPositionMarker);
         this.map.setCenter(pos);
-
-        if (this.dumps) {
-          this.markAllDumps();
-        }
       }, () => {
         this.handleLocationError(true, this.infoWindow);
       });
@@ -128,7 +127,7 @@ export class GoogleMapComponent implements OnChanges, OnInit {
             self.infoWindow.setContent(results[0].formatted_address);
           }
         } else {
-          window.alert('No results found');
+          console.error('No results found');
         }
       } else {
         self.clearMarker(self.customMarker);
