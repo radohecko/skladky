@@ -40,11 +40,14 @@
     <nav [ngClass]="toggleMenu ? 'toggleMenuStyle' : 'hidden'">
       <ul class="list">
         <li><a routerLink="home"
-             routerLinkActive="active-link">Home</a></li>
+             routerLinkActive="active-link"
+             (click)="onToggleMenu()">Home</a></li>
         <li><a routerLink="dumps"
-             routerLinkActive="active-link">Dumps</a></li>
+             routerLinkActive="active-link"
+             (click)="onToggleMenu()">Dumps</a></li>
         <li><a routerLink="stats"
-             routerLinkActive="active-link">Stats</a></li>
+             routerLinkActive="active-link"
+             (click)="onToggleMenu()">Stats</a></li>
       </ul>
       <ul *ngIf="!authService.isAuthenticated()">
         <li><a class="row-item"
