@@ -4,6 +4,7 @@ import { DumpsService, toggleOptionsLeft, toggleOptionsRight } from '../../servi
 import { Subscription } from 'rxjs';
 import { ToggleGroupOption, ToggleGroupValue } from 'src/app/shared/components/toggle-buttons/toggle-buttons.component';
 import { Router } from '@angular/router';
+import { ConsoleReporter } from 'jasmine';
 
 @Component({
   selector: 'app-dump-list',
@@ -34,15 +35,25 @@ export class DumpListComponent implements OnInit {
     this.dumpsSubscription = this.dumpsService.dumpsObservable$.subscribe(data => {
       this.dumps = data;
       this.filteredDumps = this.dumps;
+      this.filterByStatus('All');
     });
   }
 
   filterByStatus(status: string) {
+
     if (status !== 'All') {
       this.filteredDumps = this.dumps.filter(dump => dump.status === status);
     } else {
       this.filteredDumps = this.dumps;
     }
+    if (this.filteredDumps) {
+      if ((this.page * this.perPage) >= this.filteredDumps.length) {
+        this.dis_next = true;
+      } else {
+        this.dis_next = false;
+      }
+    }
+
   }
 
   onNext() {
@@ -77,9 +88,9 @@ export class DumpListComponent implements OnInit {
       case 'Pending':
       case 'Resolved':
       case 'In Process':
-        this.filterByStatus($event);
         this.page = 1;
         this.dis_prev = true;
+        this.filterByStatus($event);
         break;
       default:
         break;
