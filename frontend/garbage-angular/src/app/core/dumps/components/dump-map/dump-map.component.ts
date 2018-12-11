@@ -103,6 +103,9 @@ export class DumpMapComponent implements OnInit, OnChanges {
       });
     }
     if (dumpPosition) {
+      if (self.customMarker) {
+        self.clearMarker(self.customMarker);
+      }
       self.customMarker = self.createMarker(dumpPosition, null, true, true);
       self.infoWindow.open(self.map, self.customMarker);
     } else {
