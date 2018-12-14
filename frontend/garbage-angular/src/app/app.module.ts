@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -76,7 +76,7 @@ import {MatSnackBarModule} from '@angular/material';
     DumpAddComponent,
     ImageDialogComponent
   ],
-  providers: [DumpsService, DialogService, GoogleMapsAPIWrapper, HttpClientModule],
+  providers: [DumpsService, DialogService, GoogleMapsAPIWrapper, HttpClientModule, Title],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

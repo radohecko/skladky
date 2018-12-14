@@ -3,15 +3,38 @@ main {
   justify-items: center;
   align-items: center;
   display: grid;
-  height: 100vh;
+  height: 900px;
   grid-template-areas:
+    "link"
     "firstline"
     "secondline"
     "thirdline"
     "button"
     "map";
   grid-template-columns: 100%;
-  grid-template-rows: 50px 50px 50px 200px auto;
+  grid-template-rows: 150px 50px 50px 50px 200px auto;
+}
+
+#link {
+  grid-area: link;
+  width: 60%;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  font-size: 20px;
+}
+#link a {
+  color: black;
+}
+#credentials {
+  margin-top: 8px;
+  font-size: 18px;
+}
+
+mat-card {
+  background-color: #fde2e2;
+  border: solid 1.5px #eb9999;
+  padding: 15px;
 }
 
 #container {
@@ -19,6 +42,8 @@ main {
   position: relative;
   height: 100%; //400px;
   width: 100%;
+  min-height: 250px;
+
 }
 
 #map {

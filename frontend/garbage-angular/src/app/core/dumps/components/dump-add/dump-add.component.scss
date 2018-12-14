@@ -49,8 +49,12 @@ mat-progress-bar {
   width: 100%;
 }
 
+.mat-form-field-appearance-legacy .mat-hint {
+  color: rgba(0, 0, 0, 0.8);
+}
+
 .label {
-  color: rgba(0, 0, 0, 0.54);
+  color: rgba(0, 0, 0, 0.8);
   font-family: 'Roboto', sans-serif;
   font-size: 12px;
   font-weight: 400;

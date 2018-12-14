@@ -1,17 +1,26 @@
 <main>
-  <p class="homepage-text"
-     id="first-line">Found an illegal dump?</p>
-  <p class="homepage-text"
-     id="second-line">Do you care?</p>
-  <p class="homepage-text"
-     id="third-line">Tell us and help to clean it up!</p>
-  <button id="report"
-          (click)="onOpenAddReport()"> </button>
-  <div id="container">
-    <div id="map">
-      <app-google-map [height]="100"
-                      [width]="100"
-                      [enableMarking]="false"></app-google-map>
-    </div>
-  </div>
+   <mat-card id="link">
+      <a href="https://github.com/MisooB/skladky/blob/master/documentation/ForestDump%20Specification.pdf" >
+         Specification</a>
+      <p id="credentials">
+         admin@gmail.com<br>
+         admin123
+      </p>
+      
+   </mat-card>
+   <p class="homepage-text"
+      id="first-line">Found an illegal dump?</p>
+   <p class="homepage-text"
+      id="second-line">Do you care?</p>
+   <p class="homepage-text"
+      id="third-line">Tell us and help to clean it up!</p>
+   <button id="report"
+            (click)="onOpenAddReport()"> </button>
+   <div id="container">
+      <div id="map">
+         <app-google-map [height]="100"
+                        [width]="100"
+                        [enableMarking]="false"></app-google-map>
+      </div>
+   </div>
 </main>

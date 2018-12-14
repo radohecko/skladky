@@ -8,7 +8,7 @@ import { MapsAPILoader, AgmMap } from '@agm/core';
 import { GoogleMapsAPIWrapper } from '@agm/core/services';
 import { Chart } from 'chart.js';
 import { unsubscribe } from 'src/app/shared/utils/subscription.util';
-
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -25,7 +25,9 @@ export class StatsComponent implements OnInit, OnDestroy {
     regionsObservable$: Observable<number[]>;
 
 
-    constructor(public mapsApiLoader: MapsAPILoader, private dumpsService: DumpsService, private wrapper: GoogleMapsAPIWrapper) {
+    constructor(public mapsApiLoader: MapsAPILoader, private dumpsService: DumpsService,
+        private wrapper: GoogleMapsAPIWrapper, private titleService: Title) {
+        this.titleService.setTitle('Forest Dump Stats');
         this.mapsApiLoader = mapsApiLoader;
         this.wrapper = wrapper;
         this.mapsApiLoader.load().then(() => {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DumpAddComponent } from '../dumps/components/dump-add/dump-add.component';
 import { MatDialog } from '@angular/material';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -10,7 +11,9 @@ import { MatDialog } from '@angular/material';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private titleService: Title) {
+    this.titleService.setTitle('Forest Dump Home');
+  }
 
   ngOnInit() {
   }
