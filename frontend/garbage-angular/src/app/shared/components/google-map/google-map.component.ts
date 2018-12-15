@@ -35,10 +35,10 @@ export class GoogleMapComponent implements OnChanges, OnInit {
   dumpMarkers: google.maps.Marker[];
 
   icons = {
-    MY_POSITION: '../../../../assets/my_position.png',
-    DUMP_PENDING: '../../../../assets/pending.png',
-    DUMP_IN_PROCESS: '../../../../assets/in_process.png',
-    DUMP_RESOLVED: '../../../../assets/resolved.png'
+    MY_POSITION: './assets/my_position.png',
+    DUMP_PENDING: './assets/pending.png',
+    DUMP_IN_PROCESS: './assets/in_process.png',
+    DUMP_RESOLVED: './assets/resolved.png'
   };
 
   constructor(private mapsApiLoader: MapsAPILoader, private wrapper: GoogleMapsAPIWrapper) {
