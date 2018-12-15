@@ -33,7 +33,7 @@ export class DumpsService {
     const id = this.afs.createId();
     const dumpRef: AngularFirestoreDocument<Dump> = this.afs.doc(`dumps/${id}`);
     const image = file !== null ? id : null;
-    dumpRef.set({ ...data, image: image })
+    dumpRef.set({ ...data, image: id })
       .then(() => {
         if (file) {
           this.uploadFile(id, file);
@@ -50,7 +50,7 @@ export class DumpsService {
   updateDump(id: string, data: Dump, file: File | null) {
     const dumpRef: AngularFirestoreDocument<Dump> = this.afs.doc(`dumps/${id}`);
     const image = file !== null ? id : null;
-    dumpRef.update({ ...data, image: image })
+    dumpRef.update({ ...data, image: id })
       .then(() => {
         if (file) {
           this.uploadFile(id, file);
