@@ -27,7 +27,7 @@ export class StatsComponent implements OnInit, OnDestroy {
 
     constructor(public mapsApiLoader: MapsAPILoader, private dumpsService: DumpsService,
         private wrapper: GoogleMapsAPIWrapper, private titleService: Title) {
-        this.titleService.setTitle('Forest Dump Stats');
+        this.titleService.setTitle('Forest Dump | Stats');
         this.mapsApiLoader = mapsApiLoader;
         this.wrapper = wrapper;
         this.mapsApiLoader.load().then(() => {

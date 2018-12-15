@@ -12,7 +12,7 @@ import { Title } from '@angular/platform-browser';
 export class DumpsComponent implements OnInit {
 
   constructor(public dialog: MatDialog, private titleService: Title) {
-    this.titleService.setTitle('Forest Dump Dumps');
+    this.titleService.setTitle('Forest Dump | Dumps');
   }
 
   ngOnInit() {}
