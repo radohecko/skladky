@@ -39,7 +39,7 @@ export class DumpListComponent implements OnInit {
   }
 
   filterByStatus(status: string) {
-
+    this.optionSelectedValueRight = status;
     if (status !== 'All') {
       this.filteredDumps = this.dumps.filter(dump => dump.status === status);
     } else {

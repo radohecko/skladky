@@ -19,7 +19,7 @@ export class DumpsService {
   constructor(private afs: AngularFirestore, private storage: AngularFireStorage, private snackBar: MatSnackBar) { }
 
   getDumps() {
-    this.dumpsCollection = this.afs.collection<Dump>(`dumps`);
+    this.dumpsCollection = this.afs.collection<Dump>(`dumps`, ref => ref.orderBy('timestamp', 'desc'));
     this.dumpsObservable$ = this.dumpsCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Dump;
