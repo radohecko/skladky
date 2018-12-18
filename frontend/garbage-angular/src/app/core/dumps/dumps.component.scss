@@ -19,6 +19,10 @@ $mobile-small: 300px;
   background-repeat: no-repeat;
   border: none;
 
+  &:hover {
+    cursor: pointer;
+  }
+
   @media only screen and (max-width: $mobile-large) {
     width: 6rem;
     height: 6rem;

@@ -27,11 +27,15 @@ $mobile-small: 300px;
   mat-card-title {
     font-size: 2.5rem;
     color: $color-dark-grey;
-    white-space: nowrap;
+    white-space: pre-wrap;
 
     @media only screen and (max-width: $mobile-large) {
-      font-size: 0.8rem;
+      font-size: 1.6rem;
       overflow: hidden;
+
+      .mat-card-header-text {
+        margin: 0 !important;
+      }
     }
   }
 
