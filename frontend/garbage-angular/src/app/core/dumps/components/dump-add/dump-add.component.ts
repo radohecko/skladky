@@ -35,7 +35,7 @@ export class DumpAddComponent implements OnInit, OnDestroy {
     { label: 'Pending', value: 'Pending' },
     { label: 'In Process', value: 'In Process' }
   ];
-
+  title = 'Report a dump';
   color = 'primary';
   mode = 'query';
 
@@ -66,6 +66,7 @@ export class DumpAddComponent implements OnInit, OnDestroy {
     this.createForm();
     if (this.dump) {
       this.setDefaultValues();
+      this.title = 'Edit a dump';
     }
     this.addressSubscription = this.form.statusChanges.subscribe(status => {
       if (status === 'INVALID') {
